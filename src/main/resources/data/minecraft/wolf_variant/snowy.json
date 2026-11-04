@@ -1,0 +1,21 @@
+{
+  "assets": {
+    "angry": "newera:entity/wolf/wolf_snowy_angry",
+    "tame": "newera:entity/wolf/wolf_snowy",
+    "wild": "newera:entity/wolf/wolf_snowy"
+  },
+  "baby_assets": {
+    "angry": "newera:entity/wolf/wolf_snowy_angry_baby",
+    "tame": "newera:entity/wolf/wolf_snowy_baby",
+    "wild": "newera:entity/wolf/wolf_snowy_baby"
+  },
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "minecraft:grove"
+      },
+      "priority": 1
+    }
+  ]
+}

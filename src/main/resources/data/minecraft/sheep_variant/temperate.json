@@ -1,0 +1,5 @@
+{
+  "asset_id": "newera:entity/sheep/sheep",
+  "baby_asset_id": "newera:entity/sheep/sheep_baby",
+  "model": "normal"
+}

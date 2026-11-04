@@ -1,0 +1,10 @@
+{
+  "asset_id": "newera:entity/chicken/chicken",
+  "baby_asset_id": "newera:entity/chicken/chicken_baby",
+  "model": "normal",
+  "spawn_conditions": [
+    {
+      "priority": 5
+    }
+  ]
+}

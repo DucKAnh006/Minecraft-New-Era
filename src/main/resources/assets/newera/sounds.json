@@ -1,0 +1,74 @@
+{
+  "entity.ender_dragon.bite": {
+    "category": "hostile",
+    "sounds": [ "newera:entity/ender_dragon/ender_dragon_bite" ]
+  },
+  "entity.ender_dragon.breath": {
+    "category": "hostile",
+    "sounds": [ "newera:entity/ender_dragon/ender_dragon_breath" ]
+  },
+  "entity.ender_dragon.breath_close": {
+    "category": "hostile",
+    "sounds": [ "newera:entity/ender_dragon/ender_dragon_breath_close" ]
+  },
+  "entity.ender_dragon.death": {
+    "category": "hostile",
+    "sounds": [ "newera:entity/ender_dragon/ender_dragon_death" ]
+  },
+  "entity.ender_dragon.flap": {
+    "category": "hostile",
+    "sounds": [
+      "newera:entity/ender_dragon/ender_dragon_flap1",
+      "newera:entity/ender_dragon/ender_dragon_flap2",
+      "newera:entity/ender_dragon/ender_dragon_flap3",
+      "newera:entity/ender_dragon/ender_dragon_flap4",
+      "newera:entity/ender_dragon/ender_dragon_flap5",
+      "newera:entity/ender_dragon/ender_dragon_flap6"
+    ]
+  },
+  "entity.ender_dragon.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "newera:entity/ender_dragon/ender_dragon_hurt1",
+      "newera:entity/ender_dragon/ender_dragon_hurt2",
+      "newera:entity/ender_dragon/ender_dragon_hurt3",
+      "newera:entity/ender_dragon/ender_dragon_hurt4"
+    ]
+  },
+  "entity.ender_dragon.idle": {
+    "category": "hostile",
+    "sounds": [
+      "newera:entity/ender_dragon/ender_dragon_idle1",
+      "newera:entity/ender_dragon/ender_dragon_idle2",
+      "newera:entity/ender_dragon/ender_dragon_idle3",
+      "newera:entity/ender_dragon/ender_dragon_idle4",
+      "newera:entity/ender_dragon/ender_dragon_idle5",
+      "newera:entity/ender_dragon/ender_dragon_idle6",
+      "newera:entity/ender_dragon/ender_dragon_idle7"
+    ]
+  },
+  "entity.ender_dragon.roar": {
+    "category": "hostile",
+    "sounds": [ "newera:entity/ender_dragon/ender_dragon_roar" ]
+  },
+  "entity.ender_dragon.step": {
+    "category": "hostile",
+    "sounds": [
+      "newera:entity/ender_dragon/ender_dragon_step1",
+      "newera:entity/ender_dragon/ender_dragon_step2",
+      "newera:entity/ender_dragon/ender_dragon_step3",
+      "newera:entity/ender_dragon/ender_dragon_step4",
+      "newera:entity/ender_dragon/ender_dragon_step5",
+      "newera:entity/ender_dragon/ender_dragon_step6",
+      "newera:entity/ender_dragon/ender_dragon_step7"
+    ]
+  },
+  "entity.ender_dragon.stomp": {
+    "category": "hostile",
+    "sounds": ["newera:entity/ender_dragon/ender_dragon_stomp"]
+  },
+  "entity.ender_dragon.whoosh": {
+    "category": "hostile",
+    "sounds": [ "newera:entity/ender_dragon/ender_dragon_whoosh" ]
+  }
+}

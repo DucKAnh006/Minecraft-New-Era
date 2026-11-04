@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "newera",
+	"version": "${version}",
+	"name": "New Era",
+	"description": "A Minecraft Fabric mod introducing lifelike entity animations, realistic animal behaviors, biome-specific variants, and an overhaul to the Ender Dragon boss encounter.",
+	"authors": [
+		"Nguyen Tran Duc Anh"
+	],
+	"contact": {
+		"homepage": "https://github.com/DucKAnh006/Minecraft-New-Era-Mod",
+		"sources": "https://github.com/DucKAnh006/Minecraft-New-Era-Mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/newera/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.newera.docs.NewEraMod"
+		],
+		"client": [
+			"com.newera.docs.entity.NewEraModCustomEntityClient"
+		]
+	},
+	"mixins": [
+		"newera.mixins.json",
+		{
+			"config": "newera.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": ">=26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

@@ -1,0 +1,14 @@
+{
+  "asset_id": "newera:entity/pig/pig",
+  "baby_asset_id": "newera:entity/pig/pig_baby",
+  "model": "normal",
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "#minecraft:is_overworld"
+      },
+      "priority": 1
+    }
+  ]
+}

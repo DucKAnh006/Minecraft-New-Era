@@ -1,0 +1,14 @@
+{
+  "asset_id": "newera:entity/chicken/warm_chicken",
+  "baby_asset_id": "newera:entity/chicken/warm_chicken_baby",
+  "model": "normal",
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "#minecraft:spawns_warm_variant_farm_animals"
+      },
+      "priority": 10
+    }
+  ]
+}

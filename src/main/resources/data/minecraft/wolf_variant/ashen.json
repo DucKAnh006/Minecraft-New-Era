@@ -1,0 +1,21 @@
+{
+  "assets": {
+    "angry": "newera:entity/wolf/wolf_ashen_angry",
+    "tame": "newera:entity/wolf/wolf_ashen",
+    "wild": "newera:entity/wolf/wolf_ashen"
+  },
+  "baby_assets": {
+    "angry": "newera:entity/wolf/wolf_ashen_angry_baby",
+    "tame": "newera:entity/wolf/wolf_ashen_baby",
+    "wild": "newera:entity/wolf/wolf_ashen_baby"
+  },
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "minecraft:snowy_taiga"
+      },
+      "priority": 1
+    }
+  ]
+}

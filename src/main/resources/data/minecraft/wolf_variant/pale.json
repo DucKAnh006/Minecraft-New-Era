@@ -1,0 +1,17 @@
+{
+  "assets": {
+    "angry": "newera:entity/wolf/wolf_angry",
+    "tame": "newera:entity/wolf/wolf",
+    "wild": "newera:entity/wolf/wolf"
+  },
+  "baby_assets": {
+    "angry": "newera:entity/wolf/wolf_angry_baby",
+    "tame": "newera:entity/wolf/wolf_baby",
+    "wild": "newera:entity/wolf/wolf_baby"
+  },
+  "spawn_conditions": [
+    {
+      "priority": 0
+    }
+  ]
+}

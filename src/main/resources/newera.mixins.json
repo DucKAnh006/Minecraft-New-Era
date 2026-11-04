@@ -1,0 +1,45 @@
+{
+	"required": true,
+	"package": "com.newera.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"NewEraMixin",
+		"entity.ai.goal.TemptGoalMixin",
+		"entity.ai.goal.FollowParentGoalMixin",
+		"entity.ai.goal.AvoidEntityGoalMixin",
+		"entity.ai.goal.PanicGoalMixin",
+		"entity.AnimalInitMixin",
+		"entity.EntitySitHitboxMixin",
+		"entity.MobTurnControlMixin",
+		"entity.animal.cow.AbstractCowMixin",
+		"entity.animal.chicken.ChickenMixin",
+		"entity.animal.pig.PigMixin",
+		"entity.animal.sheep.SheepMixin",
+		"entity.animal.camel.CamelMixin",
+		"entity.animal.horse.AbstractHorseMixin",
+		"entity.animal.cat.CatMixin",
+		"entity.animal.cat.OcelotMixin",
+		"entity.animal.parrot.ParrotMixin",
+		"entity.animal.wolf.WolfMixin",
+		"entity.animal.armadillo.ArmadilloMixin",
+		"entity.boss.dragon.EnderDragonMixin",
+		"entity.boss.dragon.EnderDragonEntityMixin",
+		"entity.boss.dragon.EnderDragonPartMixin",
+		"entity.monster.enderman.EnderManMixin",
+		"entity.crystal.EndCrystalMixin",
+		"worldgen.EndPodiumFeatureMixin",
+		"worldgen.EnderDragonFightMixin",
+		"worldgen.EndSpikeFeatureMixin",
+		"worldgen.EndSpikeMixin",
+		"worldgen.SpikeCacheLoaderMixin",
+		"worldgen.EndIslandDensityFunctionMixin",
+		"entity.projectile.DragonFireballMixin",
+		"util.UtilWorkerThreadMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

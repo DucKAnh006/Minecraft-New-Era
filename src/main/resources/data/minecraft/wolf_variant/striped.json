@@ -1,0 +1,21 @@
+{
+  "assets": {
+    "angry": "newera:entity/wolf/wolf_striped_angry",
+    "tame": "newera:entity/wolf/wolf_striped",
+    "wild": "newera:entity/wolf/wolf_striped"
+  },
+  "baby_assets": {
+    "angry": "newera:entity/wolf/wolf_striped_angry_baby",
+    "tame": "newera:entity/wolf/wolf_striped_baby",
+    "wild": "newera:entity/wolf/wolf_striped_baby"
+  },
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "#minecraft:is_badlands"
+      },
+      "priority": 1
+    }
+  ]
+}

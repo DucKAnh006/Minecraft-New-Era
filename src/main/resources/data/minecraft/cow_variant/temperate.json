@@ -1,0 +1,10 @@
+{
+  "asset_id": "newera:entity/cow/cow",
+  "baby_asset_id": "newera:entity/cow/cow_baby",
+  "model": "normal",
+  "spawn_conditions": [
+    {
+      "priority": 5
+    }
+  ]
+}
