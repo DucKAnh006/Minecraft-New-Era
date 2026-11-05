@@ -24,7 +24,8 @@ public class NEWolfArmorLayer extends RenderLayer<NEWolfRenderState, EntityModel
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, NEWolfRenderState state, float yaw, float pitch) {
         if (!state.hasArmor) return;
         EntityModel<NEWolfRenderState> armorModel = state.isBaby ? this.babyModel : this.adultModel;
-        
+
         RenderLayer.renderColoredCutoutModel(armorModel, WOLF_ARMOR_LOCATION, poseStack, submitNodeCollector, packedLight, state, -1, OverlayTexture.NO_OVERLAY);
     }
 }
+

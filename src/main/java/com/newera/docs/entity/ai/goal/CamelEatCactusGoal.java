@@ -22,7 +22,7 @@ public class CamelEatCactusGoal extends MoveToBlockGoal {
 
     @Override
     public double acceptedDistance() {
-        return 2.5D; // Reach distance to eat
+        return 2.5D;
     }
 
     @Override
@@ -30,10 +30,7 @@ public class CamelEatCactusGoal extends MoveToBlockGoal {
         if (this.camel.isBaby()) {
             return false;
         }
-        // TẠM THỜI TẮT DELAY ĐỂ TEST DỄ DÀNG HƠN
-        // if (this.camel.getRandom().nextInt(this.reducedTickDelay(400)) != 0) {
-        //     return false; // Don't always try to eat
-        // }
+
         return super.canUse();
     }
 
@@ -60,28 +57,27 @@ public class CamelEatCactusGoal extends MoveToBlockGoal {
         if (this.isReachedTarget()) {
             if (this.camel instanceof INECamelAnimation animCamel) {
                 if (this.eatTicks == 0) {
-                    animCamel.setBodyState((byte) 7); // 7: Eating Cactus
+                    animCamel.setBodyState((byte) 7);
                 }
-                
+
                 this.eatTicks++;
 
-                // Wait for animation to mostly finish
                 if (this.eatTicks > 40) {
                     BlockPos target = this.blockPos;
-                    // Find the top block of the cactus
+
                     while (this.camel.level().getBlockState(target.above()).is(Blocks.CACTUS)) {
                         target = target.above();
                     }
-                    
+
                     BlockState state = this.camel.level().getBlockState(target);
                     if (state.is(Blocks.CACTUS)) {
                         this.camel.level().destroyBlock(target, false);
                         if (this.camel.level() instanceof ServerLevel serverLevel) {
                             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), target.getX() + 0.5, target.getY() + 0.5, target.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.05);
                         }
-                        this.camel.heal(2.0f); // Optional: heal the camel
+                        this.camel.heal(2.0f);
                     }
-                    
+
                     animCamel.setBodyState((byte) 0);
                     this.stop();
                 }
@@ -98,7 +94,8 @@ public class CamelEatCactusGoal extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader level, BlockPos pos) {
-        // Chỉ nhắm vào block xương rồng trên cùng (ngọn)
+
         return level.getBlockState(pos).is(Blocks.CACTUS) && !level.getBlockState(pos.above()).is(Blocks.CACTUS);
     }
 }
+

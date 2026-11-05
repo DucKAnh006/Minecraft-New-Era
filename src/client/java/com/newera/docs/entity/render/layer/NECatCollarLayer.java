@@ -37,3 +37,4 @@ public class NECatCollarLayer extends RenderLayer<NECatRenderState, NECatAbstrac
         }
     }
 }
+

@@ -19,3 +19,4 @@ public interface INECowAnimation extends INEAnimal {
 
     AnimationState getIdleAnimationState();
 }
+

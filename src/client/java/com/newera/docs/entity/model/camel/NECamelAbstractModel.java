@@ -107,9 +107,10 @@ public abstract class NECamelAbstractModel extends EntityModel<NECamelRenderStat
         this.standAnimation.apply(state.standAnimationState, state.ageInTicks);
         this.eatingAnimation.apply(state.eatingAnimationState, state.ageInTicks);
         this.idleAnimation.apply(state.idleAnimationState, state.ageInTicks);
-        
+
         if (this.dashAnimation != null) {
             this.dashAnimation.apply(state.dashAnimationState, state.ageInTicks);
         }
     }
 }
+

@@ -68,3 +68,4 @@ public class NECamelRenderer extends MobRenderer<Camel, NECamelRenderState, Enti
         return state.isBaby ? CAMEL_BABY_LOCATION : CAMEL_LOCATION;
     }
 }
+

@@ -57,3 +57,4 @@ public class NESheepVariants {
         context.register(name, new NESheepVariant(new ModelAndTexture<>(modelType, textureId), new ClientAsset.ResourceTexture(babyTextureId), selectors));
     }
 }
+

@@ -94,3 +94,4 @@ public class NEPigRenderer extends MobRenderer<Pig, NEPigRenderState, EntityMode
         return state.isBaby ? state.variant.babyTexture().texturePath() : state.variant.modelAndTexture().asset().texturePath();
     }
 }
+

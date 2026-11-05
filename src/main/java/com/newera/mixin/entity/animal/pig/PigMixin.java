@@ -57,7 +57,7 @@ public abstract class PigMixin extends Animal implements INEPigAnimation {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initSpeed(EntityType<? extends Animal> type, Level level, CallbackInfo ci) {
-        this.animalSpeed = new AnimalSpeed(this, 0.25D, 0.30D, 20);
+        this.animalSpeed = new AnimalSpeed(this, 0.25D, 0.32D, 18);
     }
 
     @Inject(method = "defineSynchedData", at = @At("TAIL"))
@@ -124,7 +124,7 @@ public abstract class PigMixin extends Animal implements INEPigAnimation {
             this.setupAnimationStates();
         } else {
             if (state > 0) {
-                if (this.getLastHurtByMob() != null || this.isOnFire()) {
+                if (this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0) {
                     this.setBodyState((byte) 0);
                     this.busyTimer = 0;
                 } else {
@@ -156,12 +156,13 @@ public abstract class PigMixin extends Animal implements INEPigAnimation {
                     }
                 }
             } else {
+                boolean isPanicking = this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0;
                 if (state > 0) {
-                    this.animalSpeed.stop();
+                    this.animalSpeed.forceStop();
+                } else if (isPanicking) {
+                    this.animalSpeed.run();
                 } else if (this.getNavigation().isDone() || this.getNavigation().getPath() == null) {
                     this.animalSpeed.stop();
-                } else if (this.getLastHurtByMob() != null || this.isOnFire()) {
-                    this.animalSpeed.run();
                 } else {
                     this.animalSpeed.walk();
                 }
@@ -214,3 +215,4 @@ public abstract class PigMixin extends Animal implements INEPigAnimation {
     @Override public AnimationState getGrazingAnimationState() { return this.grazingAnimationState; }
     @Override public AnimationState getIdleAnimationState() { return this.idleAnimationState; }
 }
+

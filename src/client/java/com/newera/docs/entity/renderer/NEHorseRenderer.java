@@ -104,3 +104,4 @@ public class NEHorseRenderer extends MobRenderer<Horse, NEHorseRenderState, NEHo
         return state.isBaby ? Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/horse_white_baby.png") : Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/horse_white.png");
     }
 }
+

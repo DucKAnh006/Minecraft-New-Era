@@ -4,3 +4,4 @@ public interface INEEnderman {
     boolean isDragonSummoned();
     void setDragonSummoned(boolean summoned);
 }
+

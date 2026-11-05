@@ -56,17 +56,17 @@ public class NewEraModCustomEntityClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityTypes.CHICKEN, com.newera.docs.entity.renderer.NEChickenRenderer::new);
         EntityRendererRegistry.register(EntityTypes.PIG, NEPigRenderer::new);
         EntityRendererRegistry.register(EntityTypes.SHEEP, NESheepRenderer::new);
-        
+
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_CAMEL, com.newera.docs.entity.model.camel.NECamelModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_CAMEL_BABY, com.newera.docs.entity.model.camel.NECamelBabyModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_CAMEL_SADDLE, com.newera.docs.entity.model.camel.NECamelSaddleModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_CAMEL_HUSK, com.newera.docs.entity.model.camel.NECamelModel::createBodyLayer);
-        
+
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_HORSE, com.newera.docs.entity.model.horse.NEHorseModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_BABY_HORSE, com.newera.docs.entity.model.horse.NEBabyHorseModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_DONKEY, com.newera.docs.entity.model.horse.NEDonkeyMuleModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_BABY_DONKEY, com.newera.docs.entity.model.horse.NEBabyDonkeyMuleModel::createBodyLayer);
-        
+
         EntityRendererRegistry.register(EntityTypes.CAMEL, com.newera.docs.entity.renderer.NECamelRenderer::new);
         EntityRendererRegistry.register(EntityTypes.HORSE, com.newera.docs.entity.renderer.NEHorseRenderer::new);
         EntityRendererRegistry.register(EntityTypes.DONKEY, com.newera.docs.entity.renderer.NEDonkeyMuleRenderer::new);
@@ -90,15 +90,14 @@ public class NewEraModCustomEntityClient implements ClientModInitializer {
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_WOLF, com.newera.docs.entity.model.wolf.NEWolfModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_WOLF_BABY, com.newera.docs.entity.model.wolf.NEWolfBabyModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_WOLF_ARMOR, com.newera.docs.entity.model.wolf.NEWolfModel::createArmorLayer);
-        
+
         EntityRendererRegistry.register(EntityTypes.WOLF, com.newera.docs.entity.renderer.NEWolfRenderer::new);
 
-        // Ender Dragon
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_ENDER_DRAGON, com.newera.docs.entity.model.ender_dragon.NEEnderDragonModel::createBodyLayer);
         EntityRendererRegistry.register(EntityTypes.ENDER_DRAGON, com.newera.docs.entity.renderer.NEEnderDragonRenderer::new);
 
-        // Ender Crystal
         ModelLayerRegistry.registerModelLayer(NEModelLayers.NE_ENDER_CRYSTAL, com.newera.docs.entity.model.ender_crystal.NEEnderCrystalModel::createBodyLayer);
         EntityRendererRegistry.register(EntityTypes.END_CRYSTAL, com.newera.docs.entity.renderer.NEEnderCrystalRenderer::new);
     }
 }
+

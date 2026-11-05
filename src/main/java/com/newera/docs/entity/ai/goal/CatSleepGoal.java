@@ -93,7 +93,7 @@ public class CatSleepGoal extends Goal {
         if (this.currentPhase == Phase.SLEEPING_HOLD) {
             this.dailySleepTicksLeft--;
         }
-        
+
         this.animal.getNavigation().stop();
 
         switch (this.currentPhase) {
@@ -142,3 +142,4 @@ public class CatSleepGoal extends Goal {
         }
     }
 }
+

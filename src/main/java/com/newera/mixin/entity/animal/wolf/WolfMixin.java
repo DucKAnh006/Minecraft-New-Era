@@ -66,7 +66,7 @@ public abstract class WolfMixin extends TamableAnimal implements INEWolfAnimatio
     @Inject(method = "registerGoals", at = @At("TAIL"))
     protected void addWildGoals(CallbackInfo ci) {
         this.goalSelector.addGoal(4, new AnimalSitGoal(this, true, 4000, 2000));
-        this.goalSelector.addGoal(4, new AnimalSleepGoal(this, true, 4000, 2000, true)); // onlySleepAtNight = true
+        this.goalSelector.addGoal(4, new AnimalSleepGoal(this, true, 4000, 2000, true));
         this.goalSelector.addGoal(3, new WolfHowlGoal((Wolf) (Object) this));
     }
 
@@ -75,33 +75,33 @@ public abstract class WolfMixin extends TamableAnimal implements INEWolfAnimatio
         Wolf wolf = (Wolf)(Object)this;
         if (wolf.isTame() && wolf.isOwnedBy(player)) {
             ItemStack itemStack = player.getItemInHand(hand);
-            
+
             if (itemStack.isEmpty()) {
                 if (wolf.isLeashed() && wolf.getLeashHolder() == player) {
                     return;
                 }
-                
+
                 if (!wolf.level().isClientSide()) {
                     boolean isCurrentlySitting = wolf.isOrderedToSit();
                     wolf.setOrderedToSit(!isCurrentlySitting);
                     wolf.getNavigation().stop();
                     wolf.setTarget(null);
-                    
+
                     if (!isCurrentlySitting) {
                         this.setBodyState((byte) 1);
                     } else {
                         byte state = this.getBodyState();
                         if (state >= 3 && state <= 5) {
-                            this.setBodyState((byte) 5); // Wake up
+                            this.setBodyState((byte) 5);
                         } else if (state != 0) {
-                            this.setBodyState((byte) 6); // Stand up
+                            this.setBodyState((byte) 6);
                         }
                     }
                 }
                 cir.setReturnValue(InteractionResult.SUCCESS);
                 return;
             }
-            
+
             if (itemStack.getItem() instanceof DyeItem) {
                 DyeColor color = (DyeColor)itemStack.get(DataComponents.DYE);
                 if (color != null && color == wolf.getCollarColor()) {
@@ -156,25 +156,25 @@ public abstract class WolfMixin extends TamableAnimal implements INEWolfAnimatio
             Wolf wolf = (Wolf)(Object)this;
             boolean isSitting = wolf.isOrderedToSit() || wolf.isInSittingPose();
             boolean isLying = false;
-            
+
             if (wolf.isTame()) {
                 LivingEntity owner = wolf.getOwner();
                 if (owner instanceof Player player) {
                     isLying = isSitting && player.isSleeping();
                 }
             }
-            
+
             boolean sittingChanged = isSitting != this.wasInSittingPose;
             boolean lyingChanged = isLying != this.wasLying;
-            
+
             if (sittingChanged) {
                 if (isSitting) {
                     this.setBodyState((byte) 1);
                 } else if (state != 0) {
                     if (state >= 3 && state <= 5) {
-                        this.setBodyState((byte) 5); // Wake up
+                        this.setBodyState((byte) 5);
                     } else {
-                        this.setBodyState((byte) 6); // Stand up
+                        this.setBodyState((byte) 6);
                     }
                 }
             } else if (isSitting) {
@@ -192,10 +192,10 @@ public abstract class WolfMixin extends TamableAnimal implements INEWolfAnimatio
                     this.setBodyState((byte) 4);
                 }
             }
-            
+
             this.wasInSittingPose = isSitting;
             this.wasLying = isLying;
-            
+
             state = this.getBodyState();
 
             if (state > 0 && state <= 6) {
@@ -292,3 +292,4 @@ public abstract class WolfMixin extends TamableAnimal implements INEWolfAnimatio
     @Override
     public AnimationState getIdleAnimationState() { return this.entityTagsidleAnimationState; }
 }
+

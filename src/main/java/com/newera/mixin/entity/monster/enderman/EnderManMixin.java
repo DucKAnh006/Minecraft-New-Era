@@ -46,13 +46,13 @@ public abstract class EnderManMixin extends Monster implements INEEnderman {
 
     @Inject(method = "registerGoals", at = @At("TAIL"))
     private void addDragonAvoidGoal(CallbackInfo ci) {
-        // Endermen actively avoid the Ender Dragon (16 block radius)
+
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, EnderDragon.class, 16.0F, 1.2D, 1.4D));
     }
 
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
     private void onHurtServer(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        // Immune to Dragon Breath and Dragon attacks
+
         if (source.is(DamageTypes.DRAGON_BREATH)
             || source.getDirectEntity() instanceof DragonFireball
             || source.getDirectEntity() instanceof AreaEffectCloud
@@ -64,7 +64,7 @@ public abstract class EnderManMixin extends Monster implements INEEnderman {
 
     @Inject(method = "setTarget", at = @At("HEAD"), cancellable = true)
     private void onSetTarget(LivingEntity target, CallbackInfo ci) {
-        // Never attack or target the Ender Dragon even if hit
+
         if (target instanceof EnderDragon) {
             ci.cancel();
         }
@@ -84,7 +84,7 @@ public abstract class EnderManMixin extends Monster implements INEEnderman {
                     }
                 }
             } else if (this.distanceToSqr(target) > 256.0 && this.tickCount % 40 == 0) {
-                // Relentless pursuit: teleport closer to target if far (> 16 blocks)
+
                 double angle = this.random.nextDouble() * Math.PI * 2.0;
                 double r = 3.5 + this.random.nextDouble() * 3.5;
                 double tx = target.getX() + Math.cos(angle) * r;
@@ -108,3 +108,4 @@ public abstract class EnderManMixin extends Monster implements INEEnderman {
         this.isDragonSummoned = input.getBooleanOr("DragonSummoned", false);
     }
 }
+

@@ -215,7 +215,6 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             triggerClientAction((byte) 81);
         }
 
-        // Hold dragonDeathTime so entity is not removed before the 240-tick (12.0s) animation completes
         if (customDeathTicks < 240 && dragon.dragonDeathTime >= 199) {
             dragon.dragonDeathTime = 199;
         }
@@ -226,7 +225,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V")
     )
     private void redirectDeathMove(EnderDragon dragon, net.minecraft.world.entity.MoverType moverType, net.minecraft.world.phys.Vec3 vec) {
-        // Suppress vanilla death upward movement! Dragon stays grounded.
+
     }
 
     @org.spongepowered.asm.mixin.injection.Redirect(
@@ -235,10 +234,8 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         require = 0
     )
     private void redirectDeathGlobalSound(net.minecraft.world.level.Level level, int eventId, net.minecraft.core.BlockPos pos, int data) {
-        // Suppress vanilla death sound event (1028) so ModSounds.ENDER_DRAGON_DEATH plays cleanly
+
     }
-
-
 
     @Inject(method = "knockBack", at = @At("HEAD"), cancellable = true)
     private void onKnockBack(net.minecraft.server.level.ServerLevel level, java.util.List<net.minecraft.world.entity.Entity> entities, CallbackInfo ci) {
@@ -280,10 +277,9 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         return level.removeBlock(pos, drop);
     }
 
-
     @Override
-    public int getFightStage() { 
-        return ((EnderDragon) (Object) this).getEntityData().get(FIGHT_STAGE); 
+    public int getFightStage() {
+        return ((EnderDragon) (Object) this).getEntityData().get(FIGHT_STAGE);
     }
 
     @Inject(method = "getAmbientSound", at = @At("HEAD"), cancellable = true, require = 0)
@@ -298,12 +294,12 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
 
     @Inject(method = "getSoundVolume", at = @At("HEAD"), cancellable = true, require = 0)
     protected void onGetSoundVolume(CallbackInfoReturnable<Float> cir) {
-        cir.setReturnValue(0.0F); // Mute vanilla sounds if they use getSoundVolume
+        cir.setReturnValue(0.0F);
     }
 
     @Inject(method = "onFlap", at = @At("HEAD"), cancellable = true)
     private void onDragonFlap(CallbackInfo ci) {
-        ci.cancel(); // Cưỡng chế tắt 100% tiếng flap của vanilla!
+        ci.cancel();
     }
 
     @Inject(method = "isPickable", at = @At("HEAD"), cancellable = true)
@@ -313,11 +309,10 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         }
     }
 
-    
     @Override
-    public void setFightStage(int stage) { 
+    public void setFightStage(int stage) {
         EnderDragon dragon = (EnderDragon) (Object) this;
-        dragon.getEntityData().set(FIGHT_STAGE, stage); 
+        dragon.getEntityData().set(FIGHT_STAGE, stage);
         if (!dragon.level().isClientSide()) {
             DragonAIController.onFightStageChanged(dragon, this, stage);
         }
@@ -433,7 +428,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             }
             return;
         }
-        
+
         if (getFightStage() == 2 && currentHealth <= 200.0F) {
             ci.cancel();
             return;
@@ -501,16 +496,15 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
 
     @org.spongepowered.asm.mixin.injection.Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;tickPart(Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;DDD)V"))
     private void redirectTickPart(EnderDragon dragon, net.minecraft.world.entity.boss.enderdragon.EnderDragonPart part, double x, double y, double z) {
-        // Suppress vanilla tickPart: custom hitbox system in onAiStepTail handles accurate positioning
+
     }
-    
-    
+
     @Unique
     private int clientActionTicks = 0;
     @Unique
     private byte currentClientAction = 0;
     @Unique
-    private int clientBasePose = 0; // 0 = ON_AIR, 1 = HOVER, 2 = ON_GROUND
+    private int clientBasePose = 0;
     @Unique
     private int walkSmoothingTicks = 0;
 
@@ -518,7 +512,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
     public void triggerClientAction(byte actionByte) {
         EnderDragon dragon = (EnderDragon) (Object) this;
         int currentTick = dragon.tickCount;
-        
+
         switch (actionByte) {
             case 60:
                 stopAttackActions();
@@ -855,14 +849,14 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                             break;
                         case 65:
                             decelerateAnimationState.stop();
-                            clientBasePose = 1; // Transitions to HOVER
+                            clientBasePose = 1;
                             flyAnimationState.startIfStopped(dragon.tickCount);
                             hoverPoseAnimationState.startIfStopped(dragon.tickCount);
                             break;
                         case 66:
                             landingAnimationState.stop();
                             fallingAnimationState.stop();
-                            clientBasePose = 2; // Transitions to ON_GROUND
+                            clientBasePose = 2;
                             onGroundPoseAnimationState.startIfStopped(dragon.tickCount);
                             break;
                         case 70:
@@ -873,16 +867,16 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                             break;
                         case 72:
                             takeoffAnimationState.stop();
-                            clientBasePose = 1; // Transitions to HOVER
+                            clientBasePose = 1;
                             flyAnimationState.startIfStopped(dragon.tickCount);
                             hoverPoseAnimationState.startIfStopped(dragon.tickCount);
                             break;
                         case 73:
-                            // Hold the falling dive pose until landing (case 66)
+
                             break;
                         case 74:
                             accelerateAnimationState.stop();
-                            clientBasePose = 0; // Transitions to ON_AIR
+                            clientBasePose = 0;
                             flyAnimationState.startIfStopped(dragon.tickCount);
                             onAirPoseAnimationState.startIfStopped(dragon.tickCount);
                             break;
@@ -926,7 +920,6 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             }
         }
 
-        // Track movement ticks for walk animation & hitbox bobbing
         double dx = dragon.getX() - dragon.xo;
         double dz = dragon.getZ() - dragon.zo;
         if (dx * dx + dz * dz > 0.0005) {
@@ -980,7 +973,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                 }
             } else {
                 walkAnimationState.stop();
-                
+
                 if (currentClientAction == 66 || currentClientAction == 61) {
                     flyAnimationState.stop();
                     onAirPoseAnimationState.stop();
@@ -994,7 +987,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                         lookingAnimationState.stop();
                     }
                 } else if (currentClientAction == 73 || fallingAnimationState.isStarted()) {
-                    // Dive / Falling: hold falling pose, STOP fly, STOP base poses
+
                     flyAnimationState.stop();
                     onAirPoseAnimationState.stop();
                     hoverPoseAnimationState.stop();
@@ -1096,11 +1089,11 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         } else if (dragon.level().isClientSide()) {
             pose = clientBasePose;
         } else if (stage == 1 || stage == 3 || DragonPhase0.isLandingInvulnerable()) {
-            pose = 2; // ON_GROUND
+            pose = 2;
         } else if (DragonPhase0.isHovering() || stage == 15) {
-            pose = 1; // HOVER
+            pose = 1;
         } else {
-            pose = 0; // ON_AIR
+            pose = 0;
         }
 
         double cx = dragon.getX();
@@ -1111,7 +1104,6 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         float cosYaw = net.minecraft.util.Mth.cos(yawRad);
         float sinYaw = net.minecraft.util.Mth.sin(yawRad);
 
-        // White Box: Overall dragon bounding box (matches root box [96, 136, 140] -> 6.0 x 8.5 x 8.75)
         double boxRadius = (pose == 1) ? 5.5D : 4.5D;
         double boxHeight = (pose == 1) ? 14.0D : 8.5D;
         dragon.setBoundingBox(new net.minecraft.world.phys.AABB(
@@ -1119,8 +1111,6 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             cx + boxRadius, cy + boxHeight, cz + boxRadius
         ));
 
-        // Green Boxes: Sub-entities (head, neck, body, tail1, tail2, tail3, wing1, wing2)
-        // Geometry: forward (+front/-back), up (+height), right (+right/-left)
         float lookYaw = this.smoothLookYaw;
         float lookPitch = this.smoothLookPitch;
         float roll = (pose == 0) ? this.smoothFlightRoll : 0.0F;
@@ -1137,7 +1127,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
         double w2f, w2y, w2r;
 
         if (pose == 2) {
-            // ON_GROUND (Phase 1, or Tags:["ground"])
+
             hf = 4.40; hy = 6.80; hr = 0.0; hw = 2.4; hh = 2.0;
             nf = 3.50; ny = 3.80; nr = 0.0; nw = 2.4; nh = 2.5;
             bf = 0.00; by = 2.00; br = 0.0; bw = 5.5; bh = 5.0;
@@ -1147,7 +1137,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             w1f = -2.00; w1y = 3.00; w1r = 6.50; ww = 9.0; wh = 3.5;
             w2f = -2.00; w2y = 3.00; w2r = -6.50;
         } else if (pose == 1) {
-            // HOVER (Hovering in air, or Tags:["hover"])
+
             hf = 2.70; hy = 5.50; hr = 0.0; hw = 2.4; hh = 2.0;
             nf = 1.30; ny = 3.50; nr = 0.0; nw = 2.4; nh = 2.5;
             bf = -1.50; by = 1.20; br = 0.0; bw = 5.5; bh = 5.0;
@@ -1157,7 +1147,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             w1f = -4.50; w1y = 2.80; w1r = 9.00; ww = 13.0; wh = 2.5;
             w2f = -4.50; w2y = 2.80; w2r = -9.00;
         } else {
-            // ON_AIR (Phase 0 flight, or Tags:["air"])
+
             hf = 7.20; hy = 2.70; hr = 0.0; hw = 2.4; hh = 2.0;
             nf = 4.50; ny = 2.00; nr = 0.0; nw = 2.4; nh = 2.5;
             bf = 0.00; by = 2.00; br = 0.0; bw = 5.5; bh = 5.0;
@@ -1168,15 +1158,13 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             w2f = -1.00; w2y = 3.50; w2r = -9.00;
         }
 
-        // Procedural Animation Offsets
         if (pose == 0) {
-            // Wing flapping (up and down oscillation)
+
             double flapAngle = (dragon.tickCount * 0.35);
             double flapOffset = Math.sin(flapAngle) * 1.8;
             w1y += flapOffset;
             w2y += flapOffset;
 
-            // Tail swaying based on flight history turning difference
             float turnDiff = 0.0F;
             try {
                 turnDiff = net.minecraft.util.Mth.wrapDegrees(dragon.flightHistory.get(6).yRot() - dragon.getYRot());
@@ -1188,7 +1176,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             t2f += (1.0 - Math.cos(swayRad)) * 1.5;
             t3f += (1.0 - Math.cos(swayRad)) * 3.0;
         } else if (pose == 1) {
-            // Hover gentle bobbing
+
             double hoverPhase = dragon.tickCount * 0.25;
             double hoverBob = Math.sin(hoverPhase) * 0.4;
             by += hoverBob;
@@ -1196,7 +1184,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             w1y += Math.sin(dragon.tickCount * 0.3) * 1.0;
             w2y += Math.sin(dragon.tickCount * 0.3) * 1.0;
         } else if (pose == 2 && walkSmoothingTicks > 0) {
-            // Ground walking bobbing & tail sway
+
             double walkCycle = dragon.tickCount * 0.35;
             double walkBob = Math.abs(Math.sin(walkCycle)) * 0.35;
             by += walkBob;
@@ -1208,10 +1196,9 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             t3r += tailSway * 1.5;
         }
 
-        // Action Animation Offsets
         if (clientActionTicks > 0) {
             switch (currentClientAction) {
-                case 60: { // BITE (total 15 ticks)
+                case 60: {
                     float prog = 1.0F - (clientActionTicks / 15.0F);
                     float strike = (float) Math.sin(prog * Math.PI);
                     hf += strike * 2.5;
@@ -1221,7 +1208,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     bf += strike * 0.6;
                     break;
                 }
-                case 61: { // ROAR (total 80 ticks)
+                case 61: {
                     float prog = 1.0F - (clientActionTicks / 80.0F);
                     float roar = (float) Math.sin(Math.min(1.0F, prog * 1.25F) * Math.PI);
                     hy += roar * 2.2;
@@ -1233,7 +1220,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     w2y += roar * 1.5;
                     break;
                 }
-                case 62: { // POUNCE LEFT (total 40 ticks)
+                case 62: {
                     float prog = 1.0F - (clientActionTicks / 40.0F);
                     float pounce = (float) Math.sin(prog * Math.PI);
                     bf += pounce * 2.0;
@@ -1246,7 +1233,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     break;
                 }
                 case 63:
-                case 69: { // POUNCE RIGHT (total 40 ticks)
+                case 69: {
                     float prog = 1.0F - (clientActionTicks / 40.0F);
                     float pounce = (float) Math.sin(prog * Math.PI);
                     bf += pounce * 2.0;
@@ -1258,7 +1245,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     w2f += pounce * 1.5;
                     break;
                 }
-                case 64: { // STOMP (total 58 ticks)
+                case 64: {
                     float prog = 1.0F - (clientActionTicks / 58.0F);
                     if (prog < 0.52F) {
                         float rear = (float) Math.sin((prog / 0.52F) * (Math.PI / 2));
@@ -1273,7 +1260,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     }
                     break;
                 }
-                case 70: { // BREATH CLOSE (total 55 ticks)
+                case 70: {
                     float prog = 1.0F - (clientActionTicks / 55.0F);
                     float breath = (float) Math.sin(prog * Math.PI);
                     hy -= breath * 2.2;
@@ -1282,7 +1269,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     nf += breath * 1.2;
                     break;
                 }
-                case 71: { // BREATH FAR (total 25 ticks)
+                case 71: {
                     float prog = 1.0F - (clientActionTicks / 25.0F);
                     if (prog < 0.4F) {
                         float prep = prog / 0.4F;
@@ -1295,7 +1282,7 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     }
                     break;
                 }
-                case 65: { // DECELERATE (total 30 ticks)
+                case 65: {
                     float prog = 1.0F - (clientActionTicks / 30.0F);
                     float brake = (float) Math.sin(prog * Math.PI);
                     w1f += brake * 2.2;
@@ -1306,14 +1293,14 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
                     hy += brake * 1.2;
                     break;
                 }
-                case 72: { // TAKEOFF (total 20 ticks)
+                case 72: {
                     float prog = 1.0F - (clientActionTicks / 20.0F);
                     by += prog * 2.5;
                     hy += prog * 3.0;
                     ny += prog * 2.8;
                     break;
                 }
-                case 75: { // ROAR HOVER (total 80 ticks)
+                case 75: {
                     float prog = 1.0F - (clientActionTicks / 80.0F);
                     float roar = (float) Math.sin(Math.min(1.0F, prog * 1.25F) * Math.PI);
                     hy += roar * 1.5;
@@ -1324,7 +1311,6 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             }
         }
 
-        // Apply dynamic head looking
         if (Math.abs(lookYaw) > 0.1F || Math.abs(lookPitch) > 0.1F) {
             float headRad = (yaw + lookYaw) * 0.017453292F;
             float pitchRad = lookPitch * 0.017453292F;
@@ -1340,7 +1326,6 @@ public abstract class EnderDragonMixin implements INEEnderDragonAnimation {
             setPartFromLocal(parts[0], cx, cy, cz, cosYaw, sinYaw, hf, hy, hr, hw, hh);
         }
 
-        // Apply dynamic wing roll (bank angle)
         if (Math.abs(roll) > 0.1F) {
             w1y -= sinRoll * w1r;
             w2y += sinRoll * (-w2r);

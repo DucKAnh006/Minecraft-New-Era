@@ -18,3 +18,4 @@ public interface INEChickenAnimation extends INEAnimal {
     AnimationState getOnAirAnimationState();
     AnimationState getLandingAnimationState();
 }
+

@@ -86,11 +86,10 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
     private final KeyframeAnimation roarCurseAnimation;
     private final KeyframeAnimation deathAnimation;
 
-
 	public NEEnderDragonModel(ModelPart root) {
 		super(root);
 		this.root = root.getChild("root");
-		
+
 		this.body = this.root.getChild("body");
 		this.neck = this.body.getChild("neck");
 		this.neck_tip = this.neck.getChild("neck_tip");
@@ -171,22 +170,17 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
         super.setupAnim(state);
         this.root.resetPose();
 
-        // 1. Khi chết: chỉ chơi animation chết
         if (state.deathAnimationState.isStarted()) {
             this.deathAnimation.apply(state.deathAnimationState, state.ageInTicks);
             return;
         }
 
-        // 2. Transitional Full-Body Actions:
-        // Takeoff, Falling, Landing, Accelerate, Decelerate
-        // Base poses (onGround, hover, onAir) MUST NOT be applied simultaneously to prevent bone transform addition and mesh distortion!
         boolean isTransitionalAction = state.takeoffAnimationState.isStarted()
                 || state.fallingAnimationState.isStarted()
                 || state.landingAnimationState.isStarted()
                 || state.accelerateAnimationState.isStarted()
                 || state.decelerateAnimationState.isStarted();
 
-        // Base Poses (Tư thế cơ sở theo trạng thái - chỉ áp dụng khi KHÔNG trong action chuyển thế)
         if (!isTransitionalAction) {
             boolean basePoseApplied = false;
             if (state.onGroundPoseAnimationState.isStarted()) {
@@ -200,7 +194,6 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
                 basePoseApplied = true;
             }
 
-            // Fallback safety net: never allow the dragon to render without an active pose!
             if (!basePoseApplied) {
                 if (state.basePoseType == 2) {
                     this.onGroundPoseAnimation.apply(state.onGroundPoseAnimationState, state.ageInTicks);
@@ -212,12 +205,10 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
             }
         }
 
-        // 3. Locomotion (Đi bộ hoặc Đập cánh bay)
         if (state.walkAnimationState.isStarted()) {
             this.walkAnimation.apply(state.walkAnimationState, state.ageInTicks);
         }
 
-        // Suppress fly flapping ONLY during actions that define their own complete wing poses (Takeoff, Falling dive, Landing crash)
         boolean suppressFly = state.takeoffAnimationState.isStarted()
                 || state.fallingAnimationState.isStarted()
                 || state.landingAnimationState.isStarted();
@@ -226,7 +217,6 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
             this.flyAnimation.apply(state.flyAnimationState, state.ageInTicks);
         }
 
-        // 4. Actions & Attacks (Áp dụng theo đúng các state được bật/tắt trong triggerClientAction)
         if (state.biteAnimationState.isStarted()) {
             this.biteAnimation.apply(state.biteAnimationState, state.ageInTicks);
         }
@@ -282,7 +272,6 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
             this.roarCurseAnimation.apply(state.roarCurseAnimationState, state.ageInTicks);
         }
 
-        // 5. Head look & Flight kinematics (Turning & Pitch)
         if (!isTransitionalAction && !state.roarCurseAnimationState.isStarted() && !state.roarAnimationState.isStarted() && !state.roarHoverAnimationState.isStarted()) {
             applyHeadLook(state);
         }
@@ -309,42 +298,33 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
     private void applyFlightKinematics(final NEEnderDragonRenderState state) {
         final float DEG_TO_RAD = (float)(Math.PI / 180.0);
 
-        // Dynamic Pitch (Climb & Dive vertical inclination)
         if (Math.abs(state.flightPitch) > 0.01F) {
             this.root.xRot += state.flightPitch * DEG_TO_RAD;
         }
 
-        // Turning Kinematics parameterized from "test" animation
         float vx = state.flightTurnX;
         if (Math.abs(vx) > 0.01F) {
-            // root: rotation: [0, 0, -clamp(v.x, -30, 30)]
+
             this.root.zRot += -net.minecraft.util.Mth.clamp(vx, -30.0F, 30.0F) * DEG_TO_RAD;
 
-            // neck: rotation: [90, clamp(v.x, -40, 40), clamp(v.x, -40, 40)]
             this.neck.yRot += net.minecraft.util.Mth.clamp(vx, -40.0F, 40.0F) * DEG_TO_RAD;
             this.neck.zRot += net.minecraft.util.Mth.clamp(vx, -40.0F, 40.0F) * DEG_TO_RAD;
 
-            // neck_tip: rotation: [0, -clamp(v.x, -40, 40), -clamp(v.x, -40, 40)]
             this.neck_tip.yRot += -net.minecraft.util.Mth.clamp(vx, -40.0F, 40.0F) * DEG_TO_RAD;
             this.neck_tip.zRot += -net.minecraft.util.Mth.clamp(vx, -40.0F, 40.0F) * DEG_TO_RAD;
 
-            // head: rotation: [-90, clamp(v.x, -40, 40), -clamp(v.x, -40, 40)]
             this.head.yRot += net.minecraft.util.Mth.clamp(vx, -40.0F, 40.0F) * DEG_TO_RAD;
             this.head.zRot += -net.minecraft.util.Mth.clamp(vx, -40.0F, 40.0F) * DEG_TO_RAD;
 
-            // tail: rotation: [0, -clamp(v.x, -20, 20), -clamp(v.x, -20, 20)]
             this.tail.yRot += -net.minecraft.util.Mth.clamp(vx, -20.0F, 20.0F) * DEG_TO_RAD;
             this.tail.zRot += -net.minecraft.util.Mth.clamp(vx, -20.0F, 20.0F) * DEG_TO_RAD;
 
-            // tail_mid: rotation: [0, -clamp(v.x, -15, 15), -clamp(v.x, -15, 15)]
             this.tail_mid.yRot += -net.minecraft.util.Mth.clamp(vx, -15.0F, 15.0F) * DEG_TO_RAD;
             this.tail_mid.zRot += -net.minecraft.util.Mth.clamp(vx, -15.0F, 15.0F) * DEG_TO_RAD;
 
-            // tail_tip: rotation: [0, -clamp(v.x, -10, 10), -clamp(v.x, -10, 10)]
             this.tail_tip.yRot += -net.minecraft.util.Mth.clamp(vx, -10.0F, 10.0F) * DEG_TO_RAD;
             this.tail_tip.zRot += -net.minecraft.util.Mth.clamp(vx, -10.0F, 10.0F) * DEG_TO_RAD;
 
-            // wings: rotation: [0, 0, clamp(v.x, -30, 30)]
             this.wings.zRot += net.minecraft.util.Mth.clamp(vx, -30.0F, 30.0F) * DEG_TO_RAD;
         }
     }
@@ -505,8 +485,6 @@ public class NEEnderDragonModel extends EntityModel<NEEnderDragonRenderState> {
 		.texOffs(2, 111).addBox(-3.0F, 4.0F, -25.0F, 4.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 0.0F, 0.0F));
 		return LayerDefinition.create(meshdefinition, 600, 600);
 	}
-	
-	
-}
 
+}
 

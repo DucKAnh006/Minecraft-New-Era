@@ -55,7 +55,7 @@ public abstract class NEHorseAbstractModel extends EntityModel<NEHorseRenderStat
         this.rootYOffset = rootYOffset;
         this.rootPart = root.getChild("root");
         this.body = this.rootPart.getChild("body");
-        
+
         ModelPart centroid = this.body.hasChild("centroid") ? this.body.getChild("centroid") : null;
 
         ModelPart currentNeck = null;
@@ -67,7 +67,7 @@ public abstract class NEHorseAbstractModel extends EntityModel<NEHorseRenderStat
             currentNeck = this.body.getChild("neck");
         }
         this.neck = currentNeck;
-        
+
         ModelPart currentViewBone = null;
         if (centroid != null && centroid.hasChild("view_bone")) {
             currentViewBone = centroid.getChild("view_bone");
@@ -157,3 +157,4 @@ public abstract class NEHorseAbstractModel extends EntityModel<NEHorseRenderStat
         if (this.right_reins != null) this.right_reins.visible = saddled;
     }
 }
+

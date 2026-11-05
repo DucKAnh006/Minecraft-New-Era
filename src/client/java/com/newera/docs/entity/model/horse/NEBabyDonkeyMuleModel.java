@@ -77,3 +77,4 @@ public class NEBabyDonkeyMuleModel extends NEDonkeyMuleAbstractModel {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 }
+

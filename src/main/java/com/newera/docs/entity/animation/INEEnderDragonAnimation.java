@@ -33,12 +33,13 @@ public interface INEEnderDragonAnimation {
     float getSmoothLookYaw();
     float getSmoothLookPitch();
     float getSmoothFlightRoll();
-    
+
     int getFightStage();
     void setFightStage(int stage);
-    
+
     int getForcedBasePose();
     void setForcedBasePose(int pose);
-    
+
     void triggerClientAction(byte actionByte);
 }
+

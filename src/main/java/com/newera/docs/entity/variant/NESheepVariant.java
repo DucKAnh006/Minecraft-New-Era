@@ -63,3 +63,4 @@ public record NESheepVariant(ModelAndTexture<NESheepVariant.ModelType> modelAndT
         }
     }
 }
+

@@ -14,7 +14,7 @@ public class NEWolfRenderState extends LivingEntityRenderState {
     public net.minecraft.resources.Identifier customTexture;
     public net.minecraft.world.entity.animal.wolf.WolfVariant variant;
     public float tailAngle;
-    
+
     public final AnimationState sitAnimationState = new AnimationState();
     public final AnimationState sittingHoldAnimationState = new AnimationState();
     public final AnimationState sleepAnimationState = new AnimationState();
@@ -25,3 +25,4 @@ public class NEWolfRenderState extends LivingEntityRenderState {
     public final AnimationState howlAnimationState = new AnimationState();
     public final AnimationState sitHowlingAnimationState = new AnimationState();
 }
+

@@ -43,3 +43,4 @@ public class NEHorseMarkingLayer extends RenderLayer<NEHorseRenderState, NEHorse
         }
     }
 }
+

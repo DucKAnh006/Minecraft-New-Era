@@ -20,9 +20,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class NEEnderDragonRenderer extends MobRenderer<EnderDragon, NEEnderDragonRenderState, EntityModel<NEEnderDragonRenderState>> {
-    
+
     private static final Identifier DRAGON_TEXTURE = Identifier.fromNamespaceAndPath("newera", "textures/entity/ender_dragon/dragon.png");
-    
+
     public NEEnderDragonRenderer(final EntityRendererProvider.Context context) {
         super(context, new NEEnderDragonModel(context.bakeLayer(NEModelLayers.NE_ENDER_DRAGON)), 5.0F);
     }
@@ -79,7 +79,6 @@ public class NEEnderDragonRenderer extends MobRenderer<EnderDragon, NEEnderDrago
                 state.beamOffset = null;
             }
 
-            // Calculate dynamic flight turn kinematics & flight pitch
             int stage = mixinEntity.getFightStage();
             boolean isGroundOrHover = state.onGroundPoseAnimationState.isStarted() || state.hoverPoseAnimationState.isStarted() || state.roarHoverAnimationState.isStarted();
             boolean isSpecialAction = state.accelerateAnimationState.isStarted() || state.takeoffAnimationState.isStarted() || state.decelerateAnimationState.isStarted() || state.landingAnimationState.isStarted() || state.fallingAnimationState.isStarted() || state.roarAnimationState.isStarted() || state.deathAnimationState.isStarted();
@@ -89,11 +88,9 @@ public class NEEnderDragonRenderer extends MobRenderer<EnderDragon, NEEnderDrago
                 float pastYaw = entity.flightHistory.get(6, partialTicks).yRot();
                 float turnDelta = net.minecraft.util.Mth.wrapDegrees(currentYaw - pastYaw);
 
-                // Positive turnDelta = turning right (vx > 0)
                 float targetTurnX = net.minecraft.util.Mth.clamp(turnDelta * 2.2F, -40.0F, 40.0F);
                 this.smoothedFlightTurnX = net.minecraft.util.Mth.lerp(0.20F, this.smoothedFlightTurnX, targetTurnX);
 
-                // Pitch angle from 3D velocity
                 Vec3 vel = entity.getDeltaMovement();
                 double horizSpeed = Math.sqrt(vel.x * vel.x + vel.z * vel.z);
                 float targetPitch = (float)(-Math.atan2(vel.y, Math.max(0.08, horizSpeed)) * (180.0 / Math.PI));
@@ -109,16 +106,15 @@ public class NEEnderDragonRenderer extends MobRenderer<EnderDragon, NEEnderDrago
             state.flightPitch = this.smoothedFlightPitch;
             state.flightRoll = this.smoothedFlightRoll;
 
-            // Determine base pose type with fallback priority
             int forcedPose = mixinEntity.getForcedBasePose();
             if (forcedPose != -1) {
                 state.basePoseType = forcedPose;
             } else if (stage == 1 || stage == 3 || entity.onGround()) {
-                state.basePoseType = 2; // ON_GROUND
+                state.basePoseType = 2;
             } else if (state.hoverPoseAnimationState.isStarted() || state.roarHoverAnimationState.isStarted() || state.hoverBreathAnimationState.isStarted() || stage == 15) {
-                state.basePoseType = 1; // HOVER
+                state.basePoseType = 1;
             } else {
-                state.basePoseType = 0; // ON_AIR
+                state.basePoseType = 0;
             }
         }
     }
@@ -150,3 +146,4 @@ public class NEEnderDragonRenderer extends MobRenderer<EnderDragon, NEEnderDrago
         super.setupRotations(renderState, poseStack, rotationYaw, partialTicks);
     }
 }
+

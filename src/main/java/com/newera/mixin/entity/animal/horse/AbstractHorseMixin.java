@@ -23,8 +23,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-
-
 @Mixin(AbstractHorse.class)
 public abstract class AbstractHorseMixin extends Animal implements INEHorseAnimation {
 
@@ -56,7 +54,6 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
     @Unique
     private float lockedBodyYaw = 0.0F;
 
-    // Momentum fields
     @Unique
     private float currentMomentum = 0.0F;
     @Unique
@@ -96,7 +93,7 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initSpeedAndGoals(EntityType<? extends Animal> type, Level level, CallbackInfo ci) {
-        this.animalSpeed = new AnimalSpeed(this, 0.20D, 0.35D, 20);
+        this.animalSpeed = new AnimalSpeed(this, 0.20D, 0.35D, 18);
     }
 
     @Inject(method = "registerGoals", at = @At("TAIL"))
@@ -121,12 +118,12 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
     public void setBodyState(byte state) {
         byte oldState = this.getBodyState();
         this.entityData.set(NEWERA_BODY_STATE, state);
-        if (state == 6) { // Stand up
+        if (state == 6) {
             this.busyTimer = 40;
-        } else if (state == 8) { // Rear
-            this.busyTimer = 30; // 1.5s
-        } else if (state == 9) { // Attack
-            this.busyTimer = 13; // 0.625s
+        } else if (state == 8) {
+            this.busyTimer = 30;
+        } else if (state == 9) {
+            this.busyTimer = 13;
         }
         if (oldState != state) {
             this.refreshDimensions();
@@ -142,9 +139,7 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
     public void tickCustom(CallbackInfo ci) {
         byte state = this.getBodyState();
 
-
-
-        if (state >= 1 && state <= 6) { // Lock body only for sitting/sleeping/waking
+        if (state >= 1 && state <= 6) {
             if (!this.isBodyLocked) {
                 this.lockedBodyYaw = this.yBodyRot;
                 this.isBodyLocked = true;
@@ -205,7 +200,7 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
                     double dx = this.counterAttackTarget.getX() - this.getX();
                     double dz = this.counterAttackTarget.getZ() - this.getZ();
                     float yawToAttacker = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0F;
-                    
+
                     this.counterAttackTarget.hurt(this.damageSources().mobAttack(this), 4.0F);
                     this.counterAttackTarget.knockback(0.6, Math.sin(yawToAttacker * Math.PI / 180.0), -Math.cos(yawToAttacker * Math.PI / 180.0), this.damageSources().mobAttack(this), 1.0F);
                 }
@@ -214,10 +209,13 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
         }
 
         if (!this.level().isClientSide() && this.animalSpeed != null) {
+            boolean isPanicking = this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0;
             if (state > 0 && state != 7) {
-                this.animalSpeed.stop();
-            } else if (this.getLastHurtByMob() != null || this.isOnFire()) {
+                this.animalSpeed.forceStop();
+            } else if (isPanicking) {
                 this.animalSpeed.run();
+            } else if (this.getNavigation().isDone() || this.getNavigation().getPath() == null) {
+                this.animalSpeed.stop();
             } else {
                 this.animalSpeed.walk();
             }
@@ -233,7 +231,7 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
 
         boolean isEating = ((AbstractHorse)(Object)this).isEating();
         this.idleAnimationState.startIfStopped(this.tickCount);
-        
+
         if (state == 0 && !isEating) {
             if (isMoving) {
                 this.walkAnimationState.startIfStopped(this.tickCount);
@@ -285,10 +283,10 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
             cir.setReturnValue(Vec3.ZERO);
             return;
         }
-        
+
         Vec3 originalInput = cir.getReturnValue();
         float forward = (float) originalInput.z;
-        
+
         if (forward > 0) {
             this.currentMomentum = Math.min(1.0F, this.currentMomentum + ACCELERATION);
             this.isDecelerating = false;
@@ -299,52 +297,51 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
             this.currentMomentum = 0.0F;
             this.isDecelerating = true;
             if (this.getBodyState() == 0 && this.onGround() && !this.isBaby() && this.getDeltaMovement().horizontalDistanceSqr() < 0.01) {
-                this.setBodyState((byte) 8); // REAR
+                this.setBodyState((byte) 8);
             }
         } else {
             this.isDecelerating = this.currentMomentum > 0.0F;
             this.currentMomentum = Math.max(0.0F, this.currentMomentum - DECELERATION);
             if (this.currentMomentum == 0.0F && this.getBodyState() == 8) {
-                // Keep rearing until busyTimer expires
+
             }
         }
 
-        // Apply momentum as the forward input
         cir.setReturnValue(new Vec3(originalInput.x, originalInput.y, this.currentMomentum));
     }
 
     @Inject(method = "hurtServer", at = @At("RETURN"))
     public void onHurtServer(net.minecraft.server.level.ServerLevel level, net.minecraft.world.damagesource.DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue() && source.getEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) {
-            this.panicTimer = 100; // 5 seconds of panic
+            this.panicTimer = 100;
             if (!this.isBaby()) {
                 double distance = this.distanceToSqr(attacker);
-                if (distance <= 9.0) { // Within 3 blocks
+                if (distance <= 9.0) {
                     if (Math.random() < 0.5) {
-                        // KICK
+
                         double dx = attacker.getX() - this.getX();
                         double dz = attacker.getZ() - this.getZ();
                         float yawToAttacker = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0F;
-                        
+
                         this.setYRot(yawToAttacker + 180.0F);
                         this.yBodyRot = this.getYRot();
                         this.yBodyRotO = this.yBodyRot;
-                        
-                        this.setBodyState((byte) 9); // ATTACK
-                        this.attackDelayTimer = 5; // 0.25 seconds
+
+                        this.setBodyState((byte) 9);
+                        this.attackDelayTimer = 5;
                         this.counterAttackTarget = attacker;
                     } else {
-                        // REAR
-                        this.setBodyState((byte) 8); // REAR
+
+                        this.setBodyState((byte) 8);
                     }
                 } else {
                     if (Math.random() < 0.5) {
-                        this.setBodyState((byte) 8); // REAR
+                        this.setBodyState((byte) 8);
                     }
                 }
             } else {
                 if (Math.random() < 0.5) {
-                    this.setBodyState((byte) 8); // REAR
+                    this.setBodyState((byte) 8);
                 }
             }
         }
@@ -364,7 +361,7 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
             if (!itemStack.is(net.minecraft.world.item.Items.SADDLE) && !player.isSecondaryUseActive()) {
                 byte state = this.getBodyState();
                 if (state >= 1 && state <= 5) {
-                    this.setBodyState((byte) 6); // Stand up
+                    this.setBodyState((byte) 6);
                 }
             }
         }
@@ -374,14 +371,14 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
     public void onStandIfPossible(CallbackInfo ci) {
         AbstractHorse self = (AbstractHorse)(Object)this;
         if (!self.isStanding() && !self.isJumping() && !self.isSaddled() && !self.isVehicle() && !this.isBaby()) {
-            this.setBodyState((byte) 8); // REAR
+            this.setBodyState((byte) 8);
             net.minecraft.sounds.SoundEvent sound = null;
             if (this.getType() == EntityTypes.HORSE) sound = net.minecraft.sounds.SoundEvents.HORSE_ANGRY;
             else if (this.getType() == EntityTypes.DONKEY) sound = net.minecraft.sounds.SoundEvents.DONKEY_ANGRY;
             else if (this.getType() == EntityTypes.MULE) sound = net.minecraft.sounds.SoundEvents.MULE_ANGRY;
             else if (this.getType() == EntityTypes.SKELETON_HORSE) sound = net.minecraft.sounds.SoundEvents.SKELETON_HORSE_AMBIENT;
             else if (this.getType() == EntityTypes.ZOMBIE_HORSE) sound = net.minecraft.sounds.SoundEvents.ZOMBIE_HORSE_AMBIENT;
-            
+
             if (sound != null) {
                 this.playSound(sound, this.getSoundVolume(), this.getVoicePitch());
             }
@@ -395,8 +392,8 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
         float yaw = this.yBodyRot * ((float)Math.PI / 180F);
         double shiftDistance = 0.0;
         double shiftY = 0.0;
-        
-        if (this.getBodyState() == 8 || ((AbstractHorse)(Object)this).isStanding()) { // Rear
+
+        if (this.getBodyState() == 8 || ((AbstractHorse)(Object)this).isStanding()) {
             shiftDistance = 0.9;
             shiftY = 0.25;
         } else if (((AbstractHorse)(Object)this).isJumping()) {
@@ -434,3 +431,4 @@ public abstract class AbstractHorseMixin extends Animal implements INEHorseAnima
     @Override
     public AnimationState getAttackAnimationState() { return this.attackAnimationState; }
 }
+

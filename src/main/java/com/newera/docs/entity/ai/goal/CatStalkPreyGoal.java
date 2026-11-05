@@ -19,7 +19,7 @@ public class CatStalkPreyGoal extends Goal {
     private int pounceTimer;
     private boolean hasDealtDamage;
     private Path path;
-    private int huntTicks; // Track hunt duration
+    private int huntTicks;
 
     public CatStalkPreyGoal(Animal mob, double stalkSpeed, double sprintSpeed) {
         this.mob = mob;
@@ -47,7 +47,7 @@ public class CatStalkPreyGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.huntTicks >= 400) { // 20 seconds timeout
+        if (this.huntTicks >= 400) {
             return false;
         }
         LivingEntity livingentity = this.mob.getTarget();
@@ -93,27 +93,27 @@ public class CatStalkPreyGoal extends Goal {
         if (livingentity == null) {
             return;
         }
-        
+
         this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
         double distSqr = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
-        
+
         if (this.pounceTimer > 0) {
             this.pounceTimer--;
-            
+
             if (this.pounceTimer == 10) {
-                // Leap towards the prey!
+
                 Vec3 vec3 = livingentity.position().subtract(this.mob.position()).normalize().scale(0.6).add(0, 0.2, 0);
                 this.mob.setDeltaMovement(vec3);
             }
-            
-            if (this.pounceTimer == 6 && !this.hasDealtDamage) { // 13 - 7 = 6 (damage at 0.35s)
+
+            if (this.pounceTimer == 6 && !this.hasDealtDamage) {
                 this.hasDealtDamage = true;
-                // Expanded attack reach during pounce for accuracy
+
                 if (distSqr <= this.getAttackReachSqr(livingentity) * 4.0D) {
                     this.mob.doHurtTarget((net.minecraft.server.level.ServerLevel) this.mob.level(), livingentity);
                 }
             }
-            
+
             if (this.pounceTimer <= 0) {
                 if (this.mob instanceof INEAnimal neAnimal) {
                     neAnimal.setBodyState((byte) 0);
@@ -123,11 +123,10 @@ public class CatStalkPreyGoal extends Goal {
         }
 
         this.delayCounter = Math.max(this.delayCounter - 1, 0);
-        
+
         if (this.delayCounter <= 0 && (this.target.distanceToSqr(this.mob) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
             this.delayCounter = 4 + this.mob.getRandom().nextInt(7);
-            
-            // Sprint if <= 8 blocks
+
             double speed = distSqr > 64.0D ? this.stalkSpeed : this.sprintSpeed;
             this.mob.getNavigation().moveTo(livingentity, speed);
         }
@@ -138,10 +137,10 @@ public class CatStalkPreyGoal extends Goal {
     protected void checkAndPerformAttack(LivingEntity target, double distSqr) {
         double d0 = this.getAttackReachSqr(target);
         if (distSqr <= d0 && this.pounceTimer <= 0) {
-            this.pounceTimer = 13; // total animation length in ticks
+            this.pounceTimer = 13;
             this.hasDealtDamage = false;
             if (this.mob instanceof INEAnimal neAnimal) {
-                neAnimal.setBodyState((byte) 11); // Pounce State
+                neAnimal.setBodyState((byte) 11);
             }
         }
     }
@@ -150,3 +149,4 @@ public class CatStalkPreyGoal extends Goal {
         return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + attackTarget.getBbWidth());
     }
 }
+

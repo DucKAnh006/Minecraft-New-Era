@@ -19,7 +19,6 @@ public class NewEraMod implements ModInitializer {
 
         com.newera.docs.sound.NESounds.registerSounds();
 
-        // Warm up and commit stack memory for background worker threads on Windows
         int bgThreads = net.minecraft.util.Util.maxAllowedExecutorThreads();
         for (int i = 0; i < bgThreads * 2; i++) {
             net.minecraft.util.Util.backgroundExecutor().execute(() -> expandThreadStack(15000));
@@ -37,3 +36,4 @@ public class NewEraMod implements ModInitializer {
         }
     }
 }
+

@@ -30,8 +30,8 @@ public class DragonPhase1 implements IDragonPhase {
 
     private Player lockedTarget = null;
     private static int jumpTicks = 0;
-    
-    private int attackState = 0; 
+
+    private int attackState = 0;
     private int attackTimer = 0;
     private int globalCooldown = 0;
     private int kitingTimer = 0;
@@ -67,8 +67,8 @@ public class DragonPhase1 implements IDragonPhase {
         if (pendingPhaseExit && attackState == 0) {
             settleTimer++;
             dragon.setDeltaMovement(0, computeHoverGravity(dragon), 0);
-            mixin.setForcedBasePose(2); // Giữ ON_GROUND cho tới khi cất cánh
-            if (settleTimer >= 10) { // Đợi 10 ticks (0.5s) để mọi animation và đòn đánh trước đó hoàn tất trơn tru trên client
+            mixin.setForcedBasePose(2);
+            if (settleTimer >= 10) {
                 pendingPhaseExit = false;
                 settleTimer = 0;
                 dragon.setDeltaMovement(0, 0, 0);
@@ -89,7 +89,7 @@ public class DragonPhase1 implements IDragonPhase {
         if (lockedTarget == null || !lockedTarget.isAlive() || lockedTarget.level() != dragon.level() || lockedTarget.isSpectator() || lockedTarget.isCreative()) {
             lockedTarget = null;
             double closestDistSq = Double.MAX_VALUE;
-            // Chỉ tìm người chơi Survival / Adventure (bỏ qua hoàn toàn người chơi Sáng Tạo / Creative)
+
             for (Player p : dragon.level().players()) {
                 if (!p.isCreative() && !p.isSpectator() && p.isAlive()) {
                     double dSq = dragon.distanceToSqr(p);
@@ -102,10 +102,10 @@ public class DragonPhase1 implements IDragonPhase {
         }
 
         if (globalCooldown > 0) globalCooldown--;
-        
+
         if (attackState > 0) {
             handleAttacks(dragon, mixin);
-            return; 
+            return;
         }
 
         if (pendingPhaseExit) {
@@ -118,32 +118,29 @@ public class DragonPhase1 implements IDragonPhase {
             double distSq = dx * dx + dz * dz;
             double dist = Math.sqrt(distSq);
 
-            // Kiting detection: continuous distance > 8.0 blocks
             if (dist > 8.0) {
                 kitingTimer++;
             } else {
                 kitingTimer = 0;
             }
 
-            // Đòn 4B: Far Breath (Dragon Fireball) when kited for > 5.0s (100 ticks)
             if (kitingTimer >= 100 && globalCooldown <= 0) {
-                attackState = 5; // Far Breath
+                attackState = 5;
                 attackTimer = 0;
                 kitingTimer = 0;
                 return;
             }
 
-            // Close Melee Attack Selection: when dist <= 8.0 blocks and cooldown is ready
             if (dist <= 8.0 && globalCooldown <= 0) {
                 int rand = dragon.getRandom().nextInt(4);
                 if (rand == 0) {
-                    attackState = 1; // Bite (Đòn 1)
+                    attackState = 1;
                 } else if (rand == 1) {
-                    attackState = 2; // Pounce (Đòn 2)
+                    attackState = 2;
                 } else if (rand == 2) {
-                    attackState = 3; // Stomp (Đòn 3)
+                    attackState = 3;
                 } else {
-                    attackState = 4; // Close Breath (Đòn 4A)
+                    attackState = 4;
                 }
                 attackTimer = 0;
                 handleAttacks(dragon, mixin);
@@ -155,7 +152,6 @@ public class DragonPhase1 implements IDragonPhase {
     private void handleAttacks(EnderDragon dragon, INEEnderDragonAnimation mixin) {
         attackTimer++;
 
-        // Khóa hướng nhìn vào mục tiêu: Cập nhật liên tục góc quay bám theo mục tiêu trong suốt thời gian ra đòn
         if (lockedTarget != null && lockedTarget.isAlive()) {
             double dx = lockedTarget.getX() - dragon.getX();
             double dz = lockedTarget.getZ() - dragon.getZ();
@@ -164,7 +160,6 @@ public class DragonPhase1 implements IDragonPhase {
             }
         }
 
-        // Cưỡng chế khóa hướng nhìn trong suốt thời gian ra đòn, không cho quay lung tung
         dragon.setYRot(lockedAttackYaw);
         dragon.yBodyRot = lockedAttackYaw;
         dragon.yHeadRot = lockedAttackYaw;
@@ -173,15 +168,15 @@ public class DragonPhase1 implements IDragonPhase {
         dragon.yBodyRotO = lockedAttackYaw;
         dragon.yHeadRotO = lockedAttackYaw;
         dragon.getNavigation().stop();
-        
+
         switch (attackState) {
-            case 1: // Đòn 1: Cắn (Bite - duration 15 ticks)
+            case 1:
                 if (attackTimer == 1) {
                     dragon.level().broadcastEntityEvent(dragon, (byte) 60);
                     mixin.triggerClientAction((byte) 60);
                 }
                 if (attackTimer == 8) {
-                    // Đòn cắn nhắm ai thì người đó chắc chắn dính sát thương nếu ở trong tầm đánh (<= 8.5 block)
+
                     if (lockedTarget != null && lockedTarget.isAlive() && !lockedTarget.isCreative() && !lockedTarget.isSpectator() && dragon.distanceTo(lockedTarget) <= 8.5) {
                         lockedTarget.hurt(dragon.damageSources().mobAttack(dragon), 14.0F);
                         double dx = lockedTarget.getX() - dragon.getX();
@@ -195,7 +190,6 @@ public class DragonPhase1 implements IDragonPhase {
                         lockedTarget.syncVelocity = true;
                     }
 
-                    // Đồng thời quét thêm mọi thực thể sống khác phía trước mặt rồng trong phạm vi 8.5 block
                     net.minecraft.world.phys.AABB aabb = dragon.getBoundingBox().inflate(8.5);
                     java.util.List<LivingEntity> entities = dragon.level().getEntitiesOfClass(
                         LivingEntity.class, aabb,
@@ -208,7 +202,7 @@ public class DragonPhase1 implements IDragonPhase {
                             double dz = entity.getZ() - dragon.getZ();
                             double angleToTarget = (Mth.atan2(dz, dx) * (180F / (float)Math.PI)) - 90.0F;
                             double yawDiff = Math.abs(Mth.wrapDegrees(lockedAttackYaw - angleToTarget));
-                            if (yawDiff <= 90.0) { // 180 độ bán nguyệt trước mặt
+                            if (yawDiff <= 90.0) {
                                 entity.hurt(dragon.damageSources().mobAttack(dragon), 14.0F);
                                 if (dist > 0.001) {
                                     entity.setDeltaMovement(entity.getDeltaMovement().add((dx / dist) * 0.8, 0.35, (dz / dist) * 0.8));
@@ -225,8 +219,8 @@ public class DragonPhase1 implements IDragonPhase {
                     globalCooldown = 15;
                 }
                 break;
-                
-            case 2: // Đòn 2: Vồ tới (Pounce - 120 degree cone, radius 8.0 blocks, duration 40 ticks)
+
+            case 2:
                 if (attackTimer == 1) {
                     byte pounceByte = dragon.getRandom().nextBoolean() ? (byte) 62 : (byte) 69;
                     dragon.level().broadcastEntityEvent(dragon, pounceByte);
@@ -234,7 +228,7 @@ public class DragonPhase1 implements IDragonPhase {
                 }
                 if (attackTimer == 20) {
                     dragon.level().playSound(null, dragon.getX(), dragon.getY(), dragon.getZ(), ModSounds.ENDER_DRAGON_WHOOSH, SoundSource.HOSTILE, 5.0F, 1.0F);
-                    // Gây sát thương chắc chắn cho mục tiêu chính nếu trong cự ly 8.5 block
+
                     if (lockedTarget != null && lockedTarget.isAlive() && !lockedTarget.isCreative() && !lockedTarget.isSpectator() && dragon.distanceTo(lockedTarget) <= 8.5) {
                         lockedTarget.hurt(dragon.damageSources().mobAttack(dragon), 16.0F);
                         double dx = lockedTarget.getX() - dragon.getX();
@@ -260,7 +254,7 @@ public class DragonPhase1 implements IDragonPhase {
                             double dz = entity.getZ() - dragon.getZ();
                             double angleToTarget = (Mth.atan2(dz, dx) * (180F / (float)Math.PI)) - 90.0F;
                             double yawDiff = Math.abs(Mth.wrapDegrees(lockedAttackYaw - angleToTarget));
-                            if (yawDiff <= 60.0) { // 120 degree cone
+                            if (yawDiff <= 60.0) {
                                 entity.hurt(dragon.damageSources().mobAttack(dragon), 16.0F);
                                 if (dist > 0.001) {
                                     entity.setDeltaMovement(entity.getDeltaMovement().add((dx / dist) * 1.2, 0.45, (dz / dist) * 1.2));
@@ -277,8 +271,8 @@ public class DragonPhase1 implements IDragonPhase {
                     globalCooldown = 30;
                 }
                 break;
-                
-            case 3: // Đòn 3: Dậm chân hất tung (Stomp - AoE radius 8.0 blocks + mace ground smash debris, duration 58 ticks)
+
+            case 3:
                 if (attackTimer == 1) {
                     dragon.level().broadcastEntityEvent(dragon, (byte) 64);
                     mixin.triggerClientAction((byte) 64);
@@ -286,7 +280,7 @@ public class DragonPhase1 implements IDragonPhase {
                 if (attackTimer == 30) {
                     dragon.level().playSound(null, dragon.getX(), dragon.getY(), dragon.getZ(), ModSounds.ENDER_DRAGON_STOMP, SoundSource.HOSTILE, 5.0F, 1.0F);
                 }
-                if (attackTimer == 40) { // Giây thứ 2 từ lúc bắt đầu animation: chân rồng dậm chạm đất phát nổ hạt particle và gây sát thương
+                if (attackTimer == 40) {
                     net.minecraft.world.phys.AABB aabb = dragon.getBoundingBox().inflate(10.0);
                     java.util.List<LivingEntity> entities = dragon.level().getEntitiesOfClass(
                         LivingEntity.class, aabb,
@@ -296,7 +290,7 @@ public class DragonPhase1 implements IDragonPhase {
                         double dx = entity.getX() - dragon.getX();
                         double dz = entity.getZ() - dragon.getZ();
                         double distSq = dx * dx + dz * dz;
-                        if (distSq <= 64.0) { // radius <= 8.0
+                        if (distSq <= 64.0) {
                             entity.hurt(dragon.damageSources().mobAttack(dragon), 15.0F);
                             double dist = Math.sqrt(distSq);
                             if (dist > 0.001) {
@@ -308,7 +302,6 @@ public class DragonPhase1 implements IDragonPhase {
                         }
                     }
 
-                    // Mace Smash Ground Debris & Dust Pillars (tối đa 350 hạt theo yêu cầu) xuất hiện ở giây thứ 2 (tick 40)
                     if (!dragon.level().isClientSide()) {
                         ServerLevel serverLevel = (ServerLevel) dragon.level();
                         BlockPos groundPos = dragon.getOnPos();
@@ -328,8 +321,8 @@ public class DragonPhase1 implements IDragonPhase {
                     globalCooldown = 40;
                 }
                 break;
-                
-            case 4: // Đòn 4A: Hơi thở gần (Breath Close - locators directed downward cone & AreaEffectCloud, duration 55 ticks)
+
+            case 4:
                 if (attackTimer == 1) {
                     dragon.level().broadcastEntityEvent(dragon, (byte) 70);
                     mixin.triggerClientAction((byte) 70);
@@ -338,7 +331,7 @@ public class DragonPhase1 implements IDragonPhase {
                     if (!dragon.level().isClientSide() && attackTimer % 2 == 0) {
                         ServerLevel serverLevel = (ServerLevel) dragon.level();
                         float yawRad = lockedAttackYaw * ((float)Math.PI / 180F);
-                        // Mouth locator position roughly 3.5 blocks forward, height Y + 1.8
+
                         double mouthX = dragon.getX() - Math.sin(yawRad) * 3.5;
                         double mouthY = dragon.getY() + 1.8;
                         double mouthZ = dragon.getZ() + Math.cos(yawRad) * 3.5;
@@ -348,7 +341,6 @@ public class DragonPhase1 implements IDragonPhase {
                             mouthX, mouthY, mouthZ, 10, 0.4, 0.2, 0.4, 0.05
                         );
 
-                        // Damage entities caught in the breath stream cone
                         net.minecraft.world.phys.AABB streamBox = new net.minecraft.world.phys.AABB(
                             mouthX - 2.5, mouthY - 2.5, mouthZ - 2.5,
                             mouthX + 2.5, mouthY + 0.5, mouthZ + 2.5
@@ -390,7 +382,7 @@ public class DragonPhase1 implements IDragonPhase {
                 }
                 break;
 
-            case 5: // Đòn 4B: Hơi thở xa (Far Breath / Dragon Fireball - shoots fireball when kited > 5s, duration 25 ticks)
+            case 5:
                 if (attackTimer == 1) {
                     dragon.level().broadcastEntityEvent(dragon, (byte) 71);
                     mixin.triggerClientAction((byte) 71);
@@ -405,7 +397,7 @@ public class DragonPhase1 implements IDragonPhase {
                     Vec3 dir;
                     if (lockedTarget != null) {
                         double tx = lockedTarget.getX() - startX;
-                        double ty = lockedTarget.getY() - startY; // Nhắm thẳng xuống chân / mặt đất người chơi
+                        double ty = lockedTarget.getY() - startY;
                         double tz = lockedTarget.getZ() - startZ;
                         dir = new Vec3(tx, ty, tz).normalize();
                     } else {
@@ -414,7 +406,7 @@ public class DragonPhase1 implements IDragonPhase {
 
                     DragonFireball fireball = new DragonFireball(serverLevel, dragon, dir);
                     fireball.snapTo(startX, startY, startZ, 0.0F, 0.0F);
-                    fireball.setDeltaMovement(dir.scale(0.85)); // Vận tốc chuẩn, bay thẳng tới vị trí người chơi và phát nổ tạo vũng tím
+                    fireball.setDeltaMovement(dir.scale(0.85));
                     serverLevel.addFreshEntity(fireball);
                 }
                 if (attackTimer >= 25) {
@@ -427,7 +419,7 @@ public class DragonPhase1 implements IDragonPhase {
 
     public static void applyMovement(EnderDragon dragon) {
         if (instance == null) return;
-        
+
         if (instance.pendingPhaseExit && instance.attackState == 0) {
             dragon.setDeltaMovement(0, computeHoverGravity(dragon), 0);
             dragon.move(net.minecraft.world.entity.MoverType.SELF, dragon.getDeltaMovement());
@@ -458,7 +450,6 @@ public class DragonPhase1 implements IDragonPhase {
             double distSq = dx * dx + dz * dz;
             double dist = Math.sqrt(distSq);
 
-            // Quay mặt mượt mà về phía mục tiêu
             if (distSq > 0.01) {
                 float targetYaw = (float)(net.minecraft.util.Mth.atan2(dz, dx) * (double)(180F / (float)Math.PI)) - 90.0F;
                 dragon.setYRot(net.minecraft.util.Mth.approachDegrees(dragon.getYRot(), targetYaw, 15.0F));
@@ -467,7 +458,6 @@ public class DragonPhase1 implements IDragonPhase {
                 dragon.setYHeadRot(dragon.getYRot());
             }
 
-            // Khoảng cách dừng: nếu đã áp sát mục tiêu (<= 4.5 block) thì dừng di chuyển ngang để đánh cận chiến!
             if (dist > 4.5) {
                 float currentYawRad = dragon.getYRot() * ((float)Math.PI / 180F);
                 velX = -Math.sin(currentYawRad) * moveSpeed;
@@ -477,12 +467,11 @@ public class DragonPhase1 implements IDragonPhase {
                 velZ = 0;
             }
         } else {
-            // Không có mục tiêu: đứng yên tại chỗ ở tư thế onground
+
             velX = 0;
             velZ = 0;
         }
 
-        // --- 1. TẮT ĐI XUYÊN OBSIDIAN / TƯỜNG CAO > 3 BLOCK & CHỐNG RỚT THE VOID ---
         boolean wallAhead = false;
         boolean voidAhead = false;
         double hSpeed = Math.sqrt(velX * velX + velZ * velZ);
@@ -492,8 +481,6 @@ public class DragonPhase1 implements IDragonPhase {
             double frontX = dragon.getX() + dirX * 1.8;
             double frontZ = dragon.getZ() + dirZ * 1.8;
 
-            // Kiểm tra tường cao / cột obsidian (> 3 block):
-            // Nếu ở độ cao y + 3.2 có khối đặc và y + 1.5 cũng đặc -> tường cao không thể bước qua
             BlockPos wallPos = BlockPos.containing(frontX, dragon.getY() + 3.2, frontZ);
             BlockPos wallMidPos = BlockPos.containing(frontX, dragon.getY() + 1.5, frontZ);
             if (!dragon.level().getBlockState(wallPos).getCollisionShape(dragon.level(), wallPos).isEmpty()
@@ -501,7 +488,6 @@ public class DragonPhase1 implements IDragonPhase {
                 wallAhead = true;
             }
 
-            // Chống rớt xuống The Void: Quét xem phía trước có mặt đất trong 25 block bên dưới không
             boolean hasGroundAhead = false;
             BlockPos groundCheckPos = BlockPos.containing(frontX, dragon.getY(), frontZ);
             for (int i = -3; i <= 25; i++) {
@@ -516,24 +502,18 @@ public class DragonPhase1 implements IDragonPhase {
             }
         }
 
-        // Nếu gặp tường cao/obsidian hoặc vực thẳm The Void: Chặn không cho đi xuyên hoặc rớt xuống
         if (wallAhead || voidAhead) {
             velX = 0;
             velZ = 0;
         }
 
-        // --- 2. CƠ CHẾ NHẢY (ĐỘ ƯU TIÊN THẤP, TỐI ĐA 10 BLOCK) ---
-        // Chỉ nhảy khi:
-        // - Có mục tiêu còn sống
-        // - Không thể đi bộ đến (rơi xuống hố quá sâu > 3 block, hoặc bị tường/cột obsidian cao chặn mà mục tiêu ở trên cao)
-        // - Đang đứng trên mặt đất và hết thời gian hồi chiêu
         if (instance.lockedTarget != null && !instance.lockedTarget.isCreative() && !instance.lockedTarget.isSpectator() && jumpTicks <= 0 && dragon.getY() <= getTargetY(dragon) + 0.3) {
             double heightDiff = instance.lockedTarget.getY() - dragon.getY();
             if (heightDiff > 3.0 || (wallAhead && heightDiff > 0.5)) {
                 double targetJump = Math.max(heightDiff + 1.5, 4.0);
-                double jumpHeight = Math.min(10.0, targetJump); // Nhảy tối đa 10 block
+                double jumpHeight = Math.min(10.0, targetJump);
                 currentY = Math.sqrt(2 * 0.08 * jumpHeight);
-                jumpTicks = 40; // Cooldown 2 giây để tránh spam nhảy
+                jumpTicks = 40;
             }
         }
 
@@ -553,7 +533,6 @@ public class DragonPhase1 implements IDragonPhase {
         double lookZ = dragon.getZ() + dragon.getDeltaMovement().z * 3.0;
         BlockPos pos = BlockPos.containing(lookX, dragon.getY(), lookZ);
 
-        // Khả năng bước qua độ cao lên tới 3 block (như lạc đà 1.5 block): Quét từ 3 block bên trên xuống 20 block bên dưới
         for (int i = -3; i <= 20; i++) {
             BlockPos checkPos = pos.below(i);
             BlockState state = dragon.level().getBlockState(checkPos);
@@ -571,16 +550,16 @@ public class DragonPhase1 implements IDragonPhase {
     private static double computeHoverGravity(EnderDragon dragon) {
         double targetY = getTargetY(dragon);
         double diff = targetY - dragon.getY();
-        
+
         if (Math.abs(diff) < 0.02) {
             return 0.0;
         }
-        
+
         if (diff < 0) {
-            // Rồng đang ở cao hơn targetY: hạ xuống mượt mà, chặn overshoot
+
             return Math.max(diff, -0.25);
         } else {
-            // Rồng đang ở thấp hơn targetY: bước lên dốc/bậc thang mượt mà lên tới 3 block
+
             if (diff <= 3.05) {
                 return Math.min(diff, Math.max(0.2, diff * 0.6));
             }
@@ -588,3 +567,4 @@ public class DragonPhase1 implements IDragonPhase {
         }
     }
 }
+

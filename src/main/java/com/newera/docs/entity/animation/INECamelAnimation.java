@@ -18,6 +18,7 @@ public interface INECamelAnimation extends INEAnimal {
     AnimationState getEatingAnimationState();
 
     AnimationState getIdleAnimationState();
-    
+
     AnimationState getDashAnimationState();
 }
+

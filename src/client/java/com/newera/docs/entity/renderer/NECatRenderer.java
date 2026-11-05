@@ -52,7 +52,7 @@ public class NECatRenderer extends MobRenderer<Cat, NECatRenderState, NECatAbstr
             state.wakeUpAnimationState.copyFrom(mixinEntity.getWakeUpAnimationState());
             state.standAnimationState.copyFrom(mixinEntity.getStandAnimationState());
             state.idleAnimationState.copyFrom(mixinEntity.getIdleAnimationState());
-            
+
             state.stretchAnimationState.copyFrom(mixinEntity.getStretchAnimationState());
             state.stalkingAnimationState.copyFrom(mixinEntity.getStalkingAnimationState());
             state.pounceAnimationState.copyFrom(mixinEntity.getPounceAnimationState());
@@ -81,3 +81,4 @@ public class NECatRenderer extends MobRenderer<Cat, NECatRenderState, NECatAbstr
         return Identifier.fromNamespaceAndPath("newera", path);
     }
 }
+

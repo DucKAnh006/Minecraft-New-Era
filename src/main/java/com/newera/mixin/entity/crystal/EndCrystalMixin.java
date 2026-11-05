@@ -73,13 +73,13 @@ public abstract class EndCrystalMixin extends Entity implements INEEndCrystalAni
             this.idleAnimationState.stop();
 
             this.wakeUpTicks++;
-            if (this.wakeUpTicks >= 80) { // 4.0 seconds = 80 ticks
+            if (this.wakeUpTicks >= 80) {
                 if (!this.level().isClientSide()) {
                     this.setCrystalState(INEEndCrystalAnimation.STATE_AWAKE);
                 }
                 this.wakeUpTicks = 0;
             }
-        } else { // STATE_AWAKE
+        } else {
             this.sleepAnimationState.stop();
             this.wakeUpAnimationState.stop();
             this.baseAnimationState.startIfStopped(currentTicks);
@@ -152,3 +152,4 @@ public abstract class EndCrystalMixin extends Entity implements INEEndCrystalAni
         }
     }
 }
+

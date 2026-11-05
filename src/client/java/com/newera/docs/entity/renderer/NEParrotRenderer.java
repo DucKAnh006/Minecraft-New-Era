@@ -33,7 +33,7 @@ public class NEParrotRenderer extends MobRenderer<Parrot, NEParrotRenderState, E
         super.extractRenderState(entity, state, partialTicks);
         state.isBaby = entity.isBaby();
         state.variant = entity.getVariant();
-        
+
         float turnSpeed = net.minecraft.util.Mth.wrapDegrees(entity.yBodyRot - entity.yBodyRotO);
         state.roll = net.minecraft.util.Mth.clamp(turnSpeed * -0.6F, -45.0F, 45.0F) * (float)(Math.PI / 180.0);
 
@@ -71,3 +71,4 @@ public class NEParrotRenderer extends MobRenderer<Parrot, NEParrotRenderState, E
         };
     }
 }
+

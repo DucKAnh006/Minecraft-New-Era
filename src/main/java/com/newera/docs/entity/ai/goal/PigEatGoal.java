@@ -36,13 +36,13 @@ public class PigEatGoal extends MoveToBlockGoal {
         super.tick();
         if (this.isReachedTarget()) {
             if (this.eatTimer == 0) {
-                // Play graze animation
+
                 this.pig.level().broadcastEntityEvent(this.pig, (byte) 10);
             }
             this.eatTimer++;
             if (this.eatTimer >= 40) {
                 this.pig.level().destroyBlock(this.blockPos, false);
-                this.pig.heal(1.0F); // heal slightly
+                this.pig.heal(1.0F);
                 this.stop();
             }
         } else {
@@ -53,8 +53,9 @@ public class PigEatGoal extends MoveToBlockGoal {
     @Override
     protected boolean isValidTarget(LevelReader level, BlockPos pos) {
         BlockState blockState = level.getBlockState(pos);
-        // Look for mushrooms or flowers
+
         return blockState.is(Blocks.BROWN_MUSHROOM) || blockState.is(Blocks.RED_MUSHROOM)
                 || blockState.is(BlockTags.FLOWERS);
     }
 }
+

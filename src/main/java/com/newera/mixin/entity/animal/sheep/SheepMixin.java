@@ -32,7 +32,7 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
 
     @Unique
     private static final EntityDataAccessor<Byte> NEWERA_BODY_STATE = SynchedEntityData.defineId(Sheep.class, EntityDataSerializers.BYTE);
-    
+
     @Unique
     private static final EntityDataAccessor<String> VARIANT_ID = SynchedEntityData.defineId(Sheep.class, EntityDataSerializers.STRING);
 
@@ -68,7 +68,7 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initSpeed(EntityType<? extends Animal> type, Level level, CallbackInfo ci) {
-        this.animalSpeed = new AnimalSpeed(this, 0.25D, 0.30D, 20);
+        this.animalSpeed = new AnimalSpeed(this, 0.23D, 0.30D, 18);
     }
 
     @Inject(method = "defineSynchedData", at = @At("TAIL"))
@@ -87,7 +87,7 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
             this.refreshDimensions();
         }
     }
-    
+
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     public void addAdditionalSaveDataInject(net.minecraft.world.level.storage.ValueOutput output, CallbackInfo ci) {
         try {
@@ -112,7 +112,7 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
         this.goalSelector.addGoal(4, new AnimalSitGoal(this, true, 4000, 2000));
         this.goalSelector.addGoal(4, new AnimalSleepGoal(this, true, 12000, 2000, true));
     }
-    
+
     @Inject(method = "finalizeSpawn", at = @At("RETURN"), cancellable = true)
     public void finalizeSpawnInject(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
         BlockPos pos = this.blockPosition();
@@ -209,7 +209,7 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
             this.setupAnimationStates();
         } else {
             if (state > 0) {
-                if (this.getLastHurtByMob() != null || this.isOnFire()) {
+                if (this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0) {
                     this.setBodyState((byte) 0);
                     this.busyTimer = 0;
                 } else {
@@ -237,17 +237,17 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
                     if (state > 0) {
                         speedAttribute.setBaseValue(0.0D);
                     } else {
-                        speedAttribute.setBaseValue(0.25D); // default sheep walk speed might be 0.25, let's use 0.25D or 0.23D? Vanilla sheep is 0.23D! Wait, vanilla sheep movement speed is 0.23D.
-                        // I will set it to 0.23D to match vanilla sheep.
+                        speedAttribute.setBaseValue(0.23D);
                     }
                 }
             } else {
+                boolean isPanicking = this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0;
                 if (state > 0) {
-                    this.animalSpeed.stop();
+                    this.animalSpeed.forceStop();
+                } else if (isPanicking) {
+                    this.animalSpeed.run();
                 } else if (this.getNavigation().isDone() || this.getNavigation().getPath() == null) {
                     this.animalSpeed.stop();
-                } else if (this.getLastHurtByMob() != null || this.isOnFire()) {
-                    this.animalSpeed.run();
                 } else {
                     this.animalSpeed.walk();
                 }
@@ -299,3 +299,4 @@ public abstract class SheepMixin extends Animal implements INESheepAnimation {
     @Override public AnimationState getGrazingAnimationState() { return this.grazingAnimationState; }
     @Override public AnimationState getIdleAnimationState() { return this.idleAnimationState; }
 }
+

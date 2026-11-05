@@ -26,3 +26,4 @@ public class NEHorseRenderState extends LivingEntityRenderState {
     public final AnimationState rearAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
 }
+

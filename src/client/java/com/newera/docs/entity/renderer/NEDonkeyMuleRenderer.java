@@ -29,9 +29,7 @@ public class NEDonkeyMuleRenderer extends MobRenderer<AbstractChestedHorse, NEHo
                 new NEBabyDonkeyMuleModel(context.bakeLayer(NEModelLayers.NE_BABY_DONKEY))
         );
         this.addLayer(new com.newera.docs.entity.render.layer.NEHorseSaddleLayer(this));
-        // Note: For donkey chest, it's actually drawn natively in the donkey.png texture on the left_bag and right_bag bones!
-        // So we don't necessarily need a NEDonkeyChestLayer unless the chest is completely separate!
-        // But since the user explicitly asked for "chest for donkey", I'll add the layer.
+
         this.addLayer(new com.newera.docs.entity.render.layer.NEDonkeyChestLayer(this));
     }
 
@@ -47,12 +45,11 @@ public class NEDonkeyMuleRenderer extends MobRenderer<AbstractChestedHorse, NEHo
         state.isBaby = entity.isBaby();
         state.hasChest = entity.hasChest();
         state.isSaddled = entity.isSaddled();
-        
-        // Use variant to store entity type to determine donkey vs mule texture
+
         if (entity.getType() == EntityTypes.MULE) {
-            state.variant = net.minecraft.world.entity.animal.equine.Variant.BROWN; // Dummy for MULE
+            state.variant = net.minecraft.world.entity.animal.equine.Variant.BROWN;
         } else {
-            state.variant = net.minecraft.world.entity.animal.equine.Variant.GRAY; // Dummy for DONKEY
+            state.variant = net.minecraft.world.entity.animal.equine.Variant.GRAY;
         }
 
         if (entity instanceof INEHorseAnimation mixinEntity) {
@@ -85,3 +82,4 @@ public class NEDonkeyMuleRenderer extends MobRenderer<AbstractChestedHorse, NEHo
         return state.isBaby ? Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/donkey_baby.png") : Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/donkey.png");
     }
 }
+

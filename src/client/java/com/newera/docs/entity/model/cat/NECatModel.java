@@ -79,3 +79,4 @@ public class NECatModel extends NECatAbstractModel {
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 }
+

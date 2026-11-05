@@ -37,7 +37,7 @@ public class WolfHowlGoal extends Goal {
 
         long timeOfDay = this.wolf.level().getDefaultClockTime() % 24000;
         boolean isNight = timeOfDay >= 13000 && timeOfDay <= 23000;
-        
+
         if (!isNight || this.wolf.level().isRaining()) {
             return false;
         }
@@ -48,29 +48,28 @@ public class WolfHowlGoal extends Goal {
         int responseChance;
 
         switch (moonPhase) {
-            case 0 -> { // Full Moon
+            case 0 -> {
                 baseChance = 100;
                 responseChance = 5;
             }
-            case 1, 7 -> { // Gibbous
+            case 1, 7 -> {
                 baseChance = 250;
                 responseChance = 10;
             }
-            case 2, 6 -> { // Quarter
+            case 2, 6 -> {
                 baseChance = 400;
                 responseChance = 20;
             }
-            case 3, 5 -> { // Crescent
+            case 3, 5 -> {
                 baseChance = 600;
                 responseChance = 30;
             }
-            default -> { // New Moon
+            default -> {
                 baseChance = 1000;
                 responseChance = 50;
             }
         }
 
-        // Randomly decide to howl, or howl if a nearby wolf is howling
         boolean canHowl = false;
         if (this.wolf.getRandom().nextInt(baseChance) == 0) {
             canHowl = true;
@@ -105,11 +104,11 @@ public class WolfHowlGoal extends Goal {
 
     @Override
     public void start() {
-        this.howlTimer = 80; // Howl duration in ticks (4 seconds)
+        this.howlTimer = 80;
         if (this.wolf instanceof INEWolfAnimation animWolf) {
-            animWolf.setBodyState(this.isSittingHowl ? (byte) 8 : (byte) 7); // 7: Stand Howl, 8: Sit Howl
+            animWolf.setBodyState(this.isSittingHowl ? (byte) 8 : (byte) 7);
         }
-        
+
         this.wolf.playSound(NESounds.WOLF_HOWL, 1.0F, (this.wolf.getRandom().nextFloat() - this.wolf.getRandom().nextFloat()) * 0.2F + 1.0F);
         this.wolf.getNavigation().stop();
     }
@@ -121,13 +120,14 @@ public class WolfHowlGoal extends Goal {
 
     @Override
     public void stop() {
-        this.nextHowlTime = this.wolf.tickCount + 200 + this.wolf.getRandom().nextInt(400); // 10-30 seconds cooldown
+        this.nextHowlTime = this.wolf.tickCount + 200 + this.wolf.getRandom().nextInt(400);
         if (this.wolf instanceof INEWolfAnimation animWolf) {
             if (this.isSittingHowl) {
-                animWolf.setBodyState((byte) 2); // Return to sitting hold
+                animWolf.setBodyState((byte) 2);
             } else {
-                animWolf.setBodyState((byte) 0); // Return to normal
+                animWolf.setBodyState((byte) 0);
             }
         }
     }
 }
+

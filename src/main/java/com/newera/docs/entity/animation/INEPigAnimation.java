@@ -19,3 +19,4 @@ public interface INEPigAnimation extends INEAnimal {
 
     AnimationState getIdleAnimationState();
 }
+

@@ -24,7 +24,7 @@ public abstract class NEDonkeyMuleAbstractModel extends NEHorseAbstractModel {
             final AnimationDefinition attackAnim
     ) {
         super(root, rootYOffset, sitAnim, sittingHoldAnim, sleepAnim, sleepingHoldAnim, wakeUpAnim, standAnim, walkAnim, grazingAnim, idleAnim, rearAnim, attackAnim);
-        
+
         ModelPart body = root.getChild("root").getChild("body");
         ModelPart centroid = body.hasChild("centroid") ? body.getChild("centroid") : null;
 
@@ -44,3 +44,4 @@ public abstract class NEDonkeyMuleAbstractModel extends NEHorseAbstractModel {
         }
     }
 }
+

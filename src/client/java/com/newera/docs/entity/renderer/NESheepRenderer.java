@@ -99,3 +99,4 @@ public class NESheepRenderer extends MobRenderer<Sheep, NESheepRenderState, NESh
         }
     }
 }
+

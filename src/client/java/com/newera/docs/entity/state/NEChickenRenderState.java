@@ -21,9 +21,10 @@ public class NEChickenRenderState extends LivingEntityRenderState {
     public final AnimationState standAnimationState = new AnimationState();
     public final AnimationState grazingAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
-    
+
     public final AnimationState flyingAnimationState = new AnimationState();
     public final AnimationState takeOffAnimationState = new AnimationState();
     public final AnimationState onAirAnimationState = new AnimationState();
     public final AnimationState landingAnimationState = new AnimationState();
 }
+

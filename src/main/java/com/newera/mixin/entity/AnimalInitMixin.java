@@ -98,12 +98,12 @@ public abstract class AnimalInitMixin extends Mob implements INEAnimal {
             } else {
                 this.neParentUUID = null;
             }
-            
+
             if (this.neChildrenUUIDs == null) {
                 this.neChildrenUUIDs = new ArrayList<>();
             }
             this.neChildrenUUIDs.clear();
-            
+
             String childrenStr = input.getStringOr("NEChildrenUUIDs", "");
             if (!childrenStr.isEmpty()) {
                 for (String uuidStr : childrenStr.split(",")) {
@@ -165,3 +165,4 @@ public abstract class AnimalInitMixin extends Mob implements INEAnimal {
         }
     }
 }
+

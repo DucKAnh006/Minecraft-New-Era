@@ -45,9 +45,9 @@ public class NEUndeadHorseRenderer extends MobRenderer<AbstractHorse, NEHorseRen
         state.isSaddled = entity.isSaddled();
 
         if (entity.getType() == EntityTypes.ZOMBIE_HORSE) {
-            state.variant = net.minecraft.world.entity.animal.equine.Variant.WHITE; // Dummy for ZOMBIE
+            state.variant = net.minecraft.world.entity.animal.equine.Variant.WHITE;
         } else {
-            state.variant = net.minecraft.world.entity.animal.equine.Variant.BLACK; // Dummy for SKELETON
+            state.variant = net.minecraft.world.entity.animal.equine.Variant.BLACK;
         }
 
         if (entity instanceof INEHorseAnimation mixinEntity) {
@@ -75,7 +75,7 @@ public class NEUndeadHorseRenderer extends MobRenderer<AbstractHorse, NEHorseRen
     @NotNull
     public Identifier getTextureLocation(@NotNull final NEHorseRenderState state) {
         if (state.variant == net.minecraft.world.entity.animal.equine.Variant.WHITE) {
-            return state.isBaby 
+            return state.isBaby
                 ? Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/horse_zombie_baby.png")
                 : Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/horse_zombie.png");
         }
@@ -84,3 +84,4 @@ public class NEUndeadHorseRenderer extends MobRenderer<AbstractHorse, NEHorseRen
             : Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/horse_skeleton.png");
     }
 }
+

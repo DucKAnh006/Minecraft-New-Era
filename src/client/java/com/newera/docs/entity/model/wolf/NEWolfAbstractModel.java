@@ -18,7 +18,7 @@ public abstract class NEWolfAbstractModel extends EntityModel<NEWolfRenderState>
     protected final ModelPart body;
     protected final ModelPart head;
     protected final ModelPart tail;
-    
+
     private final KeyframeAnimation idleAnimation;
     private final KeyframeAnimation sitAnimation;
     private final KeyframeAnimation sittingHoldAnimation;
@@ -113,10 +113,10 @@ public abstract class NEWolfAbstractModel extends EntityModel<NEWolfRenderState>
         this.sleepingHoldAnimation.apply(state.sleepingHoldAnimationState, state.ageInTicks);
         this.wakeUpAnimation.apply(state.wakeUpAnimationState, state.ageInTicks);
         this.standAnimation.apply(state.standAnimationState, state.ageInTicks);
-        
+
         if (this.howlAnimation != null) this.howlAnimation.apply(state.howlAnimationState, state.ageInTicks);
         if (this.sitHowlingAnimation != null) this.sitHowlingAnimation.apply(state.sitHowlingAnimationState, state.ageInTicks);
 
-
     }
 }
+

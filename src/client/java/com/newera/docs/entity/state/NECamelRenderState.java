@@ -18,3 +18,4 @@ public class NECamelRenderState extends LivingEntityRenderState {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState dashAnimationState = new AnimationState();
 }
+

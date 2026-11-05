@@ -44,7 +44,6 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
     @Unique
     private int takeOffTimer = 0;
 
-    // Animation states
     @Unique public final AnimationState sitAnimationState = new AnimationState();
     @Unique public final AnimationState sittingHoldAnimationState = new AnimationState();
     @Unique public final AnimationState sleepAnimationState = new AnimationState();
@@ -68,7 +67,7 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initSpeed(EntityType<? extends Animal> type, Level level, CallbackInfo ci) {
-        this.animalSpeed = new AnimalSpeed(this, 0.25D, 0.30D, 20);
+        this.animalSpeed = new AnimalSpeed(this, 0.25D, 0.34D, 18);
     }
 
     @Inject(method = "registerGoals", at = @At("TAIL"))
@@ -131,7 +130,7 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
             this.setupAnimationStates();
         } else {
             if (state > 0) {
-                if (this.getLastHurtByMob() != null || this.isOnFire()) {
+                if (this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0) {
                     this.setBodyState((byte) 0);
                     this.busyTimer = 0;
                 } else {
@@ -147,12 +146,13 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
         }
 
         if (!this.level().isClientSide() && this.animalSpeed != null) {
+            boolean isPanicking = this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0;
             if (state > 0) {
-                this.animalSpeed.stop();
+                this.animalSpeed.forceStop();
+            } else if (isPanicking) {
+                this.animalSpeed.run();
             } else if (this.getNavigation().isDone() || this.getNavigation().getPath() == null) {
                 this.animalSpeed.stop();
-            } else if (this.getLastHurtByMob() != null || this.isOnFire()) {
-                this.animalSpeed.run();
             } else {
                 this.animalSpeed.walk();
             }
@@ -188,7 +188,6 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
 
         if (state > 0) this.grazingAnimationState.stop();
 
-        // Flying and swimming logic
         boolean inWater = this.isInWater();
         boolean notOnGround = !this.onGround();
 
@@ -209,7 +208,7 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
                 if (this.wasOnGround) {
                     this.takeOffAnimationState.start(this.tickCount);
                     this.onAirAnimationState.stop();
-                    this.takeOffTimer = 10; // 0.5s = 10 ticks
+                    this.takeOffTimer = 10;
                 } else {
                     if (this.takeOffTimer > 0) {
                         this.takeOffTimer--;
@@ -227,9 +226,9 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
                 this.takeOffTimer = 0;
                 if (!this.wasOnGround) {
                     this.landingAnimationState.start(this.tickCount);
-                    this.landingTimer = 13; // 0.625s = 12.5 ticks, round up to 13
+                    this.landingTimer = 13;
                 }
-                
+
                 if (this.landingTimer > 0) {
                     this.landingTimer--;
                     if (this.landingTimer <= 0) {
@@ -261,3 +260,4 @@ public abstract class ChickenMixin extends Animal implements INEChickenAnimation
         }
     }
 }
+

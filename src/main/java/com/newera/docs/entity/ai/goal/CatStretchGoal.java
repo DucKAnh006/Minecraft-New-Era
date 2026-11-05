@@ -56,3 +56,4 @@ public class CatStretchGoal extends Goal {
         }
     }
 }
+

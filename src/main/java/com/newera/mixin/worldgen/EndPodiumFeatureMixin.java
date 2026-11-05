@@ -37,7 +37,6 @@ public abstract class EndPodiumFeatureMixin {
         ServerLevel serverLevel = worldGenLevel.getLevel();
         StructureTemplateManager templateManager = serverLevel.getServer().getStructureTemplateManager();
 
-        // 1. Thử tìm template kích hoạt khi rồng chết (nếu active == true và người dùng tạo template riêng)
         Identifier targetId = null;
         if (this.active) {
             Identifier activeId = Identifier.fromNamespaceAndPath("newera", "end_podium_active");
@@ -46,7 +45,6 @@ public abstract class EndPodiumFeatureMixin {
             }
         }
 
-        // 2. Nếu không có active template hoặc active == false, ưu tiên nạp template bệ đá chính
         if (targetId == null) {
             Identifier podiumId = Identifier.fromNamespaceAndPath("newera", "podium");
             if (templateManager.get(podiumId).isPresent()) {
@@ -59,34 +57,26 @@ public abstract class EndPodiumFeatureMixin {
             }
         }
 
-        // 3. Nếu tìm thấy custom template trong mod: nạp và đặt vào thế giới
         if (targetId != null) {
             Optional<StructureTemplate> templateOpt = templateManager.get(targetId);
             if (templateOpt.isPresent()) {
                 StructureTemplate template = templateOpt.get();
                 Vec3i size = template.getSize();
 
-                // Cột Bedrock trung tâm luôn cố định tuyệt đối tại tọa độ X=0, Z=0
                 int cx = 0;
                 int cz = 0;
 
-                // -------------------------------------------------------------
-                // BẢO TOÀN VỊ TRÍ BỆ ĐÁ VĨNH VIỄN (KHÔNG QUÉT LẠI ĐỊA HÌNH):
-                // -------------------------------------------------------------
                 int baseY = -1;
                 boolean isInitialGeneration = false;
 
-                // Cách 1: Kiểm tra cột Bedrock trung tâm đã tồn tại tại (cx, Y, cz) chưa
                 for (int y = 110; y >= 40; y--) {
                     if (worldGenLevel.getBlockState(new BlockPos(cx, y, cz)).is(Blocks.BEDROCK)) {
-                        // Cột Bedrock trung tâm cao 10 block: từ baseY đến baseY + 9
-                        // Do đó đỉnh cột Bedrock chính là baseY + 9 -> baseY = y - 9
+
                         baseY = y - 9;
                         break;
                     }
                 }
 
-                // Cách 2: Nếu chưa tìm thấy qua block, kiểm tra trong EnderDragonFight
                 if (baseY == -1 && serverLevel.getDragonFight() != null) {
                     EnderDragonFight fight = serverLevel.getDragonFight();
                     BlockPos fightPortal = ((IEnderDragonFightCustom) fight).getCustomPortalLocation();
@@ -95,8 +85,6 @@ public abstract class EndPodiumFeatureMixin {
                     }
                 }
 
-                // Cách 3: NẾU THẾ GIỚI MỚI TINH (CHƯA CÓ BỆ ĐÁ):
-                // Chỉ quét tìm điểm cao nhất trên địa hình End tự nhiên DUY NHẤT 1 LẦN khi gen thế giới!
                 if (baseY == -1) {
                     int scannedHighestY = 60;
                     for (int rx = -7; rx <= 7; rx++) {
@@ -114,30 +102,24 @@ public abstract class EndPodiumFeatureMixin {
                     isInitialGeneration = true;
                 }
 
-                // Căn giữa công trình tại (0, 0)
-                int offsetX = size.getX() / 2; // 7
-                int offsetZ = size.getZ() / 2; // 7
+                int offsetX = size.getX() / 2;
+                int offsetZ = size.getZ() / 2;
                 BlockPos placePos = new BlockPos(
                     cx - offsetX,
                     baseY,
                     cz - offsetZ
                 );
 
-                // Đồng bộ và lưu khóa cứng vị trí cổng vào EnderDragonFight
                 if (serverLevel.getDragonFight() != null) {
                     EnderDragonFight fight = serverLevel.getDragonFight();
                     ((IEnderDragonFightCustom) fight).setCustomPortalLocation(new BlockPos(cx, baseY + 1, cz));
                     fight.setDirty();
                 }
 
-                // Cấu hình đặt template
                 StructurePlaceSettings settings = new StructurePlaceSettings()
                     .setIgnoreEntities(false)
                     .setKnownShape(true);
 
-                // StructureProcessor:
-                // - Biến đổi ván gỗ sồi (minecraft:oak_planks) thành cổng End hoặc không khí
-                // - KHÔNG đặt không khí (null) ở bên ngoài hình tròn bệ đá để tránh cắt khoét địa hình hình hộp chữ nhật!
                 settings.addProcessor(new StructureProcessor() {
                     @Override
                     public StructureTemplate.StructureBlockInfo processBlock(
@@ -151,7 +133,6 @@ public abstract class EndPodiumFeatureMixin {
                         int relZ = currentBlockInfo.pos().getZ() - (placePos.getZ() + 7);
                         double distSq = relX * relX + relZ * relZ;
 
-                        // Bỏ qua không khí nằm bên ngoài hình tròn bệ đá (bán kính 7.15 block)
                         if (currentBlockInfo.state().isAir() && distSq > 7.15 * 7.15) {
                             return null;
                         }
@@ -171,10 +152,8 @@ public abstract class EndPodiumFeatureMixin {
                     }
                 });
 
-                // Đặt template vào thế giới
                 template.placeInWorld(worldGenLevel, placePos, placePos, settings, randomSource, 2);
 
-                // Dọn dẹp bất kỳ khối END_PORTAL tàn dư nào ở sai độ cao (nếu thế giới cũ từng bị lỗi hạ độ cao)
                 for (int rx = -7; rx <= 7; rx++) {
                     for (int rz = -7; rz <= 7; rz++) {
                         if (rx * rx + rz * rz <= 51) {
@@ -190,7 +169,6 @@ public abstract class EndPodiumFeatureMixin {
                     }
                 }
 
-                // Tự động bù gạch End (END_STONE_BRICKS) vào khoảng trống bên dưới chân bệ đá (khi gen lần đầu)
                 if (isInitialGeneration) {
                     for (int x = 0; x < size.getX(); x++) {
                         for (int z = 0; z < size.getZ(); z++) {
@@ -206,7 +184,7 @@ public abstract class EndPodiumFeatureMixin {
                                         worldGenLevel.setBlock(fillPos, Blocks.END_STONE_BRICKS.defaultBlockState(), 2);
                                         fillPos.move(net.minecraft.core.Direction.DOWN);
                                     } else {
-                                        break; // Đã chạm vào nền đá đảo đặc
+                                        break;
                                     }
                                 }
                             }
@@ -214,7 +192,6 @@ public abstract class EndPodiumFeatureMixin {
                     }
                 }
 
-                // Đảm bảo tất cả 52 vị trí đánh dấu bằng ván gỗ sồi được cập nhật chính xác
                 List<StructureTemplate.StructureBlockInfo> plankInfos = template.filterBlocks(placePos, new StructurePlaceSettings(), Blocks.OAK_PLANKS);
                 for (StructureTemplate.StructureBlockInfo info : plankInfos) {
                     if (this.active) {
@@ -224,21 +201,19 @@ public abstract class EndPodiumFeatureMixin {
                     }
                 }
 
-                // Cập nhật đuốc và trứng rồng theo trạng thái active
                 if (this.active) {
-                    // Đặt lại các ngọn đuốc mới trên vành bệ đá (Bedrock Rim ở baseY + 1, đuốc ở baseY + 2)
+
                     worldGenLevel.setBlock(new BlockPos(cx, baseY + 2, cz - 5), Blocks.TORCH.defaultBlockState(), 2);
                     worldGenLevel.setBlock(new BlockPos(cx, baseY + 2, cz + 5), Blocks.TORCH.defaultBlockState(), 2);
                     worldGenLevel.setBlock(new BlockPos(cx - 5, baseY + 2, cz), Blocks.TORCH.defaultBlockState(), 2);
                     worldGenLevel.setBlock(new BlockPos(cx + 5, baseY + 2, cz), Blocks.TORCH.defaultBlockState(), 2);
 
-                    // Đặt lại 4 ngọn đuốc gắn tường trên cột Bedrock trung tâm (Y = baseY + 3)
                     worldGenLevel.setBlock(new BlockPos(cx - 2, baseY + 3, cz), Blocks.WALL_TORCH.defaultBlockState().setValue(net.minecraft.world.level.block.WallTorchBlock.FACING, net.minecraft.core.Direction.WEST), 2);
                     worldGenLevel.setBlock(new BlockPos(cx + 2, baseY + 3, cz), Blocks.WALL_TORCH.defaultBlockState().setValue(net.minecraft.world.level.block.WallTorchBlock.FACING, net.minecraft.core.Direction.EAST), 2);
                     worldGenLevel.setBlock(new BlockPos(cx, baseY + 3, cz - 2), Blocks.WALL_TORCH.defaultBlockState().setValue(net.minecraft.world.level.block.WallTorchBlock.FACING, net.minecraft.core.Direction.NORTH), 2);
                     worldGenLevel.setBlock(new BlockPos(cx, baseY + 3, cz + 2), Blocks.WALL_TORCH.defaultBlockState().setValue(net.minecraft.world.level.block.WallTorchBlock.FACING, net.minecraft.core.Direction.SOUTH), 2);
                 } else {
-                    // Khi rồng hồi sinh (active == false), nếu trên đỉnh cột có Trứng Rồng thì dọn đi
+
                     BlockPos eggPos = new BlockPos(cx, baseY + 10, cz);
                     if (worldGenLevel.getBlockState(eggPos).is(Blocks.DRAGON_EGG)) {
                         worldGenLevel.setBlock(eggPos, Blocks.AIR.defaultBlockState(), 2);
@@ -250,3 +225,4 @@ public abstract class EndPodiumFeatureMixin {
         }
     }
 }
+

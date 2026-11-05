@@ -54,3 +54,4 @@ public class NECamelBabyModel extends NECamelAbstractModel {
 		return LayerDefinition.create(mesh, 64, 64);
 	}
 }
+

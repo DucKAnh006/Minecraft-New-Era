@@ -118,3 +118,4 @@ public class NEDonkeyMuleModel extends NEDonkeyMuleAbstractModel {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 }
+

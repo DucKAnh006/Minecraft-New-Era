@@ -27,3 +27,4 @@ public class NEWolfCollarLayer extends RenderLayer<NEWolfRenderState, EntityMode
         RenderLayer.renderColoredCutoutModel(this.getParentModel(), texture, poseStack, submitNodeCollector, packedLight, state, color, OverlayTexture.NO_OVERLAY);
     }
 }
+
