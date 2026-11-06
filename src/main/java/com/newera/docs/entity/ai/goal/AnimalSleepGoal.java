@@ -70,7 +70,7 @@ public class AnimalSleepGoal extends Goal {
         if (this.animal.isInWater() || this.animal.getLastHurtByMob() != null || this.currentPhase != Phase.AWAKE || this.animal.isVehicle()) {
             return false;
         }
-        
+
         if (this.animal instanceof net.minecraft.world.entity.TamableAnimal tamable && tamable.isTame()) {
             return false;
         }
@@ -209,7 +209,7 @@ public class AnimalSleepGoal extends Goal {
 
             case SLEEPING_HOLD:
                 if (this.animal.isBaby()) {
-                    // Baby wakes up if adult is no longer sleeping
+
                 } else if (this.dailySleepTicksLeft <= 0) {
                     this.transitionTo(Phase.WAKE_UP);
                 }
@@ -292,3 +292,4 @@ public class AnimalSleepGoal extends Goal {
         return false;
     }
 }
+

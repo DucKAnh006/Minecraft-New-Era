@@ -28,3 +28,4 @@ public class NECamelSaddleLayer extends RenderLayer<NECamelRenderState, EntityMo
         }
     }
 }
+

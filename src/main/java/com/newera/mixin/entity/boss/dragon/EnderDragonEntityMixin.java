@@ -14,7 +14,7 @@ public abstract class EnderDragonEntityMixin {
     private void onHandleEntityEventEnderDragon(byte id, CallbackInfo ci) {
         if ((Object) this instanceof EnderDragon dragon) {
             INEEnderDragonAnimation anim = (INEEnderDragonAnimation) dragon;
-            
+
             if (id >= 60 && id <= 85) {
                 anim.triggerClientAction(id);
                 ci.cancel();
@@ -22,3 +22,4 @@ public abstract class EnderDragonEntityMixin {
         }
     }
 }
+

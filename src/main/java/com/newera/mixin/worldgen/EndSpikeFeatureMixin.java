@@ -46,7 +46,6 @@ public abstract class EndSpikeFeatureMixin {
         int originX = cx - 11;
         int originZ = cz - 11;
 
-        // 1. Kiểm tra template cột đơn tùy chỉnh: end_pilar.nbt (kích thước 23x48x23)
         Identifier singlePilarId = Identifier.fromNamespaceAndPath("newera", "end_pilar");
         Optional<StructureTemplate> optSingle = templateManager.get(singlePilarId);
         if (optSingle.isEmpty()) {
@@ -57,8 +56,6 @@ public abstract class EndSpikeFeatureMixin {
         if (optSingle.isPresent()) {
             StructureTemplate template = optSingle.get();
 
-            // Khớp địa hình: lấy điểm cao nhất của mặt đất trong phạm vi chân cột làm chuẩn baseY
-            // Khóa cố định độ cao qua EndPillarHeightManager để không bao giờ bị hạ độ cao khi hồi sinh rồng
             int baseY = EndPillarHeightManager.getOrComputeBaseY(serverLevel, cx, cz, () -> {
                 int highestY = -1;
                 BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
@@ -89,7 +86,6 @@ public abstract class EndSpikeFeatureMixin {
                 .setIgnoreEntities(false)
                 .setKnownShape(true);
 
-            // Bỏ qua không khí ngoài bán kính cột (11.45 block) để không khoét lẹm vào sườn đảo End
             settings.addProcessor(new StructureProcessor() {
                 @Override
                 public StructureTemplate.StructureBlockInfo processBlock(
@@ -114,10 +110,8 @@ public abstract class EndSpikeFeatureMixin {
                 }
             });
 
-            // Đặt cấu trúc cột End tùy chỉnh
             template.placeInWorld(level, pos, pos, settings, random, 2);
 
-            // Kéo móng chạm đất: chỗ nào còn thiếu thì lấy block dưới cùng kéo thẳng xuống chạm đất mới thôi
             for (int x = 0; x < 23; x++) {
                 for (int z = 0; z < 23; z++) {
                     double dx = x - 11.0;
@@ -143,7 +137,7 @@ public abstract class EndSpikeFeatureMixin {
                                     level.setBlock(fillPos, fillState, 2);
                                     fillPos.move(Direction.DOWN);
                                 } else {
-                                    break; // Đã chạm mặt đất tự nhiên vững chắc!
+                                    break;
                                 }
                             }
                         }
@@ -151,11 +145,9 @@ public abstract class EndSpikeFeatureMixin {
                 }
             }
 
-            // Đảm bảo khối Bedrock đỉnh cột luôn tồn tại tại tọa độ (cx, baseY + 41, cz)
             BlockPos bedrockPos = new BlockPos(cx, baseY + 41, cz);
             level.setBlock(bedrockPos, Blocks.BEDROCK.defaultBlockState(), 2);
 
-            // Đặt pha lê End trên khối Bedrock tại (cx + 0.5, baseY + 42, cz + 0.5)
             double crystalX = cx + 0.5D;
             double crystalY = baseY + 42.0D;
             double crystalZ = cz + 0.5D;
@@ -169,7 +161,7 @@ public abstract class EndSpikeFeatureMixin {
                     crystal.setBeamTarget(this.crystalBeamTarget.orElse(null));
                     crystal.setPermanentlyInvulnerable(this.crystalInvulnerable);
                     crystal.snapTo(crystalX, crystalY, crystalZ, random.nextFloat() * 360.0F, 0.0F);
-                    // Đặt trạng thái ban đầu là kén đóng Phase 1 (STATE_SLEEP)
+
                     ((INEEndCrystalAnimation) crystal).setCrystalState(INEEndCrystalAnimation.STATE_SLEEP);
                     level.addFreshEntity(crystal);
                 }
@@ -184,7 +176,6 @@ public abstract class EndSpikeFeatureMixin {
             return;
         }
 
-        // 2. Dự phòng: Template 2 phần end_pilar_0 và end_pilar_1
         Identifier pilar0Id = Identifier.fromNamespaceAndPath("newera", "end_pilar_0");
         Identifier pilar1Id = Identifier.fromNamespaceAndPath("newera", "end_pilar_1");
 
@@ -297,3 +288,4 @@ public abstract class EndSpikeFeatureMixin {
         }
     }
 }
+

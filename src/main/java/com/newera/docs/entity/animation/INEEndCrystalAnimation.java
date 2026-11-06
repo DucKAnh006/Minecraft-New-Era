@@ -16,3 +16,4 @@ public interface INEEndCrystalAnimation {
     void setCrystalState(int state);
     void triggerWakeUp();
 }
+

@@ -10,3 +10,4 @@ public class NEEnderCrystalRenderState extends EndCrystalRenderState {
     public final AnimationState idleAnimationState = new AnimationState();
     public int crystalState = 0;
 }
+

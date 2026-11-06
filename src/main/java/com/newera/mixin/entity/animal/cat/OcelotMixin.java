@@ -26,7 +26,7 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
 
     @Unique
     private static final EntityDataAccessor<Byte> NEWERA_BODY_STATE = SynchedEntityData.defineId(Ocelot.class, EntityDataSerializers.BYTE);
-    
+
     @Unique
     private int busyTimer = 0;
 
@@ -41,11 +41,11 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
     @Unique public final AnimationState sleepingHoldAnimationState = new AnimationState();
     @Unique public final AnimationState wakeUpAnimationState = new AnimationState();
     @Unique public final AnimationState standAnimationState = new AnimationState();
-    
+
     @Unique public final AnimationState stretchAnimationState = new AnimationState();
     @Unique public final AnimationState stalkingAnimationState = new AnimationState();
     @Unique public final AnimationState pounceAnimationState = new AnimationState();
-    
+
     @Unique public final AnimationState idleAnimationState = new AnimationState();
 
     @Unique
@@ -57,7 +57,7 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initSpeed(EntityType<? extends Ocelot> type, Level level, CallbackInfo ci) {
-        this.animalSpeed = new AnimalSpeed(this, 0.30D, 0.30D, 20);
+        this.animalSpeed = new AnimalSpeed(this, 0.30D, 0.38D, 18);
     }
 
     @Inject(method = "defineSynchedData", at = @At("TAIL"))
@@ -76,10 +76,10 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
     @Inject(method = "registerGoals", at = @At("TAIL"))
     protected void addCustomGoals(CallbackInfo ci) {
         this.goalSelector.addGoal(5, new net.minecraft.world.entity.ai.goal.FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(8, new AnimalSitGoal(this, true, 4000, 2000)); // Priority 8
-        this.goalSelector.addGoal(9, new CatSleepGoal(this, 12000, 2000)); // Priority 9
-        this.goalSelector.addGoal(10, new CatStretchGoal(this)); // Priority 10
-        
+        this.goalSelector.addGoal(8, new AnimalSitGoal(this, true, 4000, 2000));
+        this.goalSelector.addGoal(9, new CatSleepGoal(this, 12000, 2000));
+        this.goalSelector.addGoal(10, new CatStretchGoal(this));
+
         this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, Rabbit.class, false));
         this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, Chicken.class, false));
         this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, Parrot.class, false));
@@ -90,7 +90,7 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
     public void setBodyState(byte state) {
         byte oldState = this.getBodyState();
         this.entityData.set(NEWERA_BODY_STATE, state);
-        // CAT_SIT: ~20 ticks, CAT_SLEEP: ~10 ticks, CAT_WAKE_UP: ~10 ticks, CAT_STAND_UP: ~20 ticks
+
         if (state == 1) {
             this.busyTimer = 20;
         } else if (state == 3 || state == 5) {
@@ -118,7 +118,7 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
         super.tick();
         byte state = this.getBodyState();
 
-        if (state > 0 && state != 8) { // Don't lock body during stalk (8)
+        if (state > 0 && state != 8) {
             if (!this.isBodyLocked) {
                 this.lockedBodyYaw = this.yBodyRot;
                 this.isBodyLocked = true;
@@ -131,7 +131,7 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
 
         if (this.level().isClientSide()) {
             this.lookWeightO = this.lookWeight;
-            float targetWeight = (state >= 3 && state <= 5) ? 0.0F : 1.0F; // 3,4,5 = sleep phases
+            float targetWeight = (state >= 3 && state <= 5) ? 0.0F : 1.0F;
             this.lookWeight = Mth.approach(this.lookWeight, targetWeight, 0.1F);
             this.setupAnimationStates();
         } else {
@@ -150,22 +150,22 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
                 } else {
                     this.getNavigation().stop();
 
-                    if (state == 5) { // Wake up -> Stand
+                    if (state == 5) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 6);
                         }
-                    } else if (state == 6) { // Stand up -> Normal
+                    } else if (state == 6) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 0);
                         }
-                    } else if (state == 1) { // Sit -> Sitting Hold
+                    } else if (state == 1) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 2);
                         }
-                    } else if (state == 3) { // Sleep -> Sleeping Hold
+                    } else if (state == 3) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 4);
@@ -176,12 +176,13 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
         }
 
         if (!this.level().isClientSide() && this.animalSpeed != null) {
+            boolean isPanicking = this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0;
             if (state > 0 && state != 11 && state != 8) {
-                this.animalSpeed.stop();
+                this.animalSpeed.forceStop();
+            } else if (isPanicking) {
+                this.animalSpeed.run();
             } else if (this.getNavigation().isDone() || this.getNavigation().getPath() == null) {
                 this.animalSpeed.stop();
-            } else if (this.getLastHurtByMob() != null || this.isOnFire()) {
-                this.animalSpeed.run();
             } else {
                 this.animalSpeed.walk();
             }
@@ -220,17 +221,17 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
 
         if (state == 6) this.standAnimationState.startIfStopped(this.tickCount);
         else this.standAnimationState.stop();
-        
+
         if (state == 7) this.stretchAnimationState.startIfStopped(this.tickCount);
         else this.stretchAnimationState.stop();
-        
+
         if (state == 8) this.stalkingAnimationState.startIfStopped(this.tickCount);
         else this.stalkingAnimationState.stop();
-        
+
         if (state == 11) this.pounceAnimationState.startIfStopped(this.tickCount);
         else this.pounceAnimationState.stop();
     }
-    
+
     @Override public AnimationState getSitAnimationState() { return this.sitAnimationState; }
     @Override public AnimationState getSittingHoldAnimationState() { return this.sittingHoldAnimationState; }
     @Override public AnimationState getSleepAnimationState() { return this.sleepAnimationState; }
@@ -242,3 +243,4 @@ public abstract class OcelotMixin extends Animal implements INECatAnimation, INE
     @Override public AnimationState getPounceAnimationState() { return this.pounceAnimationState; }
     @Override public AnimationState getIdleAnimationState() { return this.idleAnimationState; }
 }
+

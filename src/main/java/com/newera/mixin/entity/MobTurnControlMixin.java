@@ -20,9 +20,12 @@ public abstract class MobTurnControlMixin {
         if (this.mob instanceof INEAnimal) {
             double currentSpeed = this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
             if (currentSpeed > 0.22D) {
-                return Math.min(maxTurn, 35.0F); // 35.0F provides smooth turning while being fast enough to hit path nodes and prevent circular walking
+                boolean isPanicking = this.mob.getLastHurtByMob() != null || this.mob.isOnFire() || this.mob.hurtTime > 0;
+                float limit = isPanicking ? 55.0F : 35.0F;
+                return Math.min(maxTurn, limit);
             }
         }
         return maxTurn;
     }
 }
+

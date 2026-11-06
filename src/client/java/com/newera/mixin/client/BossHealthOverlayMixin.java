@@ -54,7 +54,6 @@ public abstract class BossHealthOverlayMixin {
             int barX = (screenWidth - BAR_WIDTH) / 2;
             int barY = y;
 
-            // 1. Render custom empty bar background
             extractor.blit(
                     RenderPipelines.GUI_TEXTURED,
                     DRAGON_BAR_EMPTY,
@@ -68,11 +67,9 @@ public abstract class BossHealthOverlayMixin {
                     TEX_HEIGHT
             );
 
-            // 2. Calculate fill width based on boss health progress (0.0 to 1.0)
             int fillWidth = Mth.lerpDiscrete(bossEvent.getProgress(), 0, BAR_WIDTH);
             fillWidth = Mth.clamp(fillWidth, 0, BAR_WIDTH);
 
-            // 3. Render filled progress bar if greater than 0
             if (fillWidth > 0) {
                 extractor.blit(
                         RenderPipelines.GUI_TEXTURED,
@@ -88,8 +85,8 @@ public abstract class BossHealthOverlayMixin {
                 );
             }
 
-            // Cancel vanilla bar rendering
             ci.cancel();
         }
     }
 }
+

@@ -79,7 +79,7 @@ public abstract class AbstractCowMixin extends Animal implements INECowAnimation
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initSpeed(EntityType<? extends Animal> type, Level level, CallbackInfo ci) {
-        this.animalSpeed = new AnimalSpeed(this, 0.20D, 0.25D, 20);
+        this.animalSpeed = new AnimalSpeed(this, 0.20D, 0.28D, 18);
     }
 
     @Override
@@ -146,7 +146,7 @@ public abstract class AbstractCowMixin extends Animal implements INECowAnimation
             this.entityTagssetupAnimationStates();
         } else {
             if (state > 0) {
-                if (this.getLastHurtByMob() != null || this.isOnFire()) {
+                if (this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0) {
                     this.setBodyState((byte) 0);
                     this.busyTimer = 0;
                 } else {
@@ -163,19 +163,19 @@ public abstract class AbstractCowMixin extends Animal implements INECowAnimation
         }
 
         if (!this.level().isClientSide() && this.animalSpeed != null) {
+            boolean isPanicking = this.getLastHurtByMob() != null || this.isOnFire() || this.hurtTime > 0;
             if (state > 0) {
-                this.animalSpeed.stop();
+                this.animalSpeed.forceStop();
+            } else if (isPanicking) {
+                this.animalSpeed.run();
             } else if (this.getNavigation().isDone() || this.getNavigation().getPath() == null) {
                 this.animalSpeed.stop();
-            } else if (this.getLastHurtByMob() != null || this.isOnFire()) {
-                this.animalSpeed.run();
             } else {
                 this.animalSpeed.walk();
             }
             this.animalSpeed.tick();
         }
     }
-
 
     @Unique
     private void entityTagssetupAnimationStates() {
@@ -254,3 +254,4 @@ public abstract class AbstractCowMixin extends Animal implements INECowAnimation
     @Override
     public AnimationState getIdleAnimationState() { return this.entityTagsidleAnimationState; }
 }
+

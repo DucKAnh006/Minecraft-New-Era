@@ -17,10 +17,11 @@ public interface INECatAnimation {
     AnimationState getSleepingHoldAnimationState();
     AnimationState getWakeUpAnimationState();
     AnimationState getStandAnimationState();
-    
+
     AnimationState getStretchAnimationState();
     AnimationState getStalkingAnimationState();
     AnimationState getPounceAnimationState();
-    
+
     AnimationState getIdleAnimationState();
 }
+

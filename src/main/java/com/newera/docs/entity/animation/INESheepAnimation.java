@@ -18,12 +18,12 @@ public interface INESheepAnimation extends INEAnimal {
 
     AnimationState getGrazingAnimationState();
 
-
     AnimationState getIdleAnimationState();
-    
+
     net.minecraft.resources.ResourceKey<com.newera.docs.entity.variant.NESheepVariant> getVariantKey();
 
     void setVariantKey(net.minecraft.resources.ResourceKey<com.newera.docs.entity.variant.NESheepVariant> variantKey);
 
     net.minecraft.core.Holder<NESheepVariant> getVariant();
 }
+

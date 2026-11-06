@@ -204,3 +204,4 @@ public abstract class CamelMixin extends Animal implements INECamelAnimation {
     @Override
     public AnimationState getDashAnimationState() { return this.entityTagsdashAnimationState; }
 }
+

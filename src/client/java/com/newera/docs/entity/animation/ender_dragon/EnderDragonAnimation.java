@@ -33,3 +33,4 @@ public class EnderDragonAnimation {
 	public static final AnimationDefinition DRAGON_DEATH = DragonPhase3.DRAGON_DEATH;
 
 }
+

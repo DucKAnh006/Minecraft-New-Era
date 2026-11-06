@@ -110,3 +110,4 @@ public class NEHorseModel extends NEHorseAbstractModel {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 }
+

@@ -10,7 +10,7 @@ public interface INEParrotAnimation {
 
     AnimationState getFlyFlapAnimationState();
     AnimationState getGlideFlapAnimationState();
-    
+
     AnimationState getWalkAnimationState();
     AnimationState getSitAnimationState();
     AnimationState getSittingAnimationState();
@@ -20,3 +20,4 @@ public interface INEParrotAnimation {
     AnimationState getWakeUpAnimationState();
     AnimationState getDanceAnimationState();
 }
+

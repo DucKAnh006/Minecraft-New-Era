@@ -40,7 +40,7 @@ public class DragonAIController {
 
     public static void tick(EnderDragon dragon, INEEnderDragonAnimation mixin) {
         int stage = mixin.getFightStage();
-        
+
         if (stage != lastFightStage) {
             onFightStageChanged(dragon, mixin, stage);
         }
@@ -68,10 +68,10 @@ public class DragonAIController {
                 break;
         }
     }
-    
+
     public static void postTick(EnderDragon dragon, INEEnderDragonAnimation mixin) {
         int stage = mixin.getFightStage();
-        
+
         switch (stage) {
             case 0:
                 PHASE_0.postTick(dragon, mixin);
@@ -88,3 +88,4 @@ public class DragonAIController {
         }
     }
 }
+

@@ -671,3 +671,4 @@ public class HorseAnimation {
         .build();
 
 }
+

@@ -18,3 +18,4 @@ public class NESounds {
         NewEraMod.LOGGER.info("Registering Sounds for " + NewEraMod.MOD_ID);
     }
 }
+

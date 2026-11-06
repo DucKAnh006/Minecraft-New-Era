@@ -31,14 +31,13 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
     @Unique private boolean wasDancing = false;
     @Unique private boolean wasSleeping = false;
     @Unique public int flapTimer = 0;
-    
+
     @Unique public final AnimationState idleGroundAnimationState = new AnimationState();
     @Unique public final AnimationState groundToFlyAnimationState = new AnimationState();
     @Unique public final AnimationState flyToGroundAnimationState = new AnimationState();
     @Unique public final AnimationState idleFlyAnimationState = new AnimationState();
     @Unique public final AnimationState flyFlapAnimationState = new AnimationState();
     @Unique public final AnimationState glideFlapAnimationState = new AnimationState();
-    
 
     @Unique public final AnimationState walkAnimationState = new AnimationState();
     @Unique public final AnimationState sitAnimationState = new AnimationState();
@@ -93,17 +92,17 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
         Parrot parrot = (Parrot)(Object)this;
         byte oldState = this.getBodyState();
         if (oldState == state) return;
-        
+
         parrot.getEntityData().set(NEWERA_BODY_STATE, state);
-        
+
         if (state == 1 || state == 3 || state == 5 || state == 6) {
-            this.busyTimer = 5; 
-        } else if (state == 7 || state == 9 || state == 11) { 
-            this.busyTimer = 10; 
+            this.busyTimer = 5;
+        } else if (state == 7 || state == 9 || state == 11) {
+            this.busyTimer = 10;
         } else if (state == 13) {
             this.busyTimer = 15;
         }
-        
+
         if (oldState != state) {
             parrot.refreshDimensions();
         }
@@ -119,11 +118,11 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
     private void setupAnimationStates() {
         Parrot parrot = (Parrot)(Object)this;
         byte state = this.getBodyState();
-        
+
         if (parrot.level().isClientSide() && parrot.isPartyParrot()) {
             state = 10;
         }
-        
+
         if (state == 0) {
             this.idleGroundAnimationState.startIfStopped(parrot.tickCount);
             this.groundToFlyAnimationState.stop();
@@ -139,7 +138,7 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
             this.sleepingAnimationState.stop();
             this.wakeUpAnimationState.stop();
             this.danceAnimationState.stop();
-            
+
             if (parrot.getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
                 this.walkAnimationState.startIfStopped(parrot.tickCount);
             } else {
@@ -152,19 +151,19 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
             this.flyToGroundAnimationState.stop();
             this.walkAnimationState.stop();
             this.glideFlapAnimationState.stop();
-            
+
             this.flyFlapAnimationState.startIfStopped(parrot.tickCount);
             this.danceAnimationState.stop();
-            
+
         } else if (state == 8) {
             this.idleGroundAnimationState.stop();
             this.groundToFlyAnimationState.stop();
             this.flyToGroundAnimationState.stop();
             this.walkAnimationState.stop();
             this.danceAnimationState.stop();
-            
+
             this.idleFlyAnimationState.startIfStopped(parrot.tickCount);
-            
+
             if (this.flapTimer > 0) {
                 this.flyFlapAnimationState.startIfStopped(parrot.tickCount);
                 this.glideFlapAnimationState.stop();
@@ -172,7 +171,7 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
                 this.flyFlapAnimationState.stop();
                 this.glideFlapAnimationState.startIfStopped(parrot.tickCount);
             }
-            
+
         } else if (state == 9) {
             this.idleGroundAnimationState.stop();
             this.groundToFlyAnimationState.stop();
@@ -180,10 +179,10 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
             this.idleFlyAnimationState.startIfStopped(parrot.tickCount);
             this.walkAnimationState.stop();
             this.glideFlapAnimationState.stop();
-            
+
             this.flyFlapAnimationState.startIfStopped(parrot.tickCount);
             this.danceAnimationState.stop();
-            
+
         } else if (state == 1 || state == 2 || state == 6) {
             this.idleGroundAnimationState.stop();
             this.walkAnimationState.stop();
@@ -223,16 +222,16 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
     public void aiStepInject(CallbackInfo ci) {
         byte state = this.getBodyState();
         Parrot parrot = (Parrot)(Object)this;
-        
+
         if (parrot.level().isClientSide()) {
             this.setupAnimationStates();
-            
+
         } else {
             boolean isSitting = parrot.isOrderedToSit() || parrot.isInSittingPose();
             boolean isDancing = parrot.isPartyParrot();
             boolean isSleeping = false;
             boolean isOnGround = parrot.onGround();
-            
+
             if (parrot.isTame()) {
                 net.minecraft.world.entity.LivingEntity owner = parrot.getOwner();
                 if (owner instanceof net.minecraft.world.entity.player.Player player) {
@@ -241,7 +240,7 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
             } else if (parrot.level().isDarkOutside() && state != 8 && state != 12 && !isDancing) {
                 isSleeping = true;
             }
-            
+
             boolean sittingChanged = isSitting != this.wasInSittingPose;
             boolean dancingChanged = isDancing != this.wasDancing;
             boolean sleepingChanged = isSleeping != this.wasSleeping;
@@ -261,15 +260,15 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
             } else if (isDancing) {
                 if (state == 0) this.setBodyState((byte) 10);
             }
-            
+
             if (this.flapTimer > 0) {
                 this.flapTimer--;
             }
-            
+
             if (!isSitting && !isSleeping && !isDancing) {
                 if (parrot.onGround()) {
                     if (state == 8) {
-                        this.setBodyState((byte) 9); // FLY -> FLY_TO_GROUND
+                        this.setBodyState((byte) 9);
                         this.busyTimer = 4;
                     } else if (state == 0) {
                         boolean wantsToFly = false;
@@ -279,18 +278,18 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
                         } else if (parrot.getTarget() != null) {
                             targetPos = parrot.getTarget().blockPosition();
                         }
-                        
+
                         if (targetPos != null && targetPos.getY() > parrot.getY()) {
                             wantsToFly = true;
                         } else if (parrot.getDeltaMovement().y > 0.1) {
                             wantsToFly = true;
                         }
-                        
+
                         if (wantsToFly) {
                             this.setBodyState((byte) 7);
-                            this.flapTimer = 60; // 3 seconds flap
-                            this.busyTimer = 4; // Add delay for smooth animation
-                            
+                            this.flapTimer = 60;
+                            this.busyTimer = 4;
+
                             double jumpX = 0, jumpZ = 0;
                             if (targetPos != null) {
                                 Vec3 dir = new Vec3(targetPos.getX() + 0.5, parrot.getY(), targetPos.getZ() + 0.5).subtract(parrot.position());
@@ -305,18 +304,18 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
                             parrot.syncVelocity = true;
                         }
                     }
-                } else { // In Air
+                } else {
                     if (state == 0 && parrot.getDeltaMovement().y < 0.0) {
-                        this.setBodyState((byte) 8); // Chuyển sang bay ngay khi bắt đầu rơi
+                        this.setBodyState((byte) 8);
                         this.flapTimer = 60;
                     }
                 }
             }
-            
+
             this.wasInSittingPose = isSitting;
             this.wasDancing = isDancing;
             this.wasSleeping = isSleeping;
-            
+
             state = this.getBodyState();
             if (state > 0 && state != 2 && state != 4 && state != 8 && state != 12 && state != 10) {
                 if (parrot.hurtTime > 0 || parrot.isOnFire()) {
@@ -340,8 +339,7 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
                     }
                 }
             }
-            
-            // Adjust flying speed dynamically based on state
+
             if (state == 8 || state == 7 || state == 9) {
                 parrot.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FLYING_SPEED).setBaseValue(1.5D);
             } else {
@@ -349,9 +347,7 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
             }
         }
     }
-    
 
-    
     @Override public AnimationState getIdleGroundAnimationState() { return this.idleGroundAnimationState; }
     @Override public AnimationState getGroundToFlyAnimationState() { return this.groundToFlyAnimationState; }
     @Override public AnimationState getFlyToGroundAnimationState() { return this.flyToGroundAnimationState; }
@@ -372,10 +368,10 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
     public void travel(Vec3 travelVector) {
         byte state = this.getBodyState();
         Parrot parrot = (Parrot)(Object)this;
-        
+
         super.travel(travelVector);
-        
-        if (state == 8) { 
+
+        if (state == 8) {
             boolean nearOwner = false;
             boolean followingOwner = false;
             if (parrot.isTame() && parrot.getOwner() != null) {
@@ -386,39 +382,38 @@ public abstract class ParrotMixin extends ShoulderRidingEntity implements INEPar
                     followingOwner = true;
                 }
             }
-            
-            // Hiệu ứng lượn vòng: Nếu không đang bay theo chủ, vẹt sẽ lượn theo vòng tròn lớn
+
             if (!followingOwner) {
-                parrot.setYRot(parrot.getYRot() + 2.5F); // Xoay 2.5 độ mỗi tick để tạo quỹ đạo vòng tròn
+                parrot.setYRot(parrot.getYRot() + 2.5F);
                 parrot.yBodyRot = parrot.getYRot();
-                
-                // Ép bay lượn về phía trước để không bị đứng im
+
                 Vec3 forward = Vec3.directionFromRotation(0, parrot.getYRot()).normalize().scale(0.2);
                 Vec3 delta = parrot.getDeltaMovement();
-                double newY = Math.max(delta.y, -0.025D); // Rơi rất chậm khi lượn
+                double newY = Math.max(delta.y, -0.025D);
                 parrot.setDeltaMovement(forward.x, newY, forward.z);
             } else {
-                // Nếu đang bay theo chủ, để AI tự điều khiển hướng ngang để tránh bị overshoot (quay vòng vòng tại chỗ)
+
                 Vec3 delta = parrot.getDeltaMovement();
                 double newY;
                 if (nearOwner) {
-                    newY = delta.y - 0.05D; // Rơi nhanh hơn khi gần chủ để hạ cánh
+                    newY = delta.y - 0.05D;
                 } else {
-                    newY = Math.max(delta.y, -0.025D); // Rơi chậm
+                    newY = Math.max(delta.y, -0.025D);
                 }
                 parrot.setDeltaMovement(delta.x, newY, delta.z);
             }
-            
+
         } else if (state == 7 || state == 9) {
-            // Chuyển trạng thái: Không ép tiến tới để tránh trượt đất, nhưng vẫn rơi chậm
+
             Vec3 delta = parrot.getDeltaMovement();
             double newY = Math.max(delta.y, -0.025D);
             parrot.setDeltaMovement(delta.x, newY, delta.z);
-            
+
         } else if (state == 1 || state == 6 || (state >= 3 && state <= 5)) {
-            // Chuyển trạng thái ngồi/đứng hoặc đang ngủ: Không cho phép di chuyển ngang hoặc bay lên
+
             Vec3 delta = parrot.getDeltaMovement();
             parrot.setDeltaMovement(0, Math.min(delta.y, 0), 0);
         }
     }
 }
+

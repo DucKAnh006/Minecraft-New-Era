@@ -24,3 +24,4 @@ public class NEPigRenderState extends LivingEntityRenderState {
     public final AnimationState grazingAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
 }
+

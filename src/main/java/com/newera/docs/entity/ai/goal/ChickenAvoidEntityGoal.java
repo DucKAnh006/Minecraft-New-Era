@@ -34,3 +34,4 @@ public class ChickenAvoidEntityGoal extends AvoidEntityGoal<LivingEntity> {
     }
 
 }
+

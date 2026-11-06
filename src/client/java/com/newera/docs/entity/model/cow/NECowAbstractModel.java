@@ -91,7 +91,6 @@ public abstract class NECowAbstractModel extends EntityModel<NECowRenderState> {
             this.head.yRot = 0;
         }
 
-
         if (isMovingAllowed) {
             this.walkAnimation.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, WALK_ANIMATION_SPEED, WALK_ANIMATION_SCALE_FACTOR);
         }

@@ -30,12 +30,12 @@ public class NEWolfRenderer extends MobRenderer<Wolf, NEWolfRenderState, EntityM
             new NEWolfModel(context.bakeLayer(NEModelLayers.NE_WOLF)),
             new NEWolfBabyModel(context.bakeLayer(NEModelLayers.NE_WOLF_BABY))
         );
-        
-        this.addLayer(new NEWolfArmorLayer(this, 
+
+        this.addLayer(new NEWolfArmorLayer(this,
             new NEWolfModel(context.bakeLayer(NEModelLayers.NE_WOLF_ARMOR)),
             new NEWolfBabyModel(context.bakeLayer(NEModelLayers.NE_WOLF_ARMOR))
         ));
-        
+
         this.addLayer(new NEWolfCollarLayer(this));
     }
 
@@ -53,7 +53,7 @@ public class NEWolfRenderer extends MobRenderer<Wolf, NEWolfRenderState, EntityM
         state.tailAngle = entity.getTailAngle();
         state.isTame = entity.isTame();
         state.collarColor = entity.getCollarColor();
-        
+
         state.isAngry = entity.isAngry();
         try {
             boolean foundHolder = false;
@@ -118,3 +118,4 @@ public class NEWolfRenderer extends MobRenderer<Wolf, NEWolfRenderState, EntityM
         return id;
     }
 }
+

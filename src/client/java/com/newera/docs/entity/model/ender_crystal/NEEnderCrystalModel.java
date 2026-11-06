@@ -125,3 +125,4 @@ public class NEEnderCrystalModel extends EntityModel<NEEnderCrystalRenderState> 
 		}
 	}
 }
+

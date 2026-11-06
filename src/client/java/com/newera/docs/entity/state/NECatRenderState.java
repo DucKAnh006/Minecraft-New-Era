@@ -18,10 +18,11 @@ public class NECatRenderState extends LivingEntityRenderState {
     public final AnimationState sleepingHoldAnimationState = new AnimationState();
     public final AnimationState wakeUpAnimationState = new AnimationState();
     public final AnimationState standAnimationState = new AnimationState();
-    
+
     public final AnimationState stretchAnimationState = new AnimationState();
     public final AnimationState stalkingAnimationState = new AnimationState();
     public final AnimationState pounceAnimationState = new AnimationState();
-    
+
     public final AnimationState idleAnimationState = new AnimationState();
 }
+

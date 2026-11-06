@@ -82,7 +82,7 @@ public abstract class NEParrotAbstractModel extends EntityModel<NEParrotRenderSt
     public void setupAnim(NEParrotRenderState state) {
         super.setupAnim(state);
         this.rootPart.getAllParts().forEach(ModelPart::resetPose);
-        
+
         boolean isMovingAllowed = !state.sitAnimationState.isStarted()
                 && !state.sittingAnimationState.isStarted()
                 && !state.sleepAnimationState.isStarted()
@@ -122,11 +122,11 @@ public abstract class NEParrotAbstractModel extends EntityModel<NEParrotRenderSt
         this.sleepAnimation.apply(state.sleepAnimationState, state.ageInTicks);
         this.sleepingAnimation.apply(state.sleepingAnimationState, state.ageInTicks);
         this.wakeUpAnimation.apply(state.wakeUpAnimationState, state.ageInTicks);
-        
+
         this.danceAnimation.apply(state.danceAnimationState, state.ageInTicks);
 
-        // Apply transition animations LAST to override standard flaps if they overlap
         this.groundToFlyAnimation.apply(state.groundToFlyAnimationState, state.ageInTicks);
         this.flyToGroundAnimation.apply(state.flyToGroundAnimationState, state.ageInTicks);
     }
 }
+

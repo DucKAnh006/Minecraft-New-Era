@@ -29,47 +29,34 @@ public class DragonPhase2 implements IDragonPhase {
 
     public static DragonPhase2 instance;
 
-    // Common state
     private Player lockedTarget = null;
     private Vec3 currentFlyTarget = null;
     private double flySpeed = 0.85;
 
-    // Circling parameters (Radius 72.0: outside the 48.3-radius pillars!)
     public static final double CIRCLE_RADIUS = 72.0;
     private int circlingTimer = 0;
 
-    // Attack state machine
-    // 0 = CIRCLING / ROAMING
-    // 1 = FIREBALL_BREATH (Stage 2A: DRAGON_FLY_BREATH, byte 77)
-    // 2 = LONG_BREATH_SWEEP (Stage 2A: DRAGON_FLY_LONG_BREATH, byte 78)
-    // 3 = HOVER_BARRAGE (Stage 2B: DRAGON_HOVER_BREATH, byte 76)
-    // 4 = SWOOP_ATTACK (Stage 2B: contact knockup)
     private int currentAction = 0;
     private int actionTimer = 0;
 
-    // Stage 2A Cooldowns
-    private int fireballCooldown = 120; // 6 - 9 seconds
-    private int sweepCooldown = 400; // 20 - 30 seconds
+    private int fireballCooldown = 120;
+    private int sweepCooldown = 400;
 
-    // Stage 2B Cooldowns & State
-    private int barrageCooldown = 800; // 40 seconds
-    private int swoopCooldown = 400; // 20 seconds
+    private int barrageCooldown = 800;
+    private int swoopCooldown = 400;
     private boolean wasCrystalsAlive = true;
 
-    // Long breath sweep tracking
     private Vec3 sweepStartPos = null;
     private Vec3 sweepExitPos = null;
     private double sweepDistTotal = 1.0;
     private Vec3 lastCloudPos = null;
 
-    // Hover barrage tracking
-    private int hoverSubState = 0; // 0: APPROACH, 1: WAIT_BEFORE, 2: SHOT_CYCLE, 3: WAIT_AFTER
+    private int hoverSubState = 0;
     private int hoverSubTimer = 0;
     private int hoverShotsDone = 0;
     private Vec3 hoverAnchorPos = null;
 
-    // Swoop tracking
-    private int swoopSubState = 0; // 0: DIVE_CHARGE, 1: PULL_UP
+    private int swoopSubState = 0;
     private Vec3 swoopExitTarget = null;
 
     private boolean pendingPhaseExit = false;
@@ -89,13 +76,13 @@ public class DragonPhase2 implements IDragonPhase {
         this.sweepCooldown = 400;
         this.barrageCooldown = 600;
         this.pendingPhaseExit = false;
-        mixin.setForcedBasePose(0); // ON_AIR
+        mixin.setForcedBasePose(0);
         dragon.level().broadcastEntityEvent(dragon, (byte) 68);
         mixin.triggerClientAction((byte) 68);
     }
 
     public void requestPhaseExit(EnderDragon dragon, INEEnderDragonAnimation mixin) {
-        // If in a spitting action during its ~1 second window (shot started and about to/just spat fireball)
+
         if (currentAction == 3 && hoverSubState == 2 && hoverSubTimer >= 1 && hoverSubTimer <= 20) {
             pendingPhaseExit = true;
             return;
@@ -105,7 +92,6 @@ public class DragonPhase2 implements IDragonPhase {
             return;
         }
 
-        // Otherwise interrupt immediately!
         pendingPhaseExit = false;
         currentAction = 0;
         actionTimer = 0;
@@ -194,12 +180,10 @@ public class DragonPhase2 implements IDragonPhase {
             dragon.getPhaseManager().setPhase(EnderDragonPhase.HOVERING);
         }
 
-        // Periodic wing flap sound (except when stationary hovering in barrage)
         if (dragon.tickCount % 20 == 7 && !(currentAction == 3 && hoverSubState != 0)) {
             dragon.level().playSound(null, dragon.getX(), dragon.getY(), dragon.getZ(), ModSounds.ENDER_DRAGON_FLAP, SoundSource.HOSTILE, 5.0F, 1.0F);
         }
 
-        // Target acquisition
         if (lockedTarget == null || !lockedTarget.isAlive() || lockedTarget.level() != dragon.level() || lockedTarget.isCreative() || lockedTarget.isSpectator()) {
             lockedTarget = null;
             double nearestDistSq = 160.0 * 160.0;
@@ -216,10 +200,9 @@ public class DragonPhase2 implements IDragonPhase {
 
         boolean crystalsAlive = areCrystalsAlive(dragon);
 
-        // Immediate engagement when crystals are destroyed!
         if (wasCrystalsAlive && !crystalsAlive) {
             wasCrystalsAlive = false;
-            barrageCooldown = 40; // Attack right away within 2s!
+            barrageCooldown = 40;
             swoopCooldown = 200;
             currentAction = 0;
             actionTimer = 0;
@@ -235,13 +218,13 @@ public class DragonPhase2 implements IDragonPhase {
     }
 
     private void tickStage2A(EnderDragon dragon, INEEnderDragonAnimation mixin) {
-        mixin.setForcedBasePose(0); // ON_AIR - continuous flight
+        mixin.setForcedBasePose(0);
 
         if (currentAction == 0) {
-            // CIRCLING STATE: Radius 72.0, outside pillars, lookahead steering
+
             circlingTimer++;
             double currentAngle = Math.atan2(dragon.getZ(), dragon.getX());
-            // Counter-clockwise lookahead ~25 blocks ahead along circle
+
             double targetAngle = currentAngle + 0.35;
             double targetX = Math.cos(targetAngle) * CIRCLE_RADIUS;
             double targetZ = Math.sin(targetAngle) * CIRCLE_RADIUS;
@@ -252,8 +235,6 @@ public class DragonPhase2 implements IDragonPhase {
             if (fireballCooldown > 0) fireballCooldown--;
             if (sweepCooldown > 0) sweepCooldown--;
 
-            // Check Sweep Breath trigger (Skill 2A-2)
-            // Trigger when dragon is at a good approach distance to player (35 to 65 blocks)
             if (sweepCooldown <= 0 && lockedTarget != null) {
                 double distToPlayer = dragon.distanceTo(lockedTarget);
                 if (distToPlayer >= 30.0 && distToPlayer <= 70.0) {
@@ -264,24 +245,21 @@ public class DragonPhase2 implements IDragonPhase {
                         double fx = dx / len;
                         double fz = dz / len;
 
-                        // Exit point 40 blocks past the player
                         double exitX = lockedTarget.getX() + fx * 40.0;
                         double exitZ = lockedTarget.getZ() + fz * 40.0;
 
                         BlockPos pGround = getHighestGround(dragon.level(), lockedTarget.getX(), lockedTarget.getZ());
                         BlockPos eGround = getHighestGround(dragon.level(), exitX, exitZ);
 
-                        // Ensure player and sweep path are over solid ground! ("chỉ lm trên mặt đất th nhé")
                         if (pGround != null && pGround.getY() >= 50 && eGround != null && eGround.getY() >= 50) {
-                            currentAction = 2; // LONG_BREATH_SWEEP
+                            currentAction = 2;
                             actionTimer = 0;
                             sweepStartPos = dragon.position();
                             sweepExitPos = new Vec3(exitX, eGround.getY() + 3.0, exitZ);
                             sweepDistTotal = sweepStartPos.distanceTo(sweepExitPos);
                             lastCloudPos = null;
-                            sweepCooldown = 450 + dragon.getRandom().nextInt(200); // 22 - 32 seconds
+                            sweepCooldown = 450 + dragon.getRandom().nextInt(200);
 
-                            // Start animation immediately!
                             dragon.level().broadcastEntityEvent(dragon, (byte) 78);
                             mixin.triggerClientAction((byte) 78);
                             return;
@@ -290,13 +268,11 @@ public class DragonPhase2 implements IDragonPhase {
                 }
             }
 
-            // Check Fireball Breath trigger (Skill 2A-1)
             if (fireballCooldown <= 0 && lockedTarget != null && dragon.distanceTo(lockedTarget) <= 120.0) {
-                currentAction = 1; // FIREBALL_BREATH
+                currentAction = 1;
                 actionTimer = 0;
-                fireballCooldown = 130 + dragon.getRandom().nextInt(60); // 6.5 - 9.5 seconds
+                fireballCooldown = 130 + dragon.getRandom().nextInt(60);
 
-                // Start DRAGON_FLY_BREATH animation
                 dragon.level().broadcastEntityEvent(dragon, (byte) 77);
                 mixin.triggerClientAction((byte) 77);
             }
@@ -318,7 +294,6 @@ public class DragonPhase2 implements IDragonPhase {
         currentFlyTarget = new Vec3(targetX, waveY, targetZ);
         flySpeed = 0.85;
 
-        // At tick 12 (0.6s): Spit fireball and play sound
         if (actionTimer == 12 && !dragon.level().isClientSide()) {
             ServerLevel serverLevel = (ServerLevel) dragon.level();
             float yawRad = dragon.getYRot() * ((float)Math.PI / 180F);
@@ -373,7 +348,6 @@ public class DragonPhase2 implements IDragonPhase {
             currentFlyTarget = new Vec3(tx, ty, tz);
         }
 
-        // Continuous breath spitting for 3 seconds (from tick 10 to tick 70)
         if (actionTimer >= 10 && actionTimer <= 70 && !dragon.level().isClientSide()) {
             ServerLevel serverLevel = (ServerLevel) dragon.level();
             float yawRad = dragon.getYRot() * ((float)Math.PI / 180F);
@@ -440,8 +414,8 @@ public class DragonPhase2 implements IDragonPhase {
         if (fireballCooldown > 0) fireballCooldown--;
 
         if (currentAction == 0) {
-            // ROAMING FLIGHT: Outside pillars, smooth lookahead curve
-            mixin.setForcedBasePose(0); // ON_AIR
+
+            mixin.setForcedBasePose(0);
             circlingTimer++;
             double currentAngle = Math.atan2(dragon.getZ(), dragon.getX());
             double targetAngle = currentAngle + 0.30;
@@ -451,14 +425,12 @@ public class DragonPhase2 implements IDragonPhase {
             currentFlyTarget = new Vec3(targetX, waveY, targetZ);
             flySpeed = 0.85;
 
-            // Priority 1: Trigger Hover Breath Barrage (Skill 2B-1)
             if (barrageCooldown <= 0 && lockedTarget != null) {
-                currentAction = 3; // HOVER_BARRAGE
-                hoverSubState = 0; // APPROACH
+                currentAction = 3;
+                hoverSubState = 0;
                 hoverSubTimer = 0;
                 hoverShotsDone = 0;
 
-                // Anchor position: ~16 blocks away from player, elevated ~8 blocks above ground
                 double pAngle = Math.atan2(lockedTarget.getZ() - dragon.getZ(), lockedTarget.getX() - dragon.getX());
                 double ax = lockedTarget.getX() - Math.cos(pAngle) * 16.0;
                 double az = lockedTarget.getZ() - Math.sin(pAngle) * 16.0;
@@ -466,11 +438,10 @@ public class DragonPhase2 implements IDragonPhase {
                 double ay = (gPos != null) ? Math.max(lockedTarget.getY() + 8.0, gPos.getY() + 7.0) : lockedTarget.getY() + 8.0;
                 hoverAnchorPos = new Vec3(ax, ay, az);
 
-                barrageCooldown = 1200 + dragon.getRandom().nextInt(600); // 60 - 90 seconds
+                barrageCooldown = 1200 + dragon.getRandom().nextInt(600);
                 return;
             }
 
-            // Priority 2: Trigger Long Breath Sweep (Skill 2A-2 implemented in Stage 2B!)
             if (sweepCooldown <= 0 && lockedTarget != null) {
                 double distToPlayer = dragon.distanceTo(lockedTarget);
                 if (distToPlayer >= 30.0 && distToPlayer <= 70.0) {
@@ -488,13 +459,13 @@ public class DragonPhase2 implements IDragonPhase {
                         BlockPos eGround = getHighestGround(dragon.level(), exitX, exitZ);
 
                         if (pGround != null && pGround.getY() >= 50 && eGround != null && eGround.getY() >= 50) {
-                            currentAction = 2; // LONG_BREATH_SWEEP
+                            currentAction = 2;
                             actionTimer = 0;
                             sweepStartPos = dragon.position();
                             sweepExitPos = new Vec3(exitX, eGround.getY() + 3.0, exitZ);
                             sweepDistTotal = sweepStartPos.distanceTo(sweepExitPos);
                             lastCloudPos = null;
-                            sweepCooldown = 450 + dragon.getRandom().nextInt(200); // 22 - 32 seconds
+                            sweepCooldown = 450 + dragon.getRandom().nextInt(200);
 
                             dragon.level().broadcastEntityEvent(dragon, (byte) 78);
                             mixin.triggerClientAction((byte) 78);
@@ -504,21 +475,19 @@ public class DragonPhase2 implements IDragonPhase {
                 }
             }
 
-            // Priority 3: Trigger Swoop Knockup Attack (Skill 2B-2)
             if (swoopCooldown <= 0 && lockedTarget != null && dragon.distanceTo(lockedTarget) <= 120.0) {
-                currentAction = 4; // SWOOP_ATTACK
-                swoopSubState = 0; // DIVE_CHARGE
+                currentAction = 4;
+                swoopSubState = 0;
                 actionTimer = 0;
                 swoopExitTarget = null;
-                swoopCooldown = 320 + dragon.getRandom().nextInt(160); // 16 - 24 seconds
+                swoopCooldown = 320 + dragon.getRandom().nextInt(160);
                 return;
             }
 
-            // Priority 4: Trigger Fireball Breath while roaming (Skill 2A-1 style)
             if (fireballCooldown <= 0 && lockedTarget != null && dragon.distanceTo(lockedTarget) <= 120.0) {
-                currentAction = 1; // FIREBALL_BREATH
+                currentAction = 1;
                 actionTimer = 0;
-                fireballCooldown = 140 + dragon.getRandom().nextInt(60); // 7 - 10 seconds
+                fireballCooldown = 140 + dragon.getRandom().nextInt(60);
 
                 dragon.level().broadcastEntityEvent(dragon, (byte) 77);
                 mixin.triggerClientAction((byte) 77);
@@ -538,8 +507,8 @@ public class DragonPhase2 implements IDragonPhase {
         hoverSubTimer++;
 
         switch (hoverSubState) {
-            case 0: // APPROACH: Fly near player
-                mixin.setForcedBasePose(0); // ON_AIR
+            case 0:
+                mixin.setForcedBasePose(0);
                 flySpeed = 1.05;
                 if (lockedTarget != null) {
                     if (hoverAnchorPos == null) {
@@ -556,12 +525,12 @@ public class DragonPhase2 implements IDragonPhase {
                     double distToPlayer = dragon.distanceTo(lockedTarget);
 
                     if (distToAnchor <= 5.0 || (distToPlayer <= 20.0 && distToPlayer >= 8.0) || hoverSubTimer >= 100) {
-                        // Reached position: trigger DECELERATE (30 ticks = 1.5s)
+
                         dragon.level().broadcastEntityEvent(dragon, (byte) 65);
                         mixin.triggerClientAction((byte) 65);
-                        mixin.setForcedBasePose(1); // HOVER
+                        mixin.setForcedBasePose(1);
 
-                        hoverSubState = 1; // DECELERATING
+                        hoverSubState = 1;
                         hoverSubTimer = 0;
                         currentFlyTarget = null;
                         dragon.setDeltaMovement(Vec3.ZERO);
@@ -572,45 +541,43 @@ public class DragonPhase2 implements IDragonPhase {
                 }
                 break;
 
-            case 1: // DECELERATING: Wait 30 ticks for decelerate animation to complete
+            case 1:
                 currentFlyTarget = null;
                 dragon.setDeltaMovement(Vec3.ZERO);
 
                 if (hoverSubTimer >= 30) {
-                    // Decelerate complete -> transition to HOVER!
+
                     dragon.level().broadcastEntityEvent(dragon, (byte) 67);
                     mixin.triggerClientAction((byte) 67);
-                    mixin.setForcedBasePose(1); // HOVER
+                    mixin.setForcedBasePose(1);
 
-                    hoverSubState = 2; // WAIT_BEFORE_SHOTS (100 ticks = 5.0s)
+                    hoverSubState = 2;
                     hoverSubTimer = 0;
                 }
                 break;
 
-            case 2: // WAIT_BEFORE_SHOTS: Hover stationary for 5 seconds (100 ticks)
-                mixin.setForcedBasePose(1); // HOVER
+            case 2:
+                mixin.setForcedBasePose(1);
                 currentFlyTarget = null;
                 dragon.setDeltaMovement(Vec3.ZERO);
 
                 if (hoverSubTimer >= 100) {
-                    hoverSubState = 3; // SHOT_CYCLE
+                    hoverSubState = 3;
                     hoverSubTimer = 0;
                     hoverShotsDone = 0;
                 }
                 break;
 
-            case 3: // SHOT_CYCLE: Repeat 5 times, each 5 seconds (100 ticks) apart
-                mixin.setForcedBasePose(1); // HOVER
+            case 3:
+                mixin.setForcedBasePose(1);
                 currentFlyTarget = null;
                 dragon.setDeltaMovement(Vec3.ZERO);
 
-                // Start of a shot: tick 1 (DRAGON_HOVER_BREATH)
                 if (hoverSubTimer == 1) {
                     dragon.level().broadcastEntityEvent(dragon, (byte) 76);
                     mixin.triggerClientAction((byte) 76);
                 }
 
-                // Spit fireball at tick 12 (0.6s, matching DRAGON_BREATH timing)
                 if (hoverSubTimer == 12 && !dragon.level().isClientSide()) {
                     ServerLevel serverLevel = (ServerLevel) dragon.level();
                     float yawRad = dragon.getYRot() * ((float)Math.PI / 180F);
@@ -630,42 +597,40 @@ public class DragonPhase2 implements IDragonPhase {
                     serverLevel.sendParticles(PowerParticleOption.create(ParticleTypes.DRAGON_BREATH, 1.0F), mouthX, mouthY, mouthZ, 15, 0.3, 0.3, 0.3, 0.05);
                 }
 
-                // If pending phase exit, finish this single shot at tick 20 and don't continue to next shots
                 if (pendingPhaseExit && hoverSubTimer >= 20) {
                     return;
                 }
 
-                // Each shot spaced 5 seconds (100 ticks)
                 if (hoverSubTimer >= 100) {
                     hoverShotsDone++;
                     if (hoverShotsDone < 5) {
-                        hoverSubTimer = 0; // Next shot
+                        hoverSubTimer = 0;
                     } else {
-                        // 5 shots complete: wait 5s stationary before accelerating
-                        hoverSubState = 4; // WAIT_AFTER_SHOTS
+
+                        hoverSubState = 4;
                         hoverSubTimer = 0;
                     }
                 }
                 break;
 
-            case 4: // WAIT_AFTER_SHOTS: Hover stationary for 5 seconds after 5th shot
-                mixin.setForcedBasePose(1); // HOVER
+            case 4:
+                mixin.setForcedBasePose(1);
                 currentFlyTarget = null;
                 dragon.setDeltaMovement(Vec3.ZERO);
 
                 if (hoverSubTimer >= 100) {
-                    // Trigger ACCELERATE (40 ticks = 2.0s)
+
                     dragon.level().broadcastEntityEvent(dragon, (byte) 74);
                     mixin.triggerClientAction((byte) 74);
-                    mixin.setForcedBasePose(0); // ON_AIR
+                    mixin.setForcedBasePose(0);
 
-                    hoverSubState = 5; // ACCELERATING
+                    hoverSubState = 5;
                     hoverSubTimer = 0;
                 }
                 break;
 
-            case 5: // ACCELERATING: 40 ticks
-                mixin.setForcedBasePose(0); // ON_AIR
+            case 5:
+                mixin.setForcedBasePose(0);
                 circlingTimer++;
                 double currentAngle = Math.atan2(dragon.getZ(), dragon.getX());
                 double targetAngle = currentAngle + 0.30;
@@ -676,12 +641,12 @@ public class DragonPhase2 implements IDragonPhase {
                 flySpeed = Mth.lerp(hoverSubTimer / 40.0, 0.3, 0.85);
 
                 if (hoverSubTimer >= 40) {
-                    // Accelerate complete -> switch to ON_AIR!
+
                     dragon.level().broadcastEntityEvent(dragon, (byte) 68);
                     mixin.triggerClientAction((byte) 68);
-                    mixin.setForcedBasePose(0); // ON_AIR
+                    mixin.setForcedBasePose(0);
 
-                    currentAction = 0; // Resume roaming
+                    currentAction = 0;
                     actionTimer = 0;
                     hoverSubState = 0;
                     hoverAnchorPos = null;
@@ -692,17 +657,16 @@ public class DragonPhase2 implements IDragonPhase {
 
     private void tickSwoopAttack(EnderDragon dragon, INEEnderDragonAnimation mixin) {
         actionTimer++;
-        mixin.setForcedBasePose(0); // ON_AIR
+        mixin.setForcedBasePose(0);
 
         if (swoopSubState == 0) {
-            // DIVE & CHARGE PHASE
+
             flySpeed = 1.35;
 
             if (lockedTarget != null && lockedTarget.isAlive()) {
                 currentFlyTarget = lockedTarget.position().add(0, 0.5, 0);
             }
 
-            // Check collision with player
             AABB hitBox = dragon.getBoundingBox().inflate(1.5);
             List<Player> players = dragon.level().getEntitiesOfClass(
                 Player.class, hitBox,
@@ -737,7 +701,6 @@ public class DragonPhase2 implements IDragonPhase {
                 }
             }
 
-            // Also check proximity if bounding box didn't trigger
             if (!hitAny && lockedTarget != null && dragon.distanceTo(lockedTarget) <= 6.5) {
                 hitAny = true;
                 lockedTarget.hurt(dragon.damageSources().mobAttack(dragon), 14.0F);
@@ -757,9 +720,8 @@ public class DragonPhase2 implements IDragonPhase {
                 dragon.level().playSound(null, lockedTarget.getX(), lockedTarget.getY(), lockedTarget.getZ(), ModSounds.ENDER_DRAGON_STOMP, SoundSource.HOSTILE, 4.0F, 1.0F);
             }
 
-            // If hit player OR timed out (max 100 ticks = 5s), transition to PULL-UP
             if (hitAny || actionTimer >= 100) {
-                swoopSubState = 1; // PULL_UP
+                swoopSubState = 1;
                 actionTimer = 0;
 
                 Vec3 motion = dragon.getDeltaMovement();
@@ -775,17 +737,15 @@ public class DragonPhase2 implements IDragonPhase {
                     fZ = Math.cos(yawRad);
                 }
 
-                // Overshoot 45 blocks forward and climb up to Y = 88.0
                 swoopExitTarget = new Vec3(dragon.getX() + fX * 45.0, 88.0, dragon.getZ() + fZ * 45.0);
             }
         } else if (swoopSubState == 1) {
-            // PULL-UP & ASCEND PHASE
+
             flySpeed = 1.15;
             if (swoopExitTarget != null) {
                 currentFlyTarget = swoopExitTarget;
             }
 
-            // Climb out for 40 ticks (2 seconds)
             if (actionTimer >= 40 || dragon.getY() >= 85.0) {
                 currentAction = 0;
                 actionTimer = 0;
@@ -798,7 +758,6 @@ public class DragonPhase2 implements IDragonPhase {
     public static void applyMovement(EnderDragon dragon) {
         if (instance == null) return;
 
-        // Hover stationary state in Stage 2B: smooth rotation towards target player with clamped turn step
         if (instance.currentAction == 3 && (instance.hoverSubState >= 1 && instance.hoverSubState <= 4)) {
             dragon.setDeltaMovement(Vec3.ZERO);
 
@@ -828,13 +787,11 @@ public class DragonPhase2 implements IDragonPhase {
                 Vec3 dir = diff.normalize();
                 Vec3 currentMotion = dragon.getDeltaMovement();
                 Vec3 desiredMotion = dir.scale(instance.flySpeed);
-                
-                // During swoop attack, turn and accelerate faster to track the dive
+
                 double lerpFactor = (instance.currentAction == 4) ? 0.30 : 0.15;
                 Vec3 smoothedMotion = currentMotion.scale(1.0 - lerpFactor).add(desiredMotion.scale(lerpFactor));
                 dragon.setDeltaMovement(smoothedMotion);
 
-                // Smooth organic yaw rotation
                 double dx = target.x - dragon.getX();
                 double dz = target.z - dragon.getZ();
                 if (dx * dx + dz * dz > 0.1) {
@@ -854,3 +811,4 @@ public class DragonPhase2 implements IDragonPhase {
         dragon.move(MoverType.SELF, dragon.getDeltaMovement());
     }
 }
+

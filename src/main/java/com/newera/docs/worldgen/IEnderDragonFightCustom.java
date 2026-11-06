@@ -6,3 +6,4 @@ public interface IEnderDragonFightCustom {
     BlockPos getCustomPortalLocation();
     void setCustomPortalLocation(BlockPos pos);
 }
+

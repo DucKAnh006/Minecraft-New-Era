@@ -33,7 +33,7 @@ public class FollowParentGoalMixin {
                 if (parentUUID != null) {
                     net.minecraft.server.level.ServerLevel serverLevel = (net.minecraft.server.level.ServerLevel) this.animal.level();
                     net.minecraft.world.entity.Entity entity = serverLevel.getEntity(parentUUID);
-                    
+
                     if (entity instanceof Animal adult && adult.isAlive() && !adult.isBaby()) {
                         if (this.animal.distanceToSqr(adult) < 3.0D) {
                             cir.setReturnValue(false);
@@ -57,3 +57,4 @@ public class FollowParentGoalMixin {
         }
     }
 }
+

@@ -21,10 +21,7 @@ public class NEHorseArmorLayer extends RenderLayer<NEHorseRenderState, NEHorseAb
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, NEHorseRenderState state, float yaw, float pitch) {
         ItemStack itemStack = state.armor;
         if (!itemStack.isEmpty()) {
-            // Note: In 1.21.x, AnimalArmorItem has getMaterial() or getTexture() maybe.
-            // Actually, AnimalArmorItem uses getTexture() which returns an Identifier.
-            // But we have custom textures in newera:textures/entity/horse/horse_equipment!
-            // Let's just map them based on the item registry name.
+
             String itemName = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(itemStack.getItem()).getPath();
             String textureName = "iron";
             if (itemName.contains("diamond")) textureName = "diamond";
@@ -40,8 +37,7 @@ public class NEHorseArmorLayer extends RenderLayer<NEHorseRenderState, NEHorseAb
             if (textureName.equals("leather")) {
                 color = DyedItemColor.getOrDefault(itemStack, -6265536);
                 RenderLayer.renderColoredCutoutModel(this.getParentModel(), armorLocation, poseStack, submitNodeCollector, light, state, color, OverlayTexture.NO_OVERLAY);
-                
-                // Render overlay
+
                 Identifier overlayLocation = Identifier.fromNamespaceAndPath("newera", "textures/entity/horse/horse_equipment/leather_overlay.png");
                 RenderLayer.renderColoredCutoutModel(this.getParentModel(), overlayLocation, poseStack, submitNodeCollector, light, state, -1, OverlayTexture.NO_OVERLAY);
             } else {
@@ -50,3 +46,4 @@ public class NEHorseArmorLayer extends RenderLayer<NEHorseRenderState, NEHorseAb
         }
     }
 }
+

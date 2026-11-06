@@ -16,3 +16,4 @@ public interface INEWolfAnimation extends INEAnimal {
     AnimationState getSitHowlingAnimationState();
     AnimationState getIdleAnimationState();
 }
+

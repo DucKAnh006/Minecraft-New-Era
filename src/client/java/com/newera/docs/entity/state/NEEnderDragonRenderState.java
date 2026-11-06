@@ -36,6 +36,7 @@ public class NEEnderDragonRenderState extends LivingEntityRenderState {
     public float flightRoll = 0.0F;
     public float flightTurnX = 0.0F;
     public float flightPitch = 0.0F;
-    public int basePoseType = 0; // 0 = ON_AIR, 1 = HOVER, 2 = ON_GROUND
+    public int basePoseType = 0;
     public net.minecraft.world.phys.Vec3 beamOffset;
 }
+

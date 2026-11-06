@@ -73,3 +73,4 @@ public class NESheepFurLayer extends RenderLayer<NESheepRenderState, NESheepAbst
         }
     }
 }
+

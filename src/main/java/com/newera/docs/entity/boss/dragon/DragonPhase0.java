@@ -7,33 +7,33 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class DragonPhase0 implements IDragonPhase {
-    
+
     public static Vec3 customFlyTarget = null;
-    
+
     private static DragonPhase0 instance;
     private int subState = 0;
     private Player lockedTarget = null;
     private int stateTimer = 0;
-    
+
     public DragonPhase0() {
         instance = this;
     }
-    
+
     public static boolean isLandingInvulnerable() {
         return instance != null && instance.subState == 4;
     }
-    
+
     public static boolean isHovering() {
         return instance != null && instance.subState == 2;
     }
-    
+
     public static boolean isCustomFlight() {
-        return instance != null; // Luôn dùng custom flight để không bị bay ngược theo vanilla
+        return instance != null;
     }
 
     @Override
     public void tick(EnderDragon dragon, INEEnderDragonAnimation mixin) {
-        // Bất kỳ lúc nào animation fly được chơi (subState < 4) thì bắt buộc phải có flap sound
+
         if (subState < 4 && dragon.tickCount % 20 == 7) {
             dragon.level().playSound(null, dragon.getX(), dragon.getY(), dragon.getZ(), com.newera.docs.sound.ModSounds.ENDER_DRAGON_FLAP, net.minecraft.sounds.SoundSource.HOSTILE, 5.0F, 1.0F);
         }
@@ -43,7 +43,7 @@ public class DragonPhase0 implements IDragonPhase {
                 if (dragon.getPhaseManager().getCurrentPhase().getPhase() != EnderDragonPhase.HOVERING) {
                     dragon.getPhaseManager().setPhase(EnderDragonPhase.HOVERING);
                 }
-                
+
                 for (Player p : dragon.level().players()) {
                     if (!p.isCreative() && !p.isSpectator()) {
                         double cx = p.getX();
@@ -56,55 +56,53 @@ public class DragonPhase0 implements IDragonPhase {
                         }
                     }
                 }
-                
+
                 if (lockedTarget == null) {
                     stateTimer++;
                     double angle = stateTimer * 0.02;
-                    // Lượn sóng 3D nhấp nhô lên xuống tự nhiên theo hàm sin
+
                     double waveY = 100.0 + Math.sin(stateTimer * 0.04) * 12.0;
                     customFlyTarget = new Vec3(Math.cos(angle) * 55.0, waveY, Math.sin(angle) * 55.0);
                 }
                 break;
-                
+
             case 1:
                 if (lockedTarget != null) {
                     stateTimer++;
                     double progress = Math.min(1.0, stateTimer / 200.0);
                     double radius = 35.0 * (1.0 - progress);
                     double angle = stateTimer * 0.05;
-                    
-                    // Lượn xoắn ốc kết hợp lượn sóng bổ nhào áp sát
+
                     double baseHeight = lockedTarget.getY() + 30.0 - (15.0 * progress);
                     double waveY = baseHeight + Math.sin(stateTimer * 0.08) * 5.0;
 
-                    // Khi giảm tốc hãm phanh (tick 170..200), độ cao hội tụ mượt mà về player.Y + 15.0
                     if (stateTimer >= 170) {
                         double blend = (stateTimer - 170) / 30.0;
                         waveY = net.minecraft.util.Mth.lerp(blend, waveY, lockedTarget.getY() + 15.0D);
                     }
-                    
+
                     customFlyTarget = new Vec3(
-                        lockedTarget.getX() + Math.cos(angle) * radius, 
-                        waveY, 
+                        lockedTarget.getX() + Math.cos(angle) * radius,
+                        waveY,
                         lockedTarget.getZ() + Math.sin(angle) * radius
                     );
-                    
+
                     if (stateTimer == 170) {
-                        dragon.level().broadcastEntityEvent(dragon, (byte) 65); // Decelerate (1.5s = 30 ticks)
+                        dragon.level().broadcastEntityEvent(dragon, (byte) 65);
                         mixin.triggerClientAction((byte) 65);
                     }
-                    
+
                     if (stateTimer >= 200) {
                         subState = 2;
                         stateTimer = 0;
-                        dragon.level().broadcastEntityEvent(dragon, (byte) 67); // Hover
+                        dragon.level().broadcastEntityEvent(dragon, (byte) 67);
                         mixin.triggerClientAction((byte) 67);
                     }
                 } else {
                     subState = 0;
                 }
                 break;
-                
+
             case 2:
                 if (lockedTarget != null) {
                     customFlyTarget = new Vec3(lockedTarget.getX(), lockedTarget.getY() + 15.0D, lockedTarget.getZ());
@@ -113,14 +111,14 @@ public class DragonPhase0 implements IDragonPhase {
                         subState = 3;
                         stateTimer = 0;
                         customFlyTarget = null;
-                        dragon.level().broadcastEntityEvent(dragon, (byte) 73); // Falling
+                        dragon.level().broadcastEntityEvent(dragon, (byte) 73);
                         mixin.triggerClientAction((byte) 73);
                     }
                 } else {
                     subState = 0;
                 }
                 break;
-                
+
             case 3:
                 double groundY = dragon.getY() - 100.0;
                 net.minecraft.core.BlockPos pos = net.minecraft.core.BlockPos.containing(dragon.getX(), dragon.getY(), dragon.getZ());
@@ -133,15 +131,14 @@ public class DragonPhase0 implements IDragonPhase {
                     }
                 }
                 double targetY = groundY;
-                
+
                 if (dragon.onGround() || dragon.getY() <= targetY + 0.2) {
                     subState = 4;
                     stateTimer = 0;
                     dragon.setPos(dragon.getX(), groundY, dragon.getZ());
-                    dragon.level().broadcastEntityEvent(dragon, (byte) 66); // Landing
+                    dragon.level().broadcastEntityEvent(dragon, (byte) 66);
                     mixin.triggerClientAction((byte) 66);
 
-                    // Sát thương va chạm khi rồng đâm sầm từ trên không xuống đất
                     net.minecraft.world.phys.AABB crashBox = dragon.getBoundingBox().inflate(6.0);
                     java.util.List<net.minecraft.world.entity.LivingEntity> crashEntities = dragon.level().getEntitiesOfClass(
                         net.minecraft.world.entity.LivingEntity.class, crashBox,
@@ -152,16 +149,15 @@ public class DragonPhase0 implements IDragonPhase {
                     }
                 }
                 break;
-                
+
             case 4:
                 stateTimer++;
                 if (stateTimer == 20) {
-                    dragon.level().broadcastEntityEvent(dragon, (byte) 61); // Roar
+                    dragon.level().broadcastEntityEvent(dragon, (byte) 61);
                     mixin.triggerClientAction((byte) 61);
                     dragon.level().playSound(null, dragon.getX(), dragon.getY(), dragon.getZ(), com.newera.docs.sound.ModSounds.ENDER_DRAGON_ROAR, net.minecraft.sounds.SoundSource.HOSTILE, 5.0F, 1.0F);
                 }
 
-                // Repulsion Barrier & Periodic Damage during roar (ticks 20..100)
                 if (stateTimer >= 20 && stateTimer <= 100) {
                     net.minecraft.world.phys.AABB aabb = dragon.getBoundingBox().inflate(10.0);
                     java.util.List<net.minecraft.world.entity.LivingEntity> entities = dragon.level().getEntitiesOfClass(
@@ -172,7 +168,7 @@ public class DragonPhase0 implements IDragonPhase {
                         double dx = entity.getX() - dragon.getX();
                         double dz = entity.getZ() - dragon.getZ();
                         double distSq = dx * dx + dz * dz;
-                        if (distSq <= 100.0) { // 10 block radius
+                        if (distSq <= 100.0) {
                             double dist = Math.sqrt(distSq);
                             if (dist > 0.001) {
                                 entity.setDeltaMovement((dx / dist) * 1.0, 0.35, (dz / dist) * 1.0);
@@ -184,7 +180,6 @@ public class DragonPhase0 implements IDragonPhase {
                         }
                     }
 
-                    // Shockwave circle particles
                     if (!dragon.level().isClientSide() && stateTimer % 5 == 0) {
                         net.minecraft.server.level.ServerLevel serverLevel = (net.minecraft.server.level.ServerLevel) dragon.level();
                         double radius = ((stateTimer - 20) % 20) * 0.45 + 2.0;
@@ -210,7 +205,7 @@ public class DragonPhase0 implements IDragonPhase {
 
     public static void applyMovement(EnderDragon dragon) {
         if (instance == null || !isCustomFlight()) return;
-        
+
         switch (instance.subState) {
             case 0:
             case 1:
@@ -218,13 +213,12 @@ public class DragonPhase0 implements IDragonPhase {
                     Vec3 dir = customFlyTarget.subtract(dragon.position()).normalize();
                     double speed = 1.0;
                     if (instance.subState == 1) {
-                        // Giảm tốc độ từ 1.0 xuống 0.2 khi gần hết vòng lượn
+
                         double progress = Math.min(1.0, instance.stateTimer / 200.0);
                         speed = 1.0 - (progress * 0.8);
                     }
                     dragon.setDeltaMovement(dir.scale(speed));
-                    
-                    // Logic quay đầu giống Phase 1, đảm bảo đi bộ và bay cùng hướng
+
                     double dx = customFlyTarget.x - dragon.getX();
                     double dz = customFlyTarget.z - dragon.getZ();
                     if (dx * dx + dz * dz > 0.1) {
@@ -261,3 +255,4 @@ public class DragonPhase0 implements IDragonPhase {
         dragon.move(net.minecraft.world.entity.MoverType.SELF, dragon.getDeltaMovement());
     }
 }
+

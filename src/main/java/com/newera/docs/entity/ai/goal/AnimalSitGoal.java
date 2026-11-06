@@ -51,7 +51,7 @@ public class AnimalSitGoal extends Goal {
             if (parentUUID != null) {
                 net.minecraft.server.level.ServerLevel serverLevel = (net.minecraft.server.level.ServerLevel) this.animal.level();
                 net.minecraft.world.entity.Entity parentEntity = serverLevel.getEntity(parentUUID);
-                
+
                 if (parentEntity instanceof Animal adult && !adult.isBaby() && isSitting(adult)) {
                     if (this.animal.distanceToSqr(adult) < 16.0) {
                         return adult;
@@ -158,7 +158,7 @@ public class AnimalSitGoal extends Goal {
                 case SITTING -> this.transitionTo(Phase.SITTING_HOLD);
                 case SITTING_HOLD -> {
                     if (this.animal.isBaby()) {
-                        this.stateTimer = 20; 
+                        this.stateTimer = 20;
                     } else {
                         this.transitionTo(Phase.STAND_UP);
                     }
@@ -196,3 +196,4 @@ public class AnimalSitGoal extends Goal {
         }
     }
 }
+

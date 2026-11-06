@@ -80,3 +80,4 @@ public class NEEnderCrystalRenderer extends EntityRenderer<EndCrystal, NEEnderCr
 		return super.shouldRender(entity, culler, camX, camY, camZ, partialTick) || entity.getBeamTarget() != null;
 	}
 }
+

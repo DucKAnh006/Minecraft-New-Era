@@ -30,7 +30,7 @@ public class NECamelHuskRenderer extends MobRenderer<Camel, NECamelRenderState, 
     @Override
     public void extractRenderState(@NotNull Camel entity, @NotNull NECamelRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
-        state.isBaby = false; // Husk Camel has no baby
+        state.isBaby = false;
         state.isSaddled = entity.isSaddled();
 
         if (entity instanceof INECamelAnimation mixinEntity) {
@@ -52,3 +52,4 @@ public class NECamelHuskRenderer extends MobRenderer<Camel, NECamelRenderState, 
         return CAMEL_HUSK_LOCATION;
     }
 }
+

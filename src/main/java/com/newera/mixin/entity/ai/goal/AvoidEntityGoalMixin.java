@@ -18,8 +18,9 @@ public abstract class AvoidEntityGoalMixin {
     private void wakeUpOnAvoid(CallbackInfo ci) {
         if (this.mob instanceof INEAnimal neAnimal) {
             if (neAnimal.getBodyState() > 0) {
-                neAnimal.setBodyState((byte) 0); // Wake up instantly
+                neAnimal.setBodyState((byte) 0);
             }
         }
     }
 }
+

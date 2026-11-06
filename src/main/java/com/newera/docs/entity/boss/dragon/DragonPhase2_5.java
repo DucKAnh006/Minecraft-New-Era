@@ -43,15 +43,14 @@ public class DragonPhase2_5 implements IDragonPhase {
             dragon.getPhaseManager().setPhase(EnderDragonPhase.HOVERING);
         }
 
-        // Periodic wing flap sound during flight / hover (subState < 4)
         if (subState < 4 && dragon.tickCount % 20 == 7) {
             dragon.level().playSound(null, dragon.getX(), dragon.getY(), dragon.getZ(), ModSounds.ENDER_DRAGON_FLAP, SoundSource.HOSTILE, 5.0F, 1.0F);
         }
 
         switch (subState) {
-            case 0: // FLY TO RANDOM TARGET INSIDE PILLARS
+            case 0:
                 dragon.noPhysics = true;
-                mixin.setForcedBasePose(0); // ON_AIR
+                mixin.setForcedBasePose(0);
                 stateTimer++;
 
                 if (stateTimer == 1) {
@@ -60,7 +59,7 @@ public class DragonPhase2_5 implements IDragonPhase {
                 }
 
                 if (targetHoverPos == null) {
-                    // Pick random spot inside pillars circle (R in 16..32, angle in 0..2pi)
+
                     double angle = dragon.getRandom().nextDouble() * Math.PI * 2.0;
                     double r = 16.0 + dragon.getRandom().nextDouble() * 16.0;
                     double targetX = Math.cos(angle) * r;
@@ -73,41 +72,40 @@ public class DragonPhase2_5 implements IDragonPhase {
                                + (targetHoverPos.z - dragon.getZ()) * (targetHoverPos.z - dragon.getZ());
                 double yDiff = Math.abs(targetHoverPos.y - dragon.getY());
 
-                // Converged on target hover position or timeout
                 if ((hDistSq <= 64.0 && yDiff <= 4.0) || stateTimer >= 160) {
                     subState = 1;
                     stateTimer = 0;
-                    dragon.level().broadcastEntityEvent(dragon, (byte) 65); // Decelerate
+                    dragon.level().broadcastEntityEvent(dragon, (byte) 65);
                     mixin.triggerClientAction((byte) 65);
-                    mixin.setForcedBasePose(1); // HOVER
+                    mixin.setForcedBasePose(1);
                 }
                 break;
 
-            case 1: // DECELERATE (30 ticks = 1.5s)
+            case 1:
                 dragon.noPhysics = true;
                 stateTimer++;
                 if (stateTimer >= 30) {
                     subState = 2;
                     stateTimer = 0;
-                    dragon.level().broadcastEntityEvent(dragon, (byte) 67); // Hover
+                    dragon.level().broadcastEntityEvent(dragon, (byte) 67);
                     mixin.triggerClientAction((byte) 67);
-                    mixin.setForcedBasePose(1); // HOVER
+                    mixin.setForcedBasePose(1);
                 }
                 break;
 
-            case 2: // HOVER (60 ticks = 3.0s)
+            case 2:
                 dragon.noPhysics = true;
                 stateTimer++;
                 if (stateTimer >= 60) {
                     subState = 3;
                     stateTimer = 0;
-                    dragon.level().broadcastEntityEvent(dragon, (byte) 73); // Falling
+                    dragon.level().broadcastEntityEvent(dragon, (byte) 73);
                     mixin.triggerClientAction((byte) 73);
-                    mixin.setForcedBasePose(0); // ON_AIR
+                    mixin.setForcedBasePose(0);
                 }
                 break;
 
-            case 3: // DIVE / FALLING
+            case 3:
                 dragon.noPhysics = true;
                 stateTimer++;
 
@@ -117,11 +115,10 @@ public class DragonPhase2_5 implements IDragonPhase {
                     dragon.setPos(dragon.getX(), targetGroundY, dragon.getZ());
                     dragon.noPhysics = false;
                     dragon.setOnGround(true);
-                    dragon.level().broadcastEntityEvent(dragon, (byte) 66); // Landing
+                    dragon.level().broadcastEntityEvent(dragon, (byte) 66);
                     mixin.triggerClientAction((byte) 66);
-                    mixin.setForcedBasePose(2); // ON_GROUND
+                    mixin.setForcedBasePose(2);
 
-                    // Impact crash damage to nearby living entities
                     AABB crashBox = dragon.getBoundingBox().inflate(6.0);
                     List<LivingEntity> crashEntities = dragon.level().getEntitiesOfClass(
                         LivingEntity.class, crashBox,
@@ -133,7 +130,7 @@ public class DragonPhase2_5 implements IDragonPhase {
                 }
                 break;
 
-            case 4: // LANDING FINISH & TRANSITION TO PHASE 3
+            case 4:
                 dragon.noPhysics = false;
                 stateTimer++;
 

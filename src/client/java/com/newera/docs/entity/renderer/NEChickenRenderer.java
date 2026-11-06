@@ -97,3 +97,4 @@ public class NEChickenRenderer extends MobRenderer<Chicken, NEChickenRenderState
         }
     }
 }
+

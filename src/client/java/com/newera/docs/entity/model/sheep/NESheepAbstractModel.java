@@ -116,3 +116,4 @@ public abstract class NESheepAbstractModel extends EntityModel<NESheepRenderStat
         this.idleAnimation.apply(state.idleAnimationState, state.ageInTicks);
     }
 }
+

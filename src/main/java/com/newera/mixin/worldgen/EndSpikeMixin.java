@@ -17,8 +17,8 @@ public abstract class EndSpikeMixin {
 
     @Inject(method = "getHeight", at = @At("HEAD"), cancellable = true)
     private void onGetCustomHeight(CallbackInfoReturnable<Integer> cir) {
-        // Lấy chính xác chiều cao Bedrock đỉnh cột tương ứng với từng cột từ EndPillarHeightManager
-        // Tia hồi sinh rồng sẽ bắn chính xác vào getHeight() + 1 (tọa độ pha lê)
+
         cir.setReturnValue(EndPillarHeightManager.getSpikeHeight(this.centerX, this.centerZ));
     }
 }
+

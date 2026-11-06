@@ -70,3 +70,4 @@ public class NECamelSaddleModel extends NECamelAbstractModel {
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 }
+

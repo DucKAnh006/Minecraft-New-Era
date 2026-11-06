@@ -31,7 +31,7 @@ public abstract class NECatAbstractModel extends EntityModel<NECatRenderState> {
     private final KeyframeAnimation standAnimation;
     private final KeyframeAnimation walkAnimation;
     private final KeyframeAnimation idleAnimation;
-    
+
     private final KeyframeAnimation stretchAnimation;
     private final KeyframeAnimation stalkingAnimation;
     private final KeyframeAnimation pounceAnimation;
@@ -69,7 +69,7 @@ public abstract class NECatAbstractModel extends EntityModel<NECatRenderState> {
         this.standAnimation = standAnim.bake(root);
         this.walkAnimation = walkAnim.bake(root);
         this.idleAnimation = idleAnim.bake(root);
-        
+
         this.stretchAnimation = stretchAnim.bake(root);
         this.stalkingAnimation = stalkingAnim.bake(root);
         this.pounceAnimation = pounceAnim.bake(root);
@@ -97,7 +97,6 @@ public abstract class NECatAbstractModel extends EntityModel<NECatRenderState> {
                 && !state.sittingHoldAnimationState.isStarted()
                 && !state.standAnimationState.isStarted();
 
-
         boolean isLookingAllowed = !state.sleepAnimationState.isStarted()
                 && !state.sleepingHoldAnimationState.isStarted()
                 && !state.wakeUpAnimationState.isStarted();
@@ -121,9 +120,10 @@ public abstract class NECatAbstractModel extends EntityModel<NECatRenderState> {
         this.wakeUpAnimation.apply(state.wakeUpAnimationState, state.ageInTicks);
         this.standAnimation.apply(state.standAnimationState, state.ageInTicks);
         this.idleAnimation.apply(state.idleAnimationState, state.ageInTicks);
-        
+
         this.stretchAnimation.apply(state.stretchAnimationState, state.ageInTicks);
         this.stalkingAnimation.apply(state.stalkingAnimationState, state.ageInTicks);
         this.pounceAnimation.apply(state.pounceAnimationState, state.ageInTicks);
     }
 }
+

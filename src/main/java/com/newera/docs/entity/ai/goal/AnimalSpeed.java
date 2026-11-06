@@ -18,6 +18,7 @@ public class AnimalSpeed {
 
     private RunPhase runPhase = RunPhase.NONE;
     private int phaseTimer = 0;
+    private int panicBurstTimer = 0;
 
     public enum RunPhase {
         NONE, ACCELERATING, MAINTAINING, DECELERATING
@@ -28,8 +29,8 @@ public class AnimalSpeed {
         this.walkSpeed = walkSpeed;
         this.runSpeed = runSpeed;
         this.accelerationTicks = accelerationTicks;
-        this.currentTargetSpeed = 0.0;
-        this.previousTargetSpeed = 0.0;
+        this.currentTargetSpeed = walkSpeed;
+        this.previousTargetSpeed = walkSpeed;
     }
 
     public void updateMovement(float targetYaw) {
@@ -37,27 +38,56 @@ public class AnimalSpeed {
         float angleDiff = Math.abs(Mth.wrapDegrees(targetYaw - bodyYaw));
 
         if (this.runPhase == RunPhase.MAINTAINING && angleDiff > 45.0f) {
-            this.entity.getNavigation().stop();
-            this.changeSpeedTo(this.walkSpeed, 10);
+            this.changeSpeedTo(this.walkSpeed, 8);
         }
     }
 
     public void walk() {
+        if (this.runPhase == RunPhase.ACCELERATING || this.runPhase == RunPhase.MAINTAINING) {
+            this.runPhase = RunPhase.DECELERATING;
+            this.changeSpeedTo(this.walkSpeed, 10);
+            return;
+        }
         this.runPhase = RunPhase.NONE;
-        this.changeSpeedTo(this.walkSpeed, Math.max(10, this.accelerationTicks / 2));
+        this.changeSpeedTo(this.walkSpeed, Math.max(6, this.accelerationTicks / 3));
     }
 
     public void run() {
-        if (this.runPhase == RunPhase.NONE || this.runPhase == RunPhase.DECELERATING) {
+        if (this.runPhase == RunPhase.MAINTAINING) {
+
+            this.phaseTimer = Math.max(this.phaseTimer, 80 + this.entity.getRandom().nextInt(61));
+            this.panicBurstTimer = Math.max(this.panicBurstTimer, 20);
+            return;
+        }
+
+        if (this.runPhase != RunPhase.ACCELERATING) {
             this.runPhase = RunPhase.ACCELERATING;
-            this.changeSpeedTo(this.runSpeed, this.accelerationTicks);
+            double current = this.getCurrentSpeed();
+
+            this.previousTargetSpeed = Math.max(this.walkSpeed, current);
+            this.currentTargetSpeed = this.runSpeed;
+
+            this.currentTransitionDuration = Math.max(5, this.accelerationTicks / 3);
+            this.transitionTick = 0;
+
+            this.panicBurstTimer = 25;
         }
     }
 
     public void stop() {
+
+        if (this.runPhase == RunPhase.ACCELERATING || this.runPhase == RunPhase.MAINTAINING) {
+            return;
+        }
         this.runPhase = RunPhase.NONE;
-        int decelTicks = Math.max(10, (int)(this.accelerationTicks * 0.6));
+        int decelTicks = Math.max(6, (int)(this.accelerationTicks * 0.4));
         this.changeSpeedTo(0.0, decelTicks);
+    }
+
+    public void forceStop() {
+        this.runPhase = RunPhase.NONE;
+        this.panicBurstTimer = 0;
+        this.changeSpeedTo(0.0, 4);
     }
 
     private void changeSpeedTo(double speed, int duration) {
@@ -70,18 +100,23 @@ public class AnimalSpeed {
     }
 
     public void tick() {
+        if (this.panicBurstTimer > 0) {
+            this.panicBurstTimer--;
+        }
+
         if (this.runPhase != RunPhase.NONE) {
             if (this.runPhase == RunPhase.ACCELERATING) {
                 if (this.transitionTick >= this.currentTransitionDuration) {
                     this.runPhase = RunPhase.MAINTAINING;
-                    this.phaseTimer = 60 + this.entity.getRandom().nextInt(61);
+                    this.phaseTimer = 80 + this.entity.getRandom().nextInt(61);
                 }
             } else if (this.runPhase == RunPhase.MAINTAINING) {
                 this.phaseTimer--;
                 if (this.phaseTimer <= 0) {
                     this.runPhase = RunPhase.DECELERATING;
-                    int decelTicks = Math.max(10, (int)(this.accelerationTicks * 0.75));
-                    this.changeSpeedTo(0.0, decelTicks);
+                    int decelTicks = Math.max(10, (int)(this.accelerationTicks * 0.6));
+
+                    this.changeSpeedTo(this.walkSpeed, decelTicks);
                 }
             } else if (this.runPhase == RunPhase.DECELERATING) {
                 if (this.transitionTick >= this.currentTransitionDuration) {
@@ -92,26 +127,44 @@ public class AnimalSpeed {
 
         if (this.transitionTick < this.currentTransitionDuration) {
             this.transitionTick++;
-            AttributeInstance speedAttribute = this.entity.getAttribute(Attributes.MOVEMENT_SPEED);
-            if (speedAttribute != null) {
-                speedAttribute.setBaseValue(this.getCurrentSpeed());
-            }
+        }
+
+        AttributeInstance speedAttribute = this.entity.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speedAttribute != null) {
+            speedAttribute.setBaseValue(this.getCurrentSpeed());
         }
     }
 
     public double getCurrentSpeed() {
+        double baseCalculatedSpeed;
         if (this.currentTransitionDuration <= 0 || this.transitionTick >= this.currentTransitionDuration) {
-            return this.currentTargetSpeed;
-        }
-        double t = (double) this.transitionTick / this.currentTransitionDuration;
-        double curve;
-        if (this.runPhase == RunPhase.ACCELERATING) {
-            curve = t * t;
-        } else if (this.runPhase == RunPhase.DECELERATING) {
-            curve = 1.0 - (1.0 - t) * (1.0 - t);
+            baseCalculatedSpeed = this.currentTargetSpeed;
         } else {
-            curve = t < 0.5 ? 2.0 * t * t : 1.0 - Math.pow(-2.0 * t + 2.0, 2.0) / 2.0;
+            double t = (double) this.transitionTick / this.currentTransitionDuration;
+            double curve;
+            if (this.runPhase == RunPhase.ACCELERATING) {
+
+                curve = 1.0 - Math.pow(1.0 - t, 3.0);
+            } else if (this.runPhase == RunPhase.DECELERATING) {
+
+                curve = 1.0 - (1.0 - t) * (1.0 - t);
+            } else {
+
+                curve = t < 0.5 ? 2.0 * t * t : 1.0 - Math.pow(-2.0 * t + 2.0, 2.0) / 2.0;
+            }
+            baseCalculatedSpeed = Mth.lerp(curve, this.previousTargetSpeed, this.currentTargetSpeed);
         }
-        return Mth.lerp(curve, this.previousTargetSpeed, this.currentTargetSpeed);
+
+        if (this.panicBurstTimer > 0 && (this.runPhase == RunPhase.ACCELERATING || this.runPhase == RunPhase.MAINTAINING)) {
+            double burstFactor = (double) this.panicBurstTimer / 25.0;
+            return baseCalculatedSpeed * (1.0 + 0.12 * burstFactor);
+        }
+
+        return baseCalculatedSpeed;
+    }
+
+    public RunPhase getRunPhase() {
+        return this.runPhase;
     }
 }
+

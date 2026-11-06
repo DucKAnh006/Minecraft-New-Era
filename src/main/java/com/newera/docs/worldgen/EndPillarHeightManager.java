@@ -21,40 +21,29 @@ public class EndPillarHeightManager {
     private static final Map<String, Integer> PILLAR_BASE_Y = new ConcurrentHashMap<>();
     private static Path lastSavedPath = null;
 
-    /**
-     * Lấy độ cao chân cột (baseY) đã được khóa vĩnh viễn trong save world.
-     * Nếu cột chưa từng sinh, gọi groundScanner để quét đỉnh đất cao nhất, lưu vào file rồi trả về.
-     */
     public static int getOrComputeBaseY(ServerLevel level, int cx, int cz, IntSupplier groundScanner) {
         String key = cx + "_" + cz;
 
-        // 1. Thử nạp từ file save world nếu bộ nhớ đệm chưa có
         ensureLoaded(level);
 
         if (PILLAR_BASE_Y.containsKey(key)) {
             return PILLAR_BASE_Y.get(key);
         }
 
-        // 2. Cột sinh lần đầu tiên: quét địa hình tìm điểm cao nhất
         int baseY = groundScanner.getAsInt();
         PILLAR_BASE_Y.put(key, baseY);
 
-        // 3. Lưu ngay vào file save world
         saveToFile(level);
 
         return baseY;
     }
 
-    /**
-     * Trả về chiều cao Bedrock đỉnh cột (baseY + 41) phục vụ EndSpike.getHeight().
-     * Phục vụ tia bắn hồi sinh rồng (nhắm vào getHeight() + 1 = baseY + 42).
-     */
     public static int getSpikeHeight(int cx, int cz) {
         String key = cx + "_" + cz;
         if (PILLAR_BASE_Y.containsKey(key)) {
             return PILLAR_BASE_Y.get(key) + 41;
         }
-        return 58 + 41; // Mặc định 99 nếu chưa có dữ liệu
+        return 58 + 41;
     }
 
     private static synchronized void ensureLoaded(ServerLevel level) {
@@ -93,3 +82,4 @@ public class EndPillarHeightManager {
         }
     }
 }
+

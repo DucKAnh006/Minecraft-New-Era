@@ -12,3 +12,4 @@ public class NewEraMixin {
 	private void init(CallbackInfo info) {
 	}
 }
+

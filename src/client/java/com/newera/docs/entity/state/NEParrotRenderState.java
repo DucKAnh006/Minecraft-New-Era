@@ -17,7 +17,7 @@ public class NEParrotRenderState extends LivingEntityRenderState {
 
     public final AnimationState flyFlapAnimationState = new AnimationState();
     public final AnimationState glideFlapAnimationState = new AnimationState();
-    
+
     public final AnimationState walkAnimationState = new AnimationState();
     public final AnimationState sitAnimationState = new AnimationState();
     public final AnimationState sittingAnimationState = new AnimationState();
@@ -27,3 +27,4 @@ public class NEParrotRenderState extends LivingEntityRenderState {
     public final AnimationState wakeUpAnimationState = new AnimationState();
     public final AnimationState danceAnimationState = new AnimationState();
 }
+

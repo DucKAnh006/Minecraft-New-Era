@@ -24,7 +24,7 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
 
     @Unique
     private static final EntityDataAccessor<Byte> NEWERA_BODY_STATE = SynchedEntityData.defineId(Cat.class, EntityDataSerializers.BYTE);
-    
+
     @Unique
     private int busyTimer = 0;
 
@@ -39,11 +39,11 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
     @Unique public final AnimationState sleepingHoldAnimationState = new AnimationState();
     @Unique public final AnimationState wakeUpAnimationState = new AnimationState();
     @Unique public final AnimationState standAnimationState = new AnimationState();
-    
+
     @Unique public final AnimationState stretchAnimationState = new AnimationState();
     @Unique public final AnimationState stalkingAnimationState = new AnimationState();
     @Unique public final AnimationState pounceAnimationState = new AnimationState();
-    
+
     @Unique public final AnimationState idleAnimationState = new AnimationState();
 
     @Unique
@@ -74,10 +74,10 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
     @Inject(method = "registerGoals", at = @At("TAIL"))
     protected void addCustomGoals(CallbackInfo ci) {
         this.goalSelector.addGoal(5, new net.minecraft.world.entity.ai.goal.FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(8, new AnimalSitGoal(this, true, 4000, 2000)); // Priority 8
-        this.goalSelector.addGoal(9, new CatSleepGoal(this, 12000, 2000)); // Priority 9
-        this.goalSelector.addGoal(10, new CatStretchGoal(this)); // Priority 10
-        
+        this.goalSelector.addGoal(8, new AnimalSitGoal(this, true, 4000, 2000));
+        this.goalSelector.addGoal(9, new CatSleepGoal(this, 12000, 2000));
+        this.goalSelector.addGoal(10, new CatStretchGoal(this));
+
         this.goalSelector.addGoal(1, new CatStalkPreyGoal(this, 0.6D, 1.3D));
     }
 
@@ -110,18 +110,18 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
         Cat cat = (Cat)(Object)this;
         if (cat.isTame() && cat.isOwnedBy(player)) {
             net.minecraft.world.item.ItemStack itemStack = player.getItemInHand(hand);
-            
+
             if (itemStack.isEmpty()) {
                 if (cat.isLeashed() && cat.getLeashHolder() == player) {
-                    return; // Let Vanilla handle unleashing
+                    return;
                 }
-                
+
                 if (!cat.level().isClientSide()) {
                     boolean isCurrentlySitting = cat.isOrderedToSit();
                     cat.setOrderedToSit(!isCurrentlySitting);
                     cat.getNavigation().stop();
                     cat.setTarget(null);
-                    
+
                     if (!isCurrentlySitting) {
                         this.setBodyState((byte) 1);
                     } else {
@@ -133,11 +133,11 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
                 cir.setReturnValue(net.minecraft.world.InteractionResult.SUCCESS);
                 return;
             }
-            
+
             if (itemStack.getItem() instanceof net.minecraft.world.item.DyeItem) {
                 net.minecraft.world.item.DyeColor color = (net.minecraft.world.item.DyeColor)itemStack.get(net.minecraft.core.component.DataComponents.DYE);
                 if (color != null && color == cat.getCollarColor()) {
-                    cir.setReturnValue(net.minecraft.world.InteractionResult.PASS); // Prevent toggling sit when color is the same
+                    cir.setReturnValue(net.minecraft.world.InteractionResult.PASS);
                 }
             }
         }
@@ -151,11 +151,11 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
         byte state = this.getBodyState();
         if (this.level().isClientSide()) {
             this.lookWeightO = this.lookWeight;
-            float targetWeight = (state >= 3 && state <= 5) ? 0.0F : 1.0F; // 3,4,5 = sleep phases
+            float targetWeight = (state >= 3 && state <= 5) ? 0.0F : 1.0F;
             this.lookWeight = Mth.approach(this.lookWeight, targetWeight, 0.1F);
             this.setupAnimationStates();
-            
-            if (state > 0 && state != 8) { // Don't lock body during stalk (8)
+
+            if (state > 0 && state != 8) {
                 if (!this.isBodyLocked) {
                     this.lockedBodyYaw = this.yBodyRot;
                     this.isBodyLocked = true;
@@ -169,7 +169,7 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
             Cat cat = (Cat)(Object)this;
             boolean isSitting = cat.isOrderedToSit() || cat.isInSittingPose();
             boolean isLying = cat.isLying();
-            
+
             if (cat.isTame()) {
                 net.minecraft.world.entity.LivingEntity owner = cat.getOwner();
                 if (owner instanceof net.minecraft.world.entity.player.Player player) {
@@ -178,10 +178,10 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
                     isLying = false;
                 }
             }
-            
+
             boolean sittingChanged = isSitting != this.wasInSittingPose;
             boolean lyingChanged = isLying != this.wasLying;
-            
+
             if (sittingChanged) {
                 if (isSitting) {
                     this.setBodyState((byte) 1);
@@ -203,10 +203,10 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
                     this.setBodyState((byte) 4);
                 }
             }
-            
+
             this.wasInSittingPose = isSitting;
             this.wasLying = isLying;
-            
+
             if (cat.isCrouching() && cat.getDeltaMovement().horizontalDistanceSqr() > 0.0001D) {
                 if (state != 8 && state != 11) this.setBodyState((byte) 8);
             } else if (state == 8) {
@@ -224,22 +224,22 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
                 } else {
                     this.getNavigation().stop();
 
-                    if (state == 5) { // Wake up -> Stand
+                    if (state == 5) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 6);
                         }
-                    } else if (state == 6) { // Stand up -> Normal
+                    } else if (state == 6) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 0);
                         }
-                    } else if (state == 1) { // Sit -> Sitting Hold
+                    } else if (state == 1) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 2);
                         }
-                    } else if (state == 3) { // Sleep -> Sleeping Hold
+                    } else if (state == 3) {
                         this.busyTimer--;
                         if (this.busyTimer <= 0) {
                             this.setBodyState((byte) 4);
@@ -281,17 +281,17 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
 
         if (state == 6) this.standAnimationState.startIfStopped(this.tickCount);
         else this.standAnimationState.stop();
-        
+
         if (state == 7) this.stretchAnimationState.startIfStopped(this.tickCount);
         else this.stretchAnimationState.stop();
-        
+
         if (state == 8) this.stalkingAnimationState.startIfStopped(this.tickCount);
         else this.stalkingAnimationState.stop();
-        
+
         if (state == 11) this.pounceAnimationState.startIfStopped(this.tickCount);
         else this.pounceAnimationState.stop();
     }
-    
+
     @Override public AnimationState getSitAnimationState() { return this.sitAnimationState; }
     @Override public AnimationState getSittingHoldAnimationState() { return this.sittingHoldAnimationState; }
     @Override public AnimationState getSleepAnimationState() { return this.sleepAnimationState; }
@@ -303,3 +303,4 @@ public abstract class CatMixin extends TamableAnimal implements INECatAnimation,
     @Override public AnimationState getPounceAnimationState() { return this.pounceAnimationState; }
     @Override public AnimationState getIdleAnimationState() { return this.idleAnimationState; }
 }
+

@@ -44,7 +44,8 @@ public class ChickenPeckGoal extends Goal {
     public void tick() {
         this.peckTimer = Math.max(0, this.peckTimer - 1);
         if (this.peckTimer == this.adjustedTickDelay(4)) {
-            // Can add particle effects or sound here later if needed
+
         }
     }
 }
+

@@ -27,3 +27,4 @@ public class ModSounds {
         System.out.println("Registering ModSounds for newera");
     }
 }
+

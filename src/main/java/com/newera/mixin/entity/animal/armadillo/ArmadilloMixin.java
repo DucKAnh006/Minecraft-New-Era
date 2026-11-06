@@ -306,3 +306,4 @@ public abstract class ArmadilloMixin extends Animal implements INEAnimal {
         }
     }
 }
+

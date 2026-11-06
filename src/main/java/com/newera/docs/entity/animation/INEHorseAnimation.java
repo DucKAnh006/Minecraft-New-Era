@@ -15,3 +15,4 @@ public interface INEHorseAnimation extends INEAnimal {
     AnimationState getRearAnimationState();
     AnimationState getAttackAnimationState();
 }
+

@@ -35,18 +35,16 @@ public class ChickenFlyGoal extends Goal {
             return false;
         }
         if (this.chicken.getNavigation().isDone()) {
-            return false; // Only fly when moving
+            return false;
         }
 
-        // Tình huống 1: Bị kẹt vật cản phía trước
         if (this.chicken.horizontalCollision) {
             return true;
         }
 
-        // Tình huống 2: Đang chạy nhanh (vận tốc ngang lớn do hoảng sợ/chạy trốn)
         double horizontalSpeedSqr = this.chicken.getDeltaMovement().horizontalDistanceSqr();
-        if (horizontalSpeedSqr > 0.01) { // 0.1^2 = 0.01
-            // Tốc độ cao thì tỷ lệ ngẫu nhiên bay lên lướt đi
+        if (horizontalSpeedSqr > 0.01) {
+
             return this.chicken.getRandom().nextInt(40) == 0;
         }
 
@@ -56,30 +54,27 @@ public class ChickenFlyGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (this.flyDuration <= 0 || this.chicken.isInWater()) return false;
-        // Nếu đã bay được một lúc (5 ticks) mà chạm đất thì dừng ngay lập tức
+
         if (this.flyDuration < 15 && this.chicken.onGround()) return false;
         return true;
     }
 
     @Override
     public void start() {
-        this.flyDuration = 20; 
-        
+        this.flyDuration = 20;
+
         Vec3 currentDelta = this.chicken.getDeltaMovement();
         double speed = currentDelta.horizontalDistance();
-        
-        // Cấp lực nhảy (nhảy lên). Nếu đang chạy nhanh thì nhảy bật cao hơn một chút.
+
         double jumpStrength = 0.45;
         if (speed > 0.1) {
             jumpStrength = 0.55;
         }
 
-        // Vector hướng nhìn để xác định hướng lướt tới
         Vec3 forward = this.chicken.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
-        
-        // Nhân thêm đà tiến lên dựa trên tốc độ hiện tại. Chạy càng nhanh bay càng xa.
-        double boostMultiplier = speed * 2.5; 
-        if (boostMultiplier < 0.2) boostMultiplier = 0.2; // Đảm bảo lực đẩy tối thiểu
+
+        double boostMultiplier = speed * 2.5;
+        if (boostMultiplier < 0.2) boostMultiplier = 0.2;
 
         this.chicken.setDeltaMovement(
                 currentDelta.x + forward.x * boostMultiplier,
@@ -92,8 +87,7 @@ public class ChickenFlyGoal extends Goal {
     public void tick() {
         if (this.flyDuration > 0) {
             this.flyDuration--;
-            
-            // Trong lúc rơi xuống (y < 0), bổ sung một lực lướt nhẹ về phía trước
+
             Vec3 currentDelta = this.chicken.getDeltaMovement();
             if (currentDelta.y < 0) {
                 Vec3 forward = this.chicken.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
@@ -112,3 +106,4 @@ public class ChickenFlyGoal extends Goal {
         this.cooldown = 60 + this.chicken.getRandom().nextInt(100);
     }
 }
+

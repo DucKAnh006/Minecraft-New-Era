@@ -7,88 +7,88 @@ import net.minecraft.client.animation.KeyframeAnimations;
 
 public class CamelBabyAnimation {
 	public static final AnimationDefinition CAMEL_BABY_WALK = AnimationDefinition.Builder.withLength(1.5F).looping()
-		.addAnimation("root", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("root", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 2.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -2.5F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 2.5F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -0.6F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4583F, KeyframeAnimations.posVec(0.0F, -0.6F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(15.94F, -8.42F, 20.94F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(15.94F, 8.42F, -20.94F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(15.94F, -8.42F, 20.94F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(-2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.125F, KeyframeAnimations.degreeVec(-2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4583F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.1F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.125F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 22.5F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.125F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 22.5F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(-22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.075F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.75F, KeyframeAnimations.posVec(0.075F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.2083F, KeyframeAnimations.posVec(0.075F, 4.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.posVec(0.075F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(-22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4583F, KeyframeAnimations.posVec(-0.1F, 4.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.75F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(-9.49F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5833F, KeyframeAnimations.degreeVec(-17.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.2083F, KeyframeAnimations.degreeVec(7.38F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.25F, KeyframeAnimations.posVec(-0.1F, 5.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5833F, KeyframeAnimations.posVec(-0.1F, 0.0F, -0.1F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-15.83F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.0F, KeyframeAnimations.degreeVec(-7.38F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.25F, KeyframeAnimations.degreeVec(-21.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.5F, KeyframeAnimations.degreeVec(-15.83F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.6667F, KeyframeAnimations.posVec(0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.0F, KeyframeAnimations.posVec(0.1F, 4.0F, 0.17F), AnimationChannel.Interpolations.CATMULLROM),
@@ -98,7 +98,7 @@ public class CamelBabyAnimation {
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_STAND_UP = AnimationDefinition.Builder.withLength(2.6F)
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.9F, KeyframeAnimations.degreeVec(-12.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -107,7 +107,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.3F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -13.25F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(0.0F, -13.25F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.posVec(0.0F, -11.52F, -0.85F), AnimationChannel.Interpolations.LINEAR),
@@ -118,7 +118,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.3F, KeyframeAnimations.posVec(0.0F, -0.1F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(46.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(46.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.degreeVec(39.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -134,7 +134,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.3F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -144,7 +144,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.3F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-4.75F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(5.65F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(40.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -153,14 +153,14 @@ public class CamelBabyAnimation {
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(0.0F, 0.8367F, 1.9553F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.8F, KeyframeAnimations.posVec(0.0F, -0.95F, 1.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.3F, KeyframeAnimations.posVec(0.0F, -0.95F, 1.42F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, -0.95F, 1.42F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.4F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR),
@@ -172,13 +172,13 @@ public class CamelBabyAnimation {
 			new Keyframe(2.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(2.3F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.4F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.4F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.LINEAR),
@@ -190,13 +190,13 @@ public class CamelBabyAnimation {
 			new Keyframe(2.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(2.3F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.4F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(-75.21F, 9.37F, 2.45F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.degreeVec(-70.21F, 9.37F, 2.45F), AnimationChannel.Interpolations.LINEAR),
@@ -210,7 +210,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.3F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.1F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(0.1F, -8.0F, 6.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.posVec(-0.12F, -7.18F, 5.0F), AnimationChannel.Interpolations.LINEAR),
@@ -227,7 +227,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.3F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, -10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(-74.2F, -9.3F, -2.45F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.degreeVec(-69.2F, -9.32F, -2.4F), AnimationChannel.Interpolations.LINEAR),
@@ -242,7 +242,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(0.0F, -7.89F, 4.96F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.3F, KeyframeAnimations.posVec(0.0F, -6.89F, 4.96F), AnimationChannel.Interpolations.LINEAR),
@@ -258,7 +258,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, -12.0F, -0.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(-90.0F, -12.0F, -0.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(-89.79F, -17.4F, -0.8F), AnimationChannel.Interpolations.LINEAR),
@@ -274,7 +274,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.1F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(1.5F, -10.949F, 1.9507F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(1.5F, -10.949F, 1.9507F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(1.0F, -11.0F, 1.75F), AnimationChannel.Interpolations.LINEAR),
@@ -290,7 +290,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.1F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, 12.0F, 0.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.degreeVec(-90.0F, 12.0F, 0.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(-90.0F, 17.5F, 1.0F), AnimationChannel.Interpolations.LINEAR),
@@ -305,7 +305,7 @@ public class CamelBabyAnimation {
 			new Keyframe(2.1F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-1.3F, -11.0F, 1.95F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(-1.3F, -11.0F, 1.95F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(-0.7F, -10.9F, 1.8F), AnimationChannel.Interpolations.LINEAR),
@@ -324,97 +324,97 @@ public class CamelBabyAnimation {
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_DASH = AnimationDefinition.Builder.withLength(0.5F).looping()
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -2.8F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(67.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(112.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.25F, KeyframeAnimations.degreeVec(67.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(112.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(67.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.25F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 1.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 1.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 67.5F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 67.5F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, -67.5F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, -67.5F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(44.9727F, 1.7675F, -1.7683F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(-90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.25F, KeyframeAnimations.degreeVec(44.9727F, 1.7675F, -1.7683F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(-90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(44.9727F, 1.7675F, -1.7683F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.05F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(44.9727F, -1.7675F, 1.7683F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.25F, KeyframeAnimations.degreeVec(-90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(44.9727F, -1.7675F, 1.7683F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(-90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-0.05F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(-45.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.25F, KeyframeAnimations.degreeVec(90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(-45.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-0.05F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-45.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.125F, KeyframeAnimations.degreeVec(90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.25F, KeyframeAnimations.degreeVec(-45.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.375F, KeyframeAnimations.degreeVec(90.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(-45.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.05F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_IDLE = AnimationDefinition.Builder.withLength(4.0F).looping()
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -0.1F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(1.0F, KeyframeAnimations.degreeVec(4.9811F, 0.4352F, -4.9811F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(3.0F, KeyframeAnimations.degreeVec(4.9872F, -0.2942F, 3.3674F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(4.0F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(-2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(2.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(2.625F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.CATMULLROM),
@@ -423,7 +423,7 @@ public class CamelBabyAnimation {
 			new Keyframe(3.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(2.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(2.625F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 22.5F), AnimationChannel.Interpolations.CATMULLROM),
@@ -435,7 +435,7 @@ public class CamelBabyAnimation {
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_SIT = AnimationDefinition.Builder.withLength(2.0F)
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4F, KeyframeAnimations.degreeVec(9.26F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.6F, KeyframeAnimations.degreeVec(18.15F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -447,7 +447,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.7F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -0.1F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.2F, KeyframeAnimations.posVec(0.0F, -1.5F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4F, KeyframeAnimations.posVec(0.0F, -2.21F, 0.04F), AnimationChannel.Interpolations.LINEAR),
@@ -460,7 +460,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.7F, KeyframeAnimations.posVec(0.0F, -13.25F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, -13.25F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.9F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.2F, KeyframeAnimations.degreeVec(25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -469,12 +469,12 @@ public class CamelBabyAnimation {
 			new Keyframe(1.8F, KeyframeAnimations.degreeVec(52.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(52.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(1.4F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.8F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.1F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4F, KeyframeAnimations.degreeVec(-20.42F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -486,7 +486,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.6F, KeyframeAnimations.degreeVec(-4.75F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(-4.75F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.1F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.4F, KeyframeAnimations.posVec(0.0F, 0.38F, 0.44F), AnimationChannel.Interpolations.LINEAR),
@@ -495,7 +495,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.3F, KeyframeAnimations.posVec(0.0F, -0.3F, 1.22F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.6F, KeyframeAnimations.posVec(0.0F, 0.0F, 1.22F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.2F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 45.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.3F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 60.0F), AnimationChannel.Interpolations.LINEAR),
@@ -504,10 +504,10 @@ public class CamelBabyAnimation {
 			new Keyframe(1.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.2F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.3F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -62.5F), AnimationChannel.Interpolations.LINEAR),
@@ -516,10 +516,10 @@ public class CamelBabyAnimation {
 			new Keyframe(1.6F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(-2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.7F, KeyframeAnimations.degreeVec(-23.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -530,7 +530,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.7F, KeyframeAnimations.degreeVec(-90.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(-90.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.125F, -0.1F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(0.125F, -0.1F, 0.4F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.6F, KeyframeAnimations.posVec(0.12F, -0.15F, 2.5F), AnimationChannel.Interpolations.LINEAR),
@@ -543,7 +543,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.7F, KeyframeAnimations.posVec(0.1F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.posVec(0.1F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(-2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.7F, KeyframeAnimations.degreeVec(-23.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -554,7 +554,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.7F, KeyframeAnimations.degreeVec(-90.0F, -10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(-90.0F, -10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-0.125F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(-0.125F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.6F, KeyframeAnimations.posVec(-0.13F, -0.18F, 2.35F), AnimationChannel.Interpolations.LINEAR),
@@ -567,7 +567,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.7F, KeyframeAnimations.posVec(0.0F, -10.9F, 6.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.9F, KeyframeAnimations.degreeVec(-10.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -577,7 +577,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.4F, KeyframeAnimations.degreeVec(-90.0F, -11.88F, -0.54F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(-90.0F, -11.88F, -0.54F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(-0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.9F, KeyframeAnimations.posVec(-0.1F, 0.0F, 1.0F), AnimationChannel.Interpolations.LINEAR),
@@ -586,7 +586,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.4F, KeyframeAnimations.posVec(1.4F, -10.95F, 1.95F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.posVec(1.4F, -10.95F, 1.95F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.9F, KeyframeAnimations.degreeVec(-10.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -596,7 +596,7 @@ public class CamelBabyAnimation {
 			new Keyframe(1.4F, KeyframeAnimations.degreeVec(-90.0F, 11.89F, 0.54F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(2.0F, KeyframeAnimations.degreeVec(-90.0F, 11.89F, 0.54F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(0.1F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(0.9F, KeyframeAnimations.posVec(0.1F, 0.0F, 1.0F), AnimationChannel.Interpolations.LINEAR),
@@ -609,90 +609,90 @@ public class CamelBabyAnimation {
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_SITTING = AnimationDefinition.Builder.withLength(0.0F).looping()
-		.addAnimation("root", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("root", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("root", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("root", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -13.25F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(52.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-4.75F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 1.22F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 15.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_ear", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -22.5F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_ear", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.1F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, -10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -11.0F, 6.0F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, -11.88F, -0.54F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(1.4F, -10.95F, 1.95F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(-90.0F, 11.89F, 0.54F), AnimationChannel.Interpolations.LINEAR)
 		))
-		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(-1.33F, -11.0F, 1.95F), AnimationChannel.Interpolations.LINEAR)
 		))
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_SLEEP = AnimationDefinition.Builder.withLength(1.0F)
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.0F, KeyframeAnimations.degreeVec(25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_SLEEPING = AnimationDefinition.Builder.withLength(0.25F)
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_WAKE_UP = AnimationDefinition.Builder.withLength(1.0F)
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
 			new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
 		))
 		.build();
 
 	public static final AnimationDefinition CAMEL_BABY_EATING = AnimationDefinition.Builder.withLength(4.0F)
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
 			new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.degreeVec(20.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.75F, KeyframeAnimations.degreeVec(25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -709,7 +709,7 @@ public class CamelBabyAnimation {
 			new Keyframe(3.5F, KeyframeAnimations.degreeVec(20.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
-		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION, 
+		.addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
 			new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(0.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 			new Keyframe(3.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -717,3 +717,4 @@ public class CamelBabyAnimation {
 		))
 		.build();
 }
+
