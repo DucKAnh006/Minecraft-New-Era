@@ -2,14 +2,13 @@
 
 ## Overview
 
-New Era is a Minecraft mod developed for the Fabric ecosystem that revitalizes the vanilla world by overhauling creature visuals, introducing natural animal behaviors, expanding climate-based variants, and redesigning the Ender Dragon encounter into a challenging, cinematic boss fight.
+New Era is a Minecraft mod built for the Fabric ecosystem that refreshes the vanilla experience with upgraded visuals, more lifelike world interactions, and overhauled gameplay elements.
 
 ### Key Features
 
-- Lifelike Entity Animations: Custom skeletal animation systems and natural movement sets for vanilla fauna, including Cows, Chickens, Pigs, Sheep, Camels, Horses, Donkeys, Mules, Wolves, Cats, Ocelots, Parrots, and Armadillos.
-- Dynamic Animal Behaviors: Enhanced AI routines allowing creatures to sit, sleep, stalk prey, forage, and react realistically to environment stimuli.
-- Biome and Climate Variants: Appearance and physiological adaptations across different climates (temperate, cold, and warm biomes).
-- Ender Dragon Overhaul: Completely redesigned Ender Dragon combat phases, custom bite and breath attacks, custom dragon sounds, a redesigned boss health bar HUD, and revamped End structures including central podium and obsidian spikes.
+- **Refreshed Animations & Visuals**: Smoother, more expressive animations and visual polish across vanilla entities and environments.
+- **Living World & Behaviors**: Enhanced creature behaviors, ambient reactions, and biome-based variations that make the world feel more alive.
+- **Overhauled Encounters**: Reworked major gameplay encounters, progression moments, and atmospheric audio-visual details.
 
 ## Technical Requirements
 
@@ -22,63 +21,56 @@ New Era is a Minecraft mod developed for the Fabric ecosystem that revitalizes t
 
 ### 1. Prerequisites
 
-Make sure the following tools are installed and available in your environment path:
-- Java JDK 25 or newer
-- Git
+Make sure **Java JDK 25** (or newer) is installed and available in your system `PATH`.
 
-Verify your Java version with:
+Verify your current Java version with:
 ```bash
 java -version
 ```
 
-### 2. Clone the Repository
+If Java 25 is not installed yet, you can download and install a compatible JDK 25 build (Eclipse Temurin 25) using one of the commands below:
 
-Clone the project to your local machine:
-```bash
-git clone https://github.com/DucKAnh006/Minecraft-New-Era-Mod.git
-cd Minecraft-New-Era-Mod
-```
+- **Windows (WinGet)**:
+  ```bash
+  winget install EclipseAdoptium.Temurin.25.JDK
+  ```
+- **macOS (Homebrew)**:
+  ```bash
+  brew install --cask temurin@25
+  ```
+- **Linux (APT — Debian/Ubuntu with Adoptium repository)**:
+  ```bash
+  sudo apt update && sudo apt install temurin-25-jdk
+  ```
+- **SDKMAN! (macOS / Linux / WSL)**:
+  ```bash
+  sdk install java 25.0.5-tem
+  ```
 
-### 3. Launch the Development Client
+You can also download installers manually from [Adoptium Temurin 25 Releases](https://adoptium.net/temurin/releases/?version=25).
 
-To launch the Minecraft client in the development environment, execute:
+### 2. Run and Build
 
-On Windows (Command Prompt / PowerShell):
-```cmd
-gradlew.bat runClient
-```
+From the project root directory, use `runClient` to launch the development client or `build` to compile the mod JAR into `build/libs/`:
 
-On Linux / macOS:
-```bash
-./gradlew runClient
-```
+- **Windows (Command Prompt / PowerShell)**:
+  ```bash
+  gradlew.bat runClient
+  gradlew.bat build
+  ```
 
-Alternatively, on Windows, you can execute the helper script located in the dev directory:
-```cmd
-dev\run_game.bat
-```
+- **Linux / macOS**:
+  ```bash
+  ./gradlew runClient
+  ./gradlew build
+  ```
 
-### 4. Build the Mod File
+Once the build finishes successfully, the packaged `.jar` file will be located inside the `build/libs/` directory.
 
-To compile and package the mod jar for distribution, run:
+### 3. Project Structure
 
-On Windows:
-```cmd
-gradlew.bat build
-```
-
-On Linux / macOS:
-```bash
-./gradlew build
-```
-
-Once the build finishes successfully, the packaged jar will be located inside the `build/libs/` directory.
-
-### 5. Development Workspace Structure
-
-- `src/main`: Mod initialization logic, game registries, worldgen features, sound handlers, and server-side mixins.
-- `src/client`: Client-side rendering pipeline, custom entity renderers, models, animations, and HUD overlays.
-- `dev/`: Development workspace containing raw Blockbench models, animation backups, and development scripts.
+- `src/main`: Core mod logic, registries, world features, sound events, and common/server mixins.
+- `src/client`: Client-side rendering, custom models, animations, and HUD/UI elements.
 
 ## Author
 
@@ -86,4 +78,4 @@ Once the build finishes successfully, the packaged jar will be located inside th
 
 ## License
 
-This project is licensed under the CC0 1.0 Universal License. See the LICENSE file for details.
+This project is licensed under the CC0 1.0 Universal License. See the `LICENSE` file for details.
